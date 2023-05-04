@@ -15,12 +15,6 @@
  */
 package org.mybatis.generator.codegen.mybatis3.xmlmapper.elements;
 
-import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.OutputUtilities;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
@@ -31,6 +25,12 @@ import org.mybatis.generator.codegen.AbstractGenerator;
 import org.mybatis.generator.codegen.mybatis3.ListUtilities;
 import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
 import org.mybatis.generator.config.GeneratedKey;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 
 public abstract class AbstractXmlElementGenerator extends AbstractGenerator {
     public abstract void addElements(XmlElement parentElement);
@@ -53,11 +53,11 @@ public abstract class AbstractXmlElementGenerator extends AbstractGenerator {
             GeneratedKey generatedKey) {
         String identityColumnType = introspectedColumn.getFullyQualifiedJavaType().getFullyQualifiedName();
 
-        XmlElement answer = new XmlElement("selectKey"); //$NON-NLS-1$
-        answer.addAttribute(new Attribute("resultType", identityColumnType)); //$NON-NLS-1$
+        XmlElement answer = new XmlElement("selectKey"); 
+        answer.addAttribute(new Attribute("resultType", identityColumnType)); 
         answer.addAttribute(new Attribute(
-                "keyProperty", introspectedColumn.getJavaProperty())); //$NON-NLS-1$
-        answer.addAttribute(new Attribute("order", generatedKey.getMyBatis3Order())); //$NON-NLS-1$
+                "keyProperty", introspectedColumn.getJavaProperty())); 
+        answer.addAttribute(new Attribute("order", generatedKey.getMyBatis3Order())); 
 
         answer.addElement(new TextElement(generatedKey.getRuntimeSqlStatement()));
 
@@ -65,34 +65,34 @@ public abstract class AbstractXmlElementGenerator extends AbstractGenerator {
     }
 
     protected XmlElement getBaseColumnListElement() {
-        XmlElement answer = new XmlElement("include"); //$NON-NLS-1$
-        answer.addAttribute(new Attribute("refid", introspectedTable.getBaseColumnListId())); //$NON-NLS-1$
+        XmlElement answer = new XmlElement("include"); 
+        answer.addAttribute(new Attribute("refid", introspectedTable.getBaseColumnListId())); 
         return answer;
     }
 
     protected XmlElement getBlobColumnListElement() {
-        XmlElement answer = new XmlElement("include"); //$NON-NLS-1$
-        answer.addAttribute(new Attribute("refid", introspectedTable.getBlobColumnListId())); //$NON-NLS-1$
+        XmlElement answer = new XmlElement("include"); 
+        answer.addAttribute(new Attribute("refid", introspectedTable.getBlobColumnListId())); 
         return answer;
     }
 
     protected XmlElement getExampleIncludeElement() {
-        XmlElement ifElement = new XmlElement("if"); //$NON-NLS-1$
-        ifElement.addAttribute(new Attribute("test", "_parameter != null")); //$NON-NLS-1$ //$NON-NLS-2$
+        XmlElement ifElement = new XmlElement("if"); 
+        ifElement.addAttribute(new Attribute("test", "_parameter != null"));
 
-        XmlElement includeElement = new XmlElement("include"); //$NON-NLS-1$
-        includeElement.addAttribute(new Attribute("refid", introspectedTable.getExampleWhereClauseId())); //$NON-NLS-1$
+        XmlElement includeElement = new XmlElement("include"); 
+        includeElement.addAttribute(new Attribute("refid", introspectedTable.getExampleWhereClauseId())); 
         ifElement.addElement(includeElement);
 
         return ifElement;
     }
 
     protected XmlElement getUpdateByExampleIncludeElement() {
-        XmlElement ifElement = new XmlElement("if"); //$NON-NLS-1$
-        ifElement.addAttribute(new Attribute("test", "example != null")); //$NON-NLS-1$ //$NON-NLS-2$
+        XmlElement ifElement = new XmlElement("if"); 
+        ifElement.addAttribute(new Attribute("test", "example != null"));  
 
-        XmlElement includeElement = new XmlElement("include"); //$NON-NLS-1$
-        includeElement.addAttribute(new Attribute("refid", //$NON-NLS-1$
+        XmlElement includeElement = new XmlElement("include"); 
+        includeElement.addAttribute(new Attribute("refid", 
                 introspectedTable.getMyBatis3UpdateByExampleWhereClauseId()));
         ifElement.addElement(includeElement);
 
@@ -100,7 +100,7 @@ public abstract class AbstractXmlElementGenerator extends AbstractGenerator {
     }
 
     protected List<TextElement> buildSelectList(List<IntrospectedColumn> columns) {
-        return buildSelectList("", columns); //$NON-NLS-1$
+        return buildSelectList("", columns); 
     }
 
     protected List<TextElement> buildSelectList(String initial, List<IntrospectedColumn> columns) {
@@ -111,7 +111,7 @@ public abstract class AbstractXmlElementGenerator extends AbstractGenerator {
             sb.append(MyBatis3FormattingUtilities.getSelectListPhrase(iter.next()));
 
             if (iter.hasNext()) {
-                sb.append(", "); //$NON-NLS-1$
+                sb.append(", "); 
             }
 
             if (sb.length() > 80) {
@@ -133,14 +133,14 @@ public abstract class AbstractXmlElementGenerator extends AbstractGenerator {
         for (IntrospectedColumn introspectedColumn : introspectedTable.getPrimaryKeyColumns()) {
             String line;
             if (first) {
-                line = "where "; //$NON-NLS-1$
+                line = "where "; 
                 first = false;
             } else {
-                line = "  and "; //$NON-NLS-1$
+                line = "  and "; 
             }
 
             line += MyBatis3FormattingUtilities.getEscapedColumnName(introspectedColumn);
-            line += " = "; //$NON-NLS-1$
+            line += " = "; 
             line += MyBatis3FormattingUtilities.getParameterClause(introspectedColumn);
             answer.add(new TextElement(line));
         }
@@ -149,11 +149,11 @@ public abstract class AbstractXmlElementGenerator extends AbstractGenerator {
     }
 
     protected XmlElement buildInitialInsert(String statementId, FullyQualifiedJavaType parameterType) {
-        XmlElement answer = new XmlElement("insert"); //$NON-NLS-1$
+        XmlElement answer = new XmlElement("insert"); 
 
-        answer.addAttribute(new Attribute("id", statementId)); //$NON-NLS-1$
+        answer.addAttribute(new Attribute("id", statementId)); 
 
-        answer.addAttribute(new Attribute("parameterType", parameterType.getFullyQualifiedName())); //$NON-NLS-1$
+        answer.addAttribute(new Attribute("parameterType", parameterType.getFullyQualifiedName())); 
 
         context.getCommentGenerator().addComment(answer);
 
@@ -162,11 +162,11 @@ public abstract class AbstractXmlElementGenerator extends AbstractGenerator {
                     // if the column is null, then it's a configuration error. The
                     // warning has already been reported
                     if (gk.isJdbcStandard()) {
-                        answer.addAttribute(new Attribute("useGeneratedKeys", "true")); //$NON-NLS-1$ //$NON-NLS-2$
+                        answer.addAttribute(new Attribute("useGeneratedKeys", "true"));  
                         answer.addAttribute(
-                                new Attribute("keyProperty", introspectedColumn.getJavaProperty())); //$NON-NLS-1$
+                                new Attribute("keyProperty", introspectedColumn.getJavaProperty())); 
                         answer.addAttribute(
-                                new Attribute("keyColumn", introspectedColumn.getActualColumnName())); //$NON-NLS-1$
+                                new Attribute("keyColumn", introspectedColumn.getActualColumnName())); 
                     } else {
                         answer.addElement(getSelectKey(introspectedColumn, gk));
                     }
@@ -177,8 +177,8 @@ public abstract class AbstractXmlElementGenerator extends AbstractGenerator {
     }
 
     protected enum ResultElementType {
-        ID("id"), //$NON-NLS-1$
-        RESULT("result"); //$NON-NLS-1$
+        ID("id"), 
+        RESULT("result"); 
 
         private final String value;
 
@@ -193,12 +193,12 @@ public abstract class AbstractXmlElementGenerator extends AbstractGenerator {
             XmlElement resultElement = new XmlElement(elementType.value);
 
             resultElement.addAttribute(buildColumnAttribute(introspectedColumn));
-            resultElement.addAttribute(new Attribute("property", introspectedColumn.getJavaProperty())); //$NON-NLS-1$
-            resultElement.addAttribute(new Attribute("jdbcType", introspectedColumn.getJdbcTypeName())); //$NON-NLS-1$
+            resultElement.addAttribute(new Attribute("property", introspectedColumn.getJavaProperty())); 
+            resultElement.addAttribute(new Attribute("jdbcType", introspectedColumn.getJdbcTypeName())); 
 
             if (stringHasValue(introspectedColumn.getTypeHandler())) {
                 resultElement.addAttribute(
-                        new Attribute("typeHandler", introspectedColumn.getTypeHandler())); //$NON-NLS-1$
+                        new Attribute("typeHandler", introspectedColumn.getTypeHandler())); 
             }
 
             answer.add(resultElement);
@@ -208,20 +208,20 @@ public abstract class AbstractXmlElementGenerator extends AbstractGenerator {
     }
 
     protected XmlElement buildConstructorElement(boolean includeBlobColumns) {
-        XmlElement constructor = new XmlElement("constructor"); //$NON-NLS-1$
+        XmlElement constructor = new XmlElement("constructor"); 
 
         for (IntrospectedColumn introspectedColumn : introspectedTable.getPrimaryKeyColumns()) {
-            XmlElement resultElement = new XmlElement("idArg"); //$NON-NLS-1$
+            XmlElement resultElement = new XmlElement("idArg"); 
 
             resultElement.addAttribute(buildColumnAttribute(introspectedColumn));
-            resultElement.addAttribute(new Attribute("jdbcType", //$NON-NLS-1$
+            resultElement.addAttribute(new Attribute("jdbcType", 
                     introspectedColumn.getJdbcTypeName()));
-            resultElement.addAttribute(new Attribute("javaType", //$NON-NLS-1$
+            resultElement.addAttribute(new Attribute("javaType", 
                     introspectedColumn.getFullyQualifiedJavaType().getFullyQualifiedName()));
 
             if (stringHasValue(introspectedColumn.getTypeHandler())) {
                 resultElement.addAttribute(
-                        new Attribute("typeHandler", introspectedColumn.getTypeHandler())); //$NON-NLS-1$
+                        new Attribute("typeHandler", introspectedColumn.getTypeHandler())); 
             }
 
             constructor.addElement(resultElement);
@@ -234,30 +234,30 @@ public abstract class AbstractXmlElementGenerator extends AbstractGenerator {
             columns = introspectedTable.getBaseColumns();
         }
         for (IntrospectedColumn introspectedColumn : columns) {
-            XmlElement resultElement = new XmlElement("arg"); //$NON-NLS-1$
+            XmlElement resultElement = new XmlElement("arg"); 
 
             resultElement.addAttribute(buildColumnAttribute(introspectedColumn));
-            resultElement.addAttribute(new Attribute("jdbcType", //$NON-NLS-1$
+            resultElement.addAttribute(new Attribute("jdbcType", 
                     introspectedColumn.getJdbcTypeName()));
 
             if (introspectedColumn.getFullyQualifiedJavaType().isPrimitive()) {
                 // need to use the MyBatis type alias for a primitive byte
                 String s = '_'
                         + introspectedColumn.getFullyQualifiedJavaType().getShortName();
-                resultElement.addAttribute(new Attribute("javaType", s)); //$NON-NLS-1$
-            } else if ("byte[]".equals(introspectedColumn.getFullyQualifiedJavaType() //$NON-NLS-1$
+                resultElement.addAttribute(new Attribute("javaType", s)); 
+            } else if ("byte[]".equals(introspectedColumn.getFullyQualifiedJavaType() 
                     .getFullyQualifiedName())) {
                 // need to use the MyBatis type alias for a primitive byte arry
-                resultElement.addAttribute(new Attribute("javaType", //$NON-NLS-1$
-                        "_byte[]")); //$NON-NLS-1$
+                resultElement.addAttribute(new Attribute("javaType", 
+                        "_byte[]")); 
             } else {
-                resultElement.addAttribute(new Attribute("javaType", //$NON-NLS-1$
+                resultElement.addAttribute(new Attribute("javaType", 
                         introspectedColumn.getFullyQualifiedJavaType().getFullyQualifiedName()));
             }
 
             if (stringHasValue(introspectedColumn.getTypeHandler())) {
                 resultElement.addAttribute(new Attribute(
-                        "typeHandler", introspectedColumn.getTypeHandler())); //$NON-NLS-1$
+                        "typeHandler", introspectedColumn.getTypeHandler())); 
             }
 
             constructor.addElement(resultElement);
@@ -267,34 +267,34 @@ public abstract class AbstractXmlElementGenerator extends AbstractGenerator {
     }
 
     protected Attribute buildColumnAttribute(IntrospectedColumn introspectedColumn) {
-        return new Attribute("column", //$NON-NLS-1$
+        return new Attribute("column", 
                 MyBatis3FormattingUtilities.getRenamedColumnNameForResultMap(introspectedColumn));
     }
 
     protected XmlElement buildUpdateByExampleElement(String statementId, List<IntrospectedColumn> columns) {
-        XmlElement answer = new XmlElement("update"); //$NON-NLS-1$
+        XmlElement answer = new XmlElement("update"); 
 
-        answer.addAttribute(new Attribute("id", statementId)); //$NON-NLS-1$
+        answer.addAttribute(new Attribute("id", statementId)); 
 
-        answer.addAttribute(new Attribute("parameterType", "map")); //$NON-NLS-1$ //$NON-NLS-2$
+        answer.addAttribute(new Attribute("parameterType", "map"));  
         context.getCommentGenerator().addComment(answer);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("update "); //$NON-NLS-1$
+        sb.append("update "); 
         sb.append(introspectedTable.getAliasedFullyQualifiedTableNameAtRuntime());
         answer.addElement(new TextElement(sb.toString()));
 
         // set up for first column
         sb.setLength(0);
-        sb.append("set "); //$NON-NLS-1$
+        sb.append("set "); 
 
         Iterator<IntrospectedColumn> iter = ListUtilities.removeGeneratedAlwaysColumns(columns).iterator();
         while (iter.hasNext()) {
             IntrospectedColumn introspectedColumn = iter.next();
 
             sb.append(MyBatis3FormattingUtilities.getAliasedEscapedColumnName(introspectedColumn));
-            sb.append(" = "); //$NON-NLS-1$
-            sb.append(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn, "row.")); //$NON-NLS-1$
+            sb.append(" = "); 
+            sb.append(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn, "row.")); 
 
             if (iter.hasNext()) {
                 sb.append(',');
@@ -315,28 +315,28 @@ public abstract class AbstractXmlElementGenerator extends AbstractGenerator {
 
     protected XmlElement buildUpdateByPrimaryKeyElement(String statementId, String parameterType,
                                                         List<IntrospectedColumn> columns) {
-        XmlElement answer = new XmlElement("update"); //$NON-NLS-1$
+        XmlElement answer = new XmlElement("update"); 
 
-        answer.addAttribute(new Attribute("id", statementId)); //$NON-NLS-1$
-        answer.addAttribute(new Attribute("parameterType", parameterType)); //$NON-NLS-1$
+        answer.addAttribute(new Attribute("id", statementId)); 
+        answer.addAttribute(new Attribute("parameterType", parameterType)); 
 
         context.getCommentGenerator().addComment(answer);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("update "); //$NON-NLS-1$
+        sb.append("update "); 
         sb.append(introspectedTable.getFullyQualifiedTableNameAtRuntime());
         answer.addElement(new TextElement(sb.toString()));
 
         // set up for first column
         sb.setLength(0);
-        sb.append("set "); //$NON-NLS-1$
+        sb.append("set "); 
 
         Iterator<IntrospectedColumn> iter = ListUtilities.removeGeneratedAlwaysColumns(columns).iterator();
         while (iter.hasNext()) {
             IntrospectedColumn introspectedColumn = iter.next();
 
             sb.append(MyBatis3FormattingUtilities.getEscapedColumnName(introspectedColumn));
-            sb.append(" = "); //$NON-NLS-1$
+            sb.append(" = "); 
             sb.append(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn));
 
             if (iter.hasNext()) {

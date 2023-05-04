@@ -29,10 +29,10 @@ public class KotlinType extends KotlinNamedItemContainer {
     private final Set<String> superTypes = new HashSet<>();
 
     public enum Type {
-        CLASS("class"), //$NON-NLS-1$
-        INTERFACE("interface"), //$NON-NLS-1$
-        OBJECT("object"), //$NON-NLS-1$
-        COMPANION_OBJECT("companion object"); //$NON-NLS-1$
+        CLASS("class"), 
+        INTERFACE("interface"), 
+        OBJECT("object"), 
+        COMPANION_OBJECT("companion object"); 
 
         private final String value;
 

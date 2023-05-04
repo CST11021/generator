@@ -15,15 +15,15 @@
  */
 package org.mybatis.generator.api;
 
-import java.sql.Types;
-import java.util.Properties;
-
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.internal.util.StringUtility;
 
+import java.sql.Types;
+import java.util.Properties;
+
 /**
- * This class holds information about an introspected column.
+ * 此类包含有关内省列的信息。
  *
  * @author Jeff Butler
  */
@@ -126,23 +126,20 @@ public class IntrospectedColumn {
         this.scale = scale;
     }
 
-    /*
-     * This method is primarily used for debugging, so we don't externalize the
-     * strings
-     */
+
     @Override
     public String toString() {
-        return "Actual Column Name: " //$NON-NLS-1$
+        return "Actual Column Name: "
                 + actualColumnName
-                + ", JDBC Type: " //$NON-NLS-1$
+                + ", JDBC Type: "
                 + jdbcType
-                + ", Nullable: " //$NON-NLS-1$
+                + ", Nullable: "
                 + nullable
-                + ", Length: " //$NON-NLS-1$
+                + ", Length: "
                 + length
-                + ", Scale: " //$NON-NLS-1$
+                + ", Scale: "
                 + scale
-                + ", Identity: " //$NON-NLS-1$
+                + ", Identity: "
                 + identity;
     }
 
@@ -163,10 +160,10 @@ public class IntrospectedColumn {
     public boolean isBLOBColumn() {
         String typeName = getJdbcTypeName();
 
-        return "BINARY".equals(typeName) || "BLOB".equals(typeName) //$NON-NLS-1$ //$NON-NLS-2$
-                || "CLOB".equals(typeName) || "LONGNVARCHAR".equals(typeName) //$NON-NLS-1$ //$NON-NLS-2$
-                || "LONGVARBINARY".equals(typeName) || "LONGVARCHAR".equals(typeName) //$NON-NLS-1$ //$NON-NLS-2$
-                || "NCLOB".equals(typeName) || "VARBINARY".equals(typeName); //$NON-NLS-1$ //$NON-NLS-2$
+        return "BINARY".equals(typeName) || "BLOB".equals(typeName)  
+                || "CLOB".equals(typeName) || "LONGNVARCHAR".equals(typeName)  
+                || "LONGVARBINARY".equals(typeName) || "LONGVARCHAR".equals(typeName)  
+                || "NCLOB".equals(typeName) || "VARBINARY".equals(typeName);  
     }
 
     public boolean isStringColumn() {
@@ -200,13 +197,13 @@ public class IntrospectedColumn {
     public boolean isJDBCDateColumn() {
         return fullyQualifiedJavaType.equals(FullyQualifiedJavaType
                 .getDateInstance())
-                && "DATE".equalsIgnoreCase(jdbcTypeName); //$NON-NLS-1$
+                && "DATE".equalsIgnoreCase(jdbcTypeName);
     }
 
     public boolean isJDBCTimeColumn() {
         return fullyQualifiedJavaType.equals(FullyQualifiedJavaType
                 .getDateInstance())
-                && "TIME".equalsIgnoreCase(jdbcTypeName); //$NON-NLS-1$
+                && "TIME".equalsIgnoreCase(jdbcTypeName);
     }
 
     public String getTypeHandler() {
@@ -231,7 +228,7 @@ public class IntrospectedColumn {
 
     public String getJdbcTypeName() {
         if (jdbcTypeName == null) {
-            return "OTHER"; //$NON-NLS-1$
+            return "OTHER";
         }
 
         return jdbcTypeName;

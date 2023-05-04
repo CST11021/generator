@@ -15,12 +15,12 @@
  */
 package org.mybatis.generator.config;
 
-import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-import static org.mybatis.generator.internal.util.messages.Messages.getString;
+import org.mybatis.generator.internal.db.DatabaseDialects;
 
 import java.util.List;
 
-import org.mybatis.generator.internal.db.DatabaseDialects;
+import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
+import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 /**
  * This class specifies that a key is auto-generated, either as an identity
@@ -45,8 +45,7 @@ public class GeneratedKey {
         this.type = type;
         this.isIdentity = isIdentity;
 
-        DatabaseDialects dialect = DatabaseDialects
-                .getDatabaseDialect(configuredSqlStatement);
+        DatabaseDialects dialect = DatabaseDialects.getDatabaseDialect(configuredSqlStatement);
         if (dialect == null) {
             this.runtimeSqlStatement = configuredSqlStatement;
         } else {
@@ -67,33 +66,33 @@ public class GeneratedKey {
     }
 
     public String getMyBatis3Order() {
-        return isIdentity ? "AFTER" : "BEFORE"; //$NON-NLS-1$ //$NON-NLS-2$
+        return isIdentity ? "AFTER" : "BEFORE";  
     }
 
     public void validate(List<String> errors, String tableName) {
         if (!stringHasValue(runtimeSqlStatement)) {
-            errors.add(getString("ValidationError.7", //$NON-NLS-1$
+            errors.add(getString("ValidationError.7", 
                     tableName));
         }
 
         if (stringHasValue(type)
-                && !"pre".equals(type) //$NON-NLS-1$
-                && !"post".equals(type)) { //$NON-NLS-1$ //$NON-NLS-2$
-            errors.add(getString("ValidationError.15", tableName)); //$NON-NLS-1$
+                && !"pre".equals(type) 
+                && !"post".equals(type)) {  
+            errors.add(getString("ValidationError.15", tableName)); 
         }
 
-        if ("pre".equals(type) && isIdentity) { //$NON-NLS-1$
-            errors.add(getString("ValidationError.23", //$NON-NLS-1$
+        if ("pre".equals(type) && isIdentity) { 
+            errors.add(getString("ValidationError.23", 
                     tableName));
         }
 
-        if ("post".equals(type) && !isIdentity) { //$NON-NLS-1$
-            errors.add(getString("ValidationError.24", //$NON-NLS-1$
+        if ("post".equals(type) && !isIdentity) { 
+            errors.add(getString("ValidationError.24", 
                     tableName));
         }
     }
 
     public boolean isJdbcStandard() {
-        return "JDBC".equals(runtimeSqlStatement); //$NON-NLS-1$
+        return "JDBC".equals(runtimeSqlStatement); 
     }
 }

@@ -15,18 +15,11 @@
  */
 package org.mybatis.generator.config;
 
-import static org.mybatis.generator.internal.util.StringUtility.composeFullyQualifiedTableName;
-import static org.mybatis.generator.internal.util.StringUtility.isTrue;
-import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-
 import org.mybatis.generator.internal.util.messages.Messages;
+
+import java.util.*;
+
+import static org.mybatis.generator.internal.util.StringUtility.*;
 
 public class TableConfiguration extends PropertyHolder {
 
@@ -83,6 +76,10 @@ public class TableConfiguration extends PropertyHolder {
 
     private final List<IgnoredColumnPattern> ignoredColumnPatterns = new ArrayList<>();
 
+
+
+
+
     public TableConfiguration(Context context) {
         super();
 
@@ -105,8 +102,7 @@ public class TableConfiguration extends PropertyHolder {
         return deleteByPrimaryKeyStatementEnabled;
     }
 
-    public void setDeleteByPrimaryKeyStatementEnabled(
-            boolean deleteByPrimaryKeyStatementEnabled) {
+    public void setDeleteByPrimaryKeyStatementEnabled(boolean deleteByPrimaryKeyStatementEnabled) {
         this.deleteByPrimaryKeyStatementEnabled = deleteByPrimaryKeyStatementEnabled;
     }
 
@@ -379,7 +375,7 @@ public class TableConfiguration extends PropertyHolder {
     public void validate(List<String> errors, int listPosition) {
         if (!stringHasValue(tableName)) {
             errors.add(Messages.getString(
-                    "ValidationError.6", Integer.toString(listPosition))); //$NON-NLS-1$
+                    "ValidationError.6", Integer.toString(listPosition)));
         }
 
         String fqTableName = composeFullyQualifiedTableName(
@@ -398,7 +394,7 @@ public class TableConfiguration extends PropertyHolder {
             boolean queryId2Set = stringHasValue(selectByPrimaryKeyQueryId);
 
             if (queryId1Set != queryId2Set) {
-                errors.add(Messages.getString("ValidationError.13", //$NON-NLS-1$
+                errors.add(Messages.getString("ValidationError.13",
                         fqTableName));
             }
         }

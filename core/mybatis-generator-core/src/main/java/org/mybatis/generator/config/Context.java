@@ -15,10 +15,11 @@
  */
 package org.mybatis.generator.config;
 
-import static org.mybatis.generator.internal.util.StringUtility.composeFullyQualifiedTableName;
-import static org.mybatis.generator.internal.util.StringUtility.isTrue;
-import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-import static org.mybatis.generator.internal.util.messages.Messages.getString;
+import org.mybatis.generator.api.*;
+import org.mybatis.generator.internal.JDBCConnectionFactory;
+import org.mybatis.generator.internal.ObjectFactory;
+import org.mybatis.generator.internal.PluginAggregator;
+import org.mybatis.generator.internal.db.DatabaseIntrospector;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -26,67 +27,47 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.mybatis.generator.api.CommentGenerator;
-import org.mybatis.generator.api.ConnectionFactory;
-import org.mybatis.generator.api.GeneratedFile;
-import org.mybatis.generator.api.GeneratedJavaFile;
-import org.mybatis.generator.api.GeneratedKotlinFile;
-import org.mybatis.generator.api.GeneratedXmlFile;
-import org.mybatis.generator.api.IntrospectedTable;
-import org.mybatis.generator.api.JavaFormatter;
-import org.mybatis.generator.api.JavaTypeResolver;
-import org.mybatis.generator.api.KotlinFormatter;
-import org.mybatis.generator.api.Plugin;
-import org.mybatis.generator.api.ProgressCallback;
-import org.mybatis.generator.api.XmlFormatter;
-import org.mybatis.generator.internal.JDBCConnectionFactory;
-import org.mybatis.generator.internal.ObjectFactory;
-import org.mybatis.generator.internal.PluginAggregator;
-import org.mybatis.generator.internal.db.DatabaseIntrospector;
+import static org.mybatis.generator.internal.util.StringUtility.*;
+import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 public class Context extends PropertyHolder {
 
+    /** 开始符号 */
+    private String beginningDelimiter = "\"";
+    /** 结束符号 */
+    private String endingDelimiter = "\"";
+
+    // 属性
+
     private String id;
-
-    private JDBCConnectionConfiguration jdbcConnectionConfiguration;
-
-    private ConnectionFactoryConfiguration connectionFactoryConfiguration;
-
-    private SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration;
-
-    private JavaTypeResolverConfiguration javaTypeResolverConfiguration;
-
-    private JavaModelGeneratorConfiguration javaModelGeneratorConfiguration;
-
-    private JavaClientGeneratorConfiguration javaClientGeneratorConfiguration;
-
-    private final ArrayList<TableConfiguration> tableConfigurations;
-
+    private String introspectedColumnImpl;
+    private String targetRuntime;
     private final ModelType defaultModelType;
 
-    private String beginningDelimiter = "\""; //$NON-NLS-1$
-
-    private String endingDelimiter = "\""; //$NON-NLS-1$
-
-    private CommentGeneratorConfiguration commentGeneratorConfiguration;
-
-    private CommentGenerator commentGenerator;
-
-    private PluginAggregator pluginAggregator;
+    // 内部节点
 
     private final List<PluginConfiguration> pluginConfigurations;
+    private CommentGeneratorConfiguration commentGeneratorConfiguration;
+    private JDBCConnectionConfiguration jdbcConnectionConfiguration;
+    private ConnectionFactoryConfiguration connectionFactoryConfiguration;
+    private JavaModelGeneratorConfiguration javaModelGeneratorConfiguration;
+    private JavaTypeResolverConfiguration javaTypeResolverConfiguration;
+    private SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration;
+    private JavaClientGeneratorConfiguration javaClientGeneratorConfiguration;
+    private final ArrayList<TableConfiguration> tableConfigurations;
 
-    private String targetRuntime;
 
-    private String introspectedColumnImpl;
-
+    private PluginAggregator pluginAggregator;
+    private CommentGenerator commentGenerator;
     private Boolean autoDelimitKeywords;
-
     private JavaFormatter javaFormatter;
-
+    private XmlFormatter xmlFormatter;
     private KotlinFormatter kotlinFormatter;
 
-    private XmlFormatter xmlFormatter;
+
+
+
+
 
     public Context(ModelType defaultModelType) {
         super();
@@ -135,15 +116,15 @@ public class Context extends PropertyHolder {
      */
     public void validate(List<String> errors) {
         if (!stringHasValue(id)) {
-            errors.add(getString("ValidationError.16")); //$NON-NLS-1$
+            errors.add(getString("ValidationError.16")); 
         }
 
         if (jdbcConnectionConfiguration == null && connectionFactoryConfiguration == null) {
             // must specify one
-            errors.add(getString("ValidationError.10", id)); //$NON-NLS-1$
+            errors.add(getString("ValidationError.10", id)); 
         } else if (jdbcConnectionConfiguration != null && connectionFactoryConfiguration != null) {
             // must not specify both
-            errors.add(getString("ValidationError.10", id)); //$NON-NLS-1$
+            errors.add(getString("ValidationError.10", id)); 
         } else if (jdbcConnectionConfiguration != null) {
             jdbcConnectionConfiguration.validate(errors);
         } else {
@@ -151,7 +132,7 @@ public class Context extends PropertyHolder {
         }
 
         if (javaModelGeneratorConfiguration == null) {
-            errors.add(getString("ValidationError.8", id)); //$NON-NLS-1$
+            errors.add(getString("ValidationError.8", id)); 
         } else {
             javaModelGeneratorConfiguration.validate(errors, id);
         }
@@ -164,19 +145,19 @@ public class Context extends PropertyHolder {
         try {
             it = ObjectFactory.createIntrospectedTableForValidation(this);
         } catch (Exception e) {
-            errors.add(getString("ValidationError.25", id)); //$NON-NLS-1$
+            errors.add(getString("ValidationError.25", id)); 
         }
 
         if (it != null && it.requiresXMLGenerator()) {
             if (sqlMapGeneratorConfiguration == null) {
-                errors.add(getString("ValidationError.9", id)); //$NON-NLS-1$
+                errors.add(getString("ValidationError.9", id)); 
             } else {
                 sqlMapGeneratorConfiguration.validate(errors, id);
             }
         }
 
         if (tableConfigurations.isEmpty()) {
-            errors.add(getString("ValidationError.3", id)); //$NON-NLS-1$
+            errors.add(getString("ValidationError.3", id)); 
         } else {
             for (int i = 0; i < tableConfigurations.size(); i++) {
                 TableConfiguration tc = tableConfigurations.get(i);
@@ -372,26 +353,21 @@ public class Context extends PropertyHolder {
      * @throws InterruptedException
      *             if the progress callback reports a cancel
      */
-    public void introspectTables(ProgressCallback callback,
-            List<String> warnings, Set<String> fullyQualifiedTableNames)
-            throws SQLException, InterruptedException {
+    public void introspectTables(ProgressCallback callback, List<String> warnings, Set<String> fullyQualifiedTableNames) throws SQLException, InterruptedException {
 
         introspectedTables.clear();
-        JavaTypeResolver javaTypeResolver = ObjectFactory
-                .createJavaTypeResolver(this, warnings);
+        JavaTypeResolver javaTypeResolver = ObjectFactory.createJavaTypeResolver(this, warnings);
 
         Connection connection = null;
 
         try {
-            callback.startTask(getString("Progress.0")); //$NON-NLS-1$
+            callback.startTask(getString("Progress.0")); 
             connection = getConnection();
 
-            DatabaseIntrospector databaseIntrospector = new DatabaseIntrospector(
-                    this, connection.getMetaData(), javaTypeResolver, warnings);
+            DatabaseIntrospector databaseIntrospector = new DatabaseIntrospector(this, connection.getMetaData(), javaTypeResolver, warnings);
 
             for (TableConfiguration tc : tableConfigurations) {
-                String tableName = composeFullyQualifiedTableName(tc.getCatalog(), tc
-                                .getSchema(), tc.getTableName(), '.');
+                String tableName = composeFullyQualifiedTableName(tc.getCatalog(), tc.getSchema(), tc.getTableName(), '.');
 
                 if (fullyQualifiedTableNames != null
                         && !fullyQualifiedTableNames.isEmpty()
@@ -400,13 +376,12 @@ public class Context extends PropertyHolder {
                 }
 
                 if (!tc.areAnyStatementsEnabled()) {
-                    warnings.add(getString("Warning.0", tableName)); //$NON-NLS-1$
+                    warnings.add(getString("Warning.0", tableName)); 
                     continue;
                 }
 
-                callback.startTask(getString("Progress.1", tableName)); //$NON-NLS-1$
-                List<IntrospectedTable> tables = databaseIntrospector
-                        .introspectTables(tc);
+                callback.startTask(getString("Progress.1", tableName)); 
+                List<IntrospectedTable> tables = databaseIntrospector.introspectTables(tc);
 
                 if (tables != null) {
                     introspectedTables.addAll(tables);
@@ -434,23 +409,19 @@ public class Context extends PropertyHolder {
             List<GeneratedXmlFile> generatedXmlFiles,
             List<GeneratedKotlinFile> generatedKotlinFiles,
             List<GeneratedFile> otherGeneratedFiles,
-            List<String> warnings)
-            throws InterruptedException {
+            List<String> warnings) throws InterruptedException {
 
         pluginAggregator = new PluginAggregator();
         for (PluginConfiguration pluginConfiguration : pluginConfigurations) {
-            Plugin plugin = ObjectFactory.createPlugin(this,
-                    pluginConfiguration);
+            Plugin plugin = ObjectFactory.createPlugin(this, pluginConfiguration);
             if (plugin.validate(warnings)) {
                 pluginAggregator.addPlugin(plugin);
             } else {
-                warnings.add(getString("Warning.24", //$NON-NLS-1$
-                        pluginConfiguration.getConfigurationType(), id));
+                warnings.add(getString("Warning.24", pluginConfiguration.getConfigurationType(), id));
             }
         }
 
-        // initialize everything first before generating. This allows plugins to know about other
-        // items in the configuration.
+        // 在生成之前先初始化所有内容。这允许插件了解配置中的其他项目。
         for (IntrospectedTable introspectedTable : introspectedTables) {
             callback.checkCancel();
             introspectedTable.initialize();
@@ -464,31 +435,20 @@ public class Context extends PropertyHolder {
                 continue;
             }
 
-            generatedJavaFiles.addAll(introspectedTable
-                    .getGeneratedJavaFiles());
-            generatedXmlFiles.addAll(introspectedTable
-                    .getGeneratedXmlFiles());
-            generatedKotlinFiles.addAll(introspectedTable
-                    .getGeneratedKotlinFiles());
+            generatedJavaFiles.addAll(introspectedTable.getGeneratedJavaFiles());
+            generatedXmlFiles.addAll(introspectedTable.getGeneratedXmlFiles());
+            generatedKotlinFiles.addAll(introspectedTable.getGeneratedKotlinFiles());
 
-            generatedJavaFiles.addAll(pluginAggregator
-                    .contextGenerateAdditionalJavaFiles(introspectedTable));
-            generatedXmlFiles.addAll(pluginAggregator
-                    .contextGenerateAdditionalXmlFiles(introspectedTable));
-            generatedKotlinFiles.addAll(pluginAggregator
-                    .contextGenerateAdditionalKotlinFiles(introspectedTable));
-            otherGeneratedFiles.addAll(pluginAggregator
-                    .contextGenerateAdditionalFiles(introspectedTable));
+            generatedJavaFiles.addAll(pluginAggregator.contextGenerateAdditionalJavaFiles(introspectedTable));
+            generatedXmlFiles.addAll(pluginAggregator.contextGenerateAdditionalXmlFiles(introspectedTable));
+            generatedKotlinFiles.addAll(pluginAggregator.contextGenerateAdditionalKotlinFiles(introspectedTable));
+            otherGeneratedFiles.addAll(pluginAggregator.contextGenerateAdditionalFiles(introspectedTable));
         }
 
-        generatedJavaFiles.addAll(pluginAggregator
-                .contextGenerateAdditionalJavaFiles());
-        generatedXmlFiles.addAll(pluginAggregator
-                .contextGenerateAdditionalXmlFiles());
-        generatedKotlinFiles.addAll(pluginAggregator
-                .contextGenerateAdditionalKotlinFiles());
-        otherGeneratedFiles.addAll(pluginAggregator
-                .contextGenerateAdditionalFiles());
+        generatedJavaFiles.addAll(pluginAggregator.contextGenerateAdditionalJavaFiles());
+        generatedXmlFiles.addAll(pluginAggregator.contextGenerateAdditionalXmlFiles());
+        generatedKotlinFiles.addAll(pluginAggregator.contextGenerateAdditionalKotlinFiles());
+        otherGeneratedFiles.addAll(pluginAggregator.contextGenerateAdditionalFiles());
     }
 
     /**

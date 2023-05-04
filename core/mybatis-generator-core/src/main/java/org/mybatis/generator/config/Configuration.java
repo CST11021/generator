@@ -15,13 +15,13 @@
  */
 package org.mybatis.generator.config;
 
-import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-import static org.mybatis.generator.internal.util.messages.Messages.getString;
+import org.mybatis.generator.exception.InvalidConfigurationException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mybatis.generator.exception.InvalidConfigurationException;
+import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
+import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 public class Configuration {
 
@@ -56,14 +56,14 @@ public class Configuration {
 
         for (String classPathEntry : classPathEntries) {
             if (!stringHasValue(classPathEntry)) {
-                errors.add(getString("ValidationError.19")); //$NON-NLS-1$
+                errors.add(getString("ValidationError.19"));
                 // only need to state this error once
                 break;
             }
         }
 
         if (contexts.isEmpty()) {
-            errors.add(getString("ValidationError.11")); //$NON-NLS-1$
+            errors.add(getString("ValidationError.11"));
         } else {
             for (Context context : contexts) {
                 context.validate(errors);

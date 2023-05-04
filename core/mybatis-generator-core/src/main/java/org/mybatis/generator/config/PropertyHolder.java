@@ -18,6 +18,7 @@ package org.mybatis.generator.config;
 import java.util.Properties;
 
 public abstract class PropertyHolder {
+
     private final Properties properties;
 
     protected PropertyHolder() {

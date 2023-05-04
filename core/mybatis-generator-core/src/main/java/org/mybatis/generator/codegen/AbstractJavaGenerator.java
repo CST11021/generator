@@ -44,7 +44,7 @@ public abstract class AbstractJavaGenerator extends AbstractGenerator {
         Method method = new Method(getGetterMethodName(field.getName(), field.getType()));
         method.setReturnType(field.getType());
         method.setVisibility(JavaVisibility.PUBLIC);
-        String s = "return " + field.getName() + ';'; //$NON-NLS-1$
+        String s = "return " + field.getName() + ';';
 
         method.addBodyLine(s);
         return method;
@@ -84,7 +84,7 @@ public abstract class AbstractJavaGenerator extends AbstractGenerator {
         Method method = new Method(topLevelClass.getType().getShortName());
         method.setVisibility(JavaVisibility.PUBLIC);
         method.setConstructor(true);
-        method.addBodyLine("super();"); //$NON-NLS-1$
+        method.addBodyLine("super();");
         return method;
     }
 

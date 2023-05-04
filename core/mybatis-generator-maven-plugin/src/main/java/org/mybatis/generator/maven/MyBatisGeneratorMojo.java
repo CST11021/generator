@@ -177,11 +177,11 @@ public class MyBatisGeneratorMojo extends AbstractMojo {
         ObjectFactory.addExternalClassLoader(cl);
 
         if (configurationFile == null) {
-            throw new MojoExecutionException(Messages.getString("RuntimeError.0")); //$NON-NLS-1$
+            throw new MojoExecutionException(Messages.getString("RuntimeError.0"));
         }
 
         if (!configurationFile.exists()) {
-            throw new MojoExecutionException(Messages.getString("RuntimeError.1", configurationFile.toString())); //$NON-NLS-1$
+            throw new MojoExecutionException(Messages.getString("RuntimeError.1", configurationFile.toString()));
         }
 
         runScriptIfNecessary();

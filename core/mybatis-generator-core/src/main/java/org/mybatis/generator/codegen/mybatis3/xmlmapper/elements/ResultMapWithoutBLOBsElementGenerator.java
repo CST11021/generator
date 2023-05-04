@@ -15,11 +15,11 @@
  */
 package org.mybatis.generator.codegen.mybatis3.xmlmapper.elements;
 
-import java.util.List;
-
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.XmlElement;
+
+import java.util.List;
 
 public class ResultMapWithoutBLOBsElementGenerator extends AbstractXmlElementGenerator {
 
@@ -32,8 +32,8 @@ public class ResultMapWithoutBLOBsElementGenerator extends AbstractXmlElementGen
 
     @Override
     public void addElements(XmlElement parentElement) {
-        XmlElement answer = new XmlElement("resultMap"); //$NON-NLS-1$
-        answer.addAttribute(new Attribute("id", introspectedTable.getBaseResultMapId())); //$NON-NLS-1$
+        XmlElement answer = new XmlElement("resultMap");
+        answer.addAttribute(new Attribute("id", introspectedTable.getBaseResultMapId()));
 
         String returnType;
         if (isSimple) {
@@ -46,7 +46,7 @@ public class ResultMapWithoutBLOBsElementGenerator extends AbstractXmlElementGen
             }
         }
 
-        answer.addAttribute(new Attribute("type", returnType)); //$NON-NLS-1$
+        answer.addAttribute(new Attribute("type", returnType));
 
         context.getCommentGenerator().addComment(answer);
 

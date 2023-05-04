@@ -53,8 +53,7 @@ public interface ProgressCallback {
     default void introspectionStarted(int totalTasks) {}
 
     /**
-     * Called to note the start of the generation phase, and to note the maximum
-     * number of startTask messages that will be sent for the generation phase.
+     * 调用以记录生成阶段的开始，并记录将为生成阶段发送的 startTask 消息的最大数量。
      *
      * @param totalTasks
      *            the maximum number of times startTask will be called for the
@@ -63,9 +62,7 @@ public interface ProgressCallback {
     default void generationStarted(int totalTasks) {}
 
     /**
-     * Called to note the start of the file saving phase, and to note the
-     * maximum number of startTask messages that will be sent for the file
-     * saving phase.
+     * 调用以记录文件保存阶段的开始，并记录将为文件保存阶段发送的 startTask 消息的最大数量。
      *
      * @param totalTasks
      *            the maximum number of times startTask will be called for the

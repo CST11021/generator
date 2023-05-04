@@ -131,7 +131,7 @@ public class SqlScriptRunner {
         String line;
 
         while ((line = br.readLine()) != null) {
-            if (line.startsWith("--")) { //$NON-NLS-1$
+            if (line.startsWith("--")) { 
                 continue;
             }
 
@@ -139,7 +139,7 @@ public class SqlScriptRunner {
                 continue;
             }
 
-            if (line.endsWith(";")) { //$NON-NLS-1$
+            if (line.endsWith(";")) { 
                 sb.append(line, 0, line.length() - 1);
                 break;
             } else {

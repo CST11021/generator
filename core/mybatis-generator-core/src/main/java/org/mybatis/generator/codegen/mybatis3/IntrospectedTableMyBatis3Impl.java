@@ -15,22 +15,11 @@
  */
 package org.mybatis.generator.codegen.mybatis3;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.mybatis.generator.api.GeneratedJavaFile;
-import org.mybatis.generator.api.GeneratedKotlinFile;
-import org.mybatis.generator.api.GeneratedXmlFile;
-import org.mybatis.generator.api.IntrospectedTable;
-import org.mybatis.generator.api.ProgressCallback;
+import org.mybatis.generator.api.*;
 import org.mybatis.generator.api.dom.java.CompilationUnit;
 import org.mybatis.generator.api.dom.kotlin.KotlinFile;
 import org.mybatis.generator.api.dom.xml.Document;
-import org.mybatis.generator.codegen.AbstractGenerator;
-import org.mybatis.generator.codegen.AbstractJavaClientGenerator;
-import org.mybatis.generator.codegen.AbstractJavaGenerator;
-import org.mybatis.generator.codegen.AbstractKotlinGenerator;
-import org.mybatis.generator.codegen.AbstractXmlGenerator;
+import org.mybatis.generator.codegen.*;
 import org.mybatis.generator.codegen.mybatis3.javamapper.AnnotatedClientGenerator;
 import org.mybatis.generator.codegen.mybatis3.javamapper.JavaMapperGenerator;
 import org.mybatis.generator.codegen.mybatis3.javamapper.MixedClientGenerator;
@@ -42,6 +31,9 @@ import org.mybatis.generator.codegen.mybatis3.xmlmapper.XMLMapperGenerator;
 import org.mybatis.generator.config.PropertyRegistry;
 import org.mybatis.generator.internal.ObjectFactory;
 import org.mybatis.generator.internal.util.StringUtility;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Introspected table implementation for generating MyBatis3 artifacts.
@@ -112,13 +104,13 @@ public class IntrospectedTableMyBatis3Impl extends IntrospectedTable {
                 .getConfigurationType();
 
         AbstractJavaClientGenerator javaGenerator;
-        if ("XMLMAPPER".equalsIgnoreCase(type)) { //$NON-NLS-1$
+        if ("XMLMAPPER".equalsIgnoreCase(type)) { 
             javaGenerator = new JavaMapperGenerator(getClientProject());
-        } else if ("MIXEDMAPPER".equalsIgnoreCase(type)) { //$NON-NLS-1$
+        } else if ("MIXEDMAPPER".equalsIgnoreCase(type)) { 
             javaGenerator = new MixedClientGenerator(getClientProject());
-        } else if ("ANNOTATEDMAPPER".equalsIgnoreCase(type)) { //$NON-NLS-1$
+        } else if ("ANNOTATEDMAPPER".equalsIgnoreCase(type)) { 
             javaGenerator = new AnnotatedClientGenerator(getClientProject());
-        } else if ("MAPPER".equalsIgnoreCase(type)) { //$NON-NLS-1$
+        } else if ("MAPPER".equalsIgnoreCase(type)) { 
             javaGenerator = new JavaMapperGenerator(getClientProject());
         } else {
             javaGenerator = (AbstractJavaClientGenerator) ObjectFactory.createInternalObject(type);
@@ -227,8 +219,10 @@ public class IntrospectedTableMyBatis3Impl extends IntrospectedTable {
 
         if (xmlMapperGenerator != null) {
             Document document = xmlMapperGenerator.getDocument();
-            GeneratedXmlFile gxf = new GeneratedXmlFile(document,
-                    getMyBatis3XmlMapperFileName(), getMyBatis3XmlMapperPackage(),
+            GeneratedXmlFile gxf = new GeneratedXmlFile(
+                    document,
+                    getMyBatis3XmlMapperFileName(),
+                    getMyBatis3XmlMapperPackage(),
                     context.getSqlMapGeneratorConfiguration().getTargetProject(),
                     true, context.getXmlFormatter());
             if (context.getPlugins().sqlMapGenerated(gxf, this)) {

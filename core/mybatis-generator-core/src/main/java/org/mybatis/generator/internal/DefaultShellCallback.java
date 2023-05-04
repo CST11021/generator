@@ -42,12 +42,12 @@ public class DefaultShellCallback implements ShellCallback {
 
         File targetProjectDirectory = new File(targetProject);
         if (!targetProjectDirectory.isDirectory()) {
-            throw new ShellException(getString("Warning.9", //$NON-NLS-1$
+            throw new ShellException(getString("Warning.9", 
                     targetProject));
         }
 
         StringBuilder sb = new StringBuilder();
-        StringTokenizer st = new StringTokenizer(targetPackage, "."); //$NON-NLS-1$
+        StringTokenizer st = new StringTokenizer(targetPackage, "."); 
         while (st.hasMoreTokens()) {
             sb.append(st.nextToken());
             sb.append(File.separatorChar);
@@ -57,7 +57,7 @@ public class DefaultShellCallback implements ShellCallback {
         if (!directory.isDirectory()) {
             boolean rc = directory.mkdirs();
             if (!rc) {
-                throw new ShellException(getString("Warning.10", //$NON-NLS-1$
+                throw new ShellException(getString("Warning.10", 
                         directory.getAbsolutePath()));
             }
         }

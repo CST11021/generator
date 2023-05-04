@@ -15,13 +15,13 @@
  */
 package org.mybatis.generator.runtime.dynamic.sql.elements;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.Interface;
 import org.mybatis.generator.api.dom.java.Method;
 import org.mybatis.generator.api.dom.java.Parameter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class UpdateByPrimaryKeySelectiveMethodGenerator extends AbstractMethodGenerator {
     private final FullyQualifiedJavaType recordType;
@@ -43,21 +43,21 @@ public class UpdateByPrimaryKeySelectiveMethodGenerator extends AbstractMethodGe
 
         imports.add(recordType);
 
-        Method method = new Method("updateByPrimaryKeySelective"); //$NON-NLS-1$
+        Method method = new Method("updateByPrimaryKeySelective"); 
         method.setDefault(true);
         context.getCommentGenerator().addGeneralMethodAnnotation(method, introspectedTable, imports);
 
         method.setReturnType(FullyQualifiedJavaType.getIntInstance());
-        method.addParameter(new Parameter(recordType, "row")); //$NON-NLS-1$
+        method.addParameter(new Parameter(recordType, "row")); 
 
-        method.addBodyLine("return update(c ->"); //$NON-NLS-1$
+        method.addBodyLine("return update(c ->"); 
 
         method.addBodyLines(
                 fragmentGenerator.getSetEqualWhenPresentLines(introspectedTable.getNonPrimaryKeyColumns(),
-                        "    c", "    ", false)); //$NON-NLS-1$ //$NON-NLS-2$
-        method.addBodyLines(fragmentGenerator.getPrimaryKeyWhereClauseForUpdate("    ")); //$NON-NLS-1$
+                        "    c", "    ", false));  
+        method.addBodyLines(fragmentGenerator.getPrimaryKeyWhereClauseForUpdate("    ")); 
 
-        method.addBodyLine(");"); //$NON-NLS-1$
+        method.addBodyLine(");"); 
         return MethodAndImports.withMethod(method)
                 .withImports(imports)
                 .build();

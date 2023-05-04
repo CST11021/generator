@@ -26,9 +26,9 @@ public class ResultMapWithBLOBsElementGenerator extends AbstractXmlElementGenera
 
     @Override
     public void addElements(XmlElement parentElement) {
-        XmlElement answer = new XmlElement("resultMap"); //$NON-NLS-1$
+        XmlElement answer = new XmlElement("resultMap");
 
-        answer.addAttribute(new Attribute("id", //$NON-NLS-1$
+        answer.addAttribute(new Attribute("id",
                 introspectedTable.getResultMapWithBLOBsId()));
 
         String returnType;
@@ -40,10 +40,10 @@ public class ResultMapWithBLOBsElementGenerator extends AbstractXmlElementGenera
             returnType = introspectedTable.getBaseRecordType();
         }
 
-        answer.addAttribute(new Attribute("type", returnType)); //$NON-NLS-1$
+        answer.addAttribute(new Attribute("type", returnType));
 
         if (!introspectedTable.isConstructorBased()) {
-            answer.addAttribute(new Attribute("extends", //$NON-NLS-1$
+            answer.addAttribute(new Attribute("extends",
                     introspectedTable.getBaseResultMapId()));
         }
 

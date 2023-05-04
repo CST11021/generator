@@ -30,11 +30,11 @@ public class AnnotatedSelectByExampleWithBLOBsMethodGenerator extends SelectByEx
     public void addMapperAnnotations(Interface interfaze, Method method) {
         FullyQualifiedJavaType fqjt = new FullyQualifiedJavaType(introspectedTable.getMyBatis3SqlProviderType());
 
-        String s = "@SelectProvider(type=" //$NON-NLS-1$
+        String s = "@SelectProvider(type=" 
                 + fqjt.getShortName()
-                + ".class, method=\"" //$NON-NLS-1$
+                + ".class, method=\"" 
                 + introspectedTable.getSelectByExampleWithBLOBsStatementId()
-                + "\")";//$NON-NLS-1$
+                + "\")";
         method.addAnnotation(s);
 
         addAnnotatedResults(interfaze, method, introspectedTable.getNonPrimaryKeyColumns());
@@ -44,6 +44,6 @@ public class AnnotatedSelectByExampleWithBLOBsMethodGenerator extends SelectByEx
     public void addExtraImports(Interface interfaze) {
         addAnnotatedSelectImports(interfaze);
         interfaze.addImportedType(
-                new FullyQualifiedJavaType("org.apache.ibatis.annotations.SelectProvider")); //$NON-NLS-1$
+                new FullyQualifiedJavaType("org.apache.ibatis.annotations.SelectProvider")); 
     }
 }

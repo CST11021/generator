@@ -29,15 +29,15 @@ public class SelectByPrimaryKeyElementGenerator extends AbstractXmlElementGenera
 
     @Override
     public void addElements(XmlElement parentElement) {
-        XmlElement answer = new XmlElement("select"); //$NON-NLS-1$
+        XmlElement answer = new XmlElement("select");
 
         answer.addAttribute(new Attribute(
-                "id", introspectedTable.getSelectByPrimaryKeyStatementId())); //$NON-NLS-1$
+                "id", introspectedTable.getSelectByPrimaryKeyStatementId()));
         if (introspectedTable.getRules().generateResultMapWithBLOBs()) {
-            answer.addAttribute(new Attribute("resultMap", //$NON-NLS-1$
+            answer.addAttribute(new Attribute("resultMap",
                     introspectedTable.getResultMapWithBLOBsId()));
         } else {
-            answer.addAttribute(new Attribute("resultMap", //$NON-NLS-1$
+            answer.addAttribute(new Attribute("resultMap",
                     introspectedTable.getBaseResultMapId()));
         }
 
@@ -48,33 +48,33 @@ public class SelectByPrimaryKeyElementGenerator extends AbstractXmlElementGenera
             // PK fields are in the base class. If more than on PK
             // field, then they are coming in a map.
             if (introspectedTable.getPrimaryKeyColumns().size() > 1) {
-                parameterType = "map"; //$NON-NLS-1$
+                parameterType = "map";
             } else {
                 parameterType = introspectedTable.getPrimaryKeyColumns().get(0).getFullyQualifiedJavaType().toString();
             }
         }
 
-        answer.addAttribute(new Attribute("parameterType", parameterType)); //$NON-NLS-1$
+        answer.addAttribute(new Attribute("parameterType", parameterType));
 
         context.getCommentGenerator().addComment(answer);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("select "); //$NON-NLS-1$
+        sb.append("select ");
 
         if (stringHasValue(introspectedTable.getSelectByPrimaryKeyQueryId())) {
             sb.append('\'');
             sb.append(introspectedTable.getSelectByPrimaryKeyQueryId());
-            sb.append("' as QUERYID,"); //$NON-NLS-1$
+            sb.append("' as QUERYID,");
         }
         answer.addElement(new TextElement(sb.toString()));
         answer.addElement(getBaseColumnListElement());
         if (introspectedTable.hasBLOBColumns()) {
-            answer.addElement(new TextElement(",")); //$NON-NLS-1$
+            answer.addElement(new TextElement(","));
             answer.addElement(getBlobColumnListElement());
         }
 
         sb.setLength(0);
-        sb.append("from "); //$NON-NLS-1$
+        sb.append("from ");
         sb.append(introspectedTable.getAliasedFullyQualifiedTableNameAtRuntime());
         answer.addElement(new TextElement(sb.toString()));
 

@@ -15,8 +15,6 @@
  */
 package org.mybatis.generator.codegen.mybatis3;
 
-import java.util.List;
-
 import org.mybatis.generator.api.ProgressCallback;
 import org.mybatis.generator.codegen.AbstractJavaClientGenerator;
 import org.mybatis.generator.codegen.AbstractJavaGenerator;
@@ -26,6 +24,8 @@ import org.mybatis.generator.codegen.mybatis3.model.SimpleModelGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.SimpleXMLMapperGenerator;
 import org.mybatis.generator.internal.ObjectFactory;
 
+import java.util.List;
+
 /**
  * Introspected table implementation for generating simple MyBatis3 artifacts (no "by example" methods,
  * flat model, etc.)
@@ -34,6 +34,7 @@ import org.mybatis.generator.internal.ObjectFactory;
  *
  */
 public class IntrospectedTableMyBatis3SimpleImpl extends IntrospectedTableMyBatis3Impl {
+
     public IntrospectedTableMyBatis3SimpleImpl() {
         super();
     }
@@ -62,11 +63,11 @@ public class IntrospectedTableMyBatis3SimpleImpl extends IntrospectedTableMyBati
         String type = context.getJavaClientGeneratorConfiguration().getConfigurationType();
 
         AbstractJavaClientGenerator javaGenerator;
-        if ("XMLMAPPER".equalsIgnoreCase(type)) { //$NON-NLS-1$
+        if ("XMLMAPPER".equalsIgnoreCase(type)) { 
             javaGenerator = new SimpleJavaClientGenerator(getClientProject());
-        } else if ("ANNOTATEDMAPPER".equalsIgnoreCase(type)) { //$NON-NLS-1$
+        } else if ("ANNOTATEDMAPPER".equalsIgnoreCase(type)) { 
             javaGenerator = new SimpleAnnotatedClientGenerator(getClientProject());
-        } else if ("MAPPER".equalsIgnoreCase(type)) { //$NON-NLS-1$
+        } else if ("MAPPER".equalsIgnoreCase(type)) { 
             javaGenerator = new SimpleJavaClientGenerator(getClientProject());
         } else {
             javaGenerator = (AbstractJavaClientGenerator) ObjectFactory.createInternalObject(type);

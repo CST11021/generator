@@ -15,12 +15,12 @@
  */
 package org.mybatis.generator.api.dom.xml.render;
 
+import org.mybatis.generator.api.dom.xml.DocType;
+import org.mybatis.generator.api.dom.xml.Document;
+
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.mybatis.generator.api.dom.xml.DocType;
-import org.mybatis.generator.api.dom.xml.Document;
 
 public class DocumentRenderer {
 
@@ -29,24 +29,47 @@ public class DocumentRenderer {
                 renderDocType(document),
                 renderRootElement(document))
                 .flatMap(Function.identity())
-                .collect(Collectors.joining(System.getProperty("line.separator"))); //$NON-NLS-1$
+                .collect(Collectors.joining(System.getProperty("line.separator")));
     }
 
+    /**
+     * <?xml version="1.0" encoding="UTF-8"?>
+     *
+     * @return
+     */
     private Stream<String> renderXmlHeader() {
-        return Stream.of("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"); //$NON-NLS-1$
+        return Stream.of("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
     }
 
+    /**
+     * <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+     *
+     * @param document
+     * @return
+     */
     private Stream<String> renderDocType(Document document) {
-        return Stream.of("<!DOCTYPE " //$NON-NLS-1$
+        return Stream.of("<!DOCTYPE "
                 + document.getRootElement().getName()
-                + document.getDocType().map(this::renderDocType).orElse("") //$NON-NLS-1$
-                + ">"); //$NON-NLS-1$
+                + document.getDocType().map(this::renderDocType).orElse("")
+                + ">");
     }
 
+    /**
+     * <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+     *
+     * @param docType
+     * @return
+     */
     private String renderDocType(DocType docType) {
-        return " " + docType.accept(new DocTypeRenderer()); //$NON-NLS-1$
+        return " " + docType.accept(new DocTypeRenderer());
     }
 
+    /**
+     * 从根节点开始渲染
+     *
+     * @param document
+     * @return
+     */
     private Stream<String> renderRootElement(Document document) {
         return document.getRootElement().accept(new ElementRenderer());
     }

@@ -15,10 +15,10 @@
  */
 package org.mybatis.generator.config;
 
+import java.util.List;
+
 import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
-
-import java.util.List;
 
 /**
  * This class is used to specify a renaming rule for columns in a table. This
@@ -73,7 +73,7 @@ public class ColumnRenamingRule {
 
     public void validate(List<String> errors, String tableName) {
         if (!stringHasValue(searchString)) {
-            errors.add(getString("ValidationError.14", tableName)); //$NON-NLS-1$
+            errors.add(getString("ValidationError.14", tableName));
         }
     }
 }

@@ -15,34 +15,19 @@
  */
 package org.mybatis.generator.api;
 
-import static org.mybatis.generator.internal.util.StringUtility.isTrue;
-import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.mybatis.generator.config.Context;
-import org.mybatis.generator.config.GeneratedKey;
-import org.mybatis.generator.config.JavaClientGeneratorConfiguration;
-import org.mybatis.generator.config.JavaModelGeneratorConfiguration;
-import org.mybatis.generator.config.ModelType;
-import org.mybatis.generator.config.PropertyHolder;
-import org.mybatis.generator.config.PropertyRegistry;
-import org.mybatis.generator.config.SqlMapGeneratorConfiguration;
-import org.mybatis.generator.config.TableConfiguration;
+import org.mybatis.generator.config.*;
 import org.mybatis.generator.internal.rules.ConditionalModelRules;
 import org.mybatis.generator.internal.rules.FlatModelRules;
 import org.mybatis.generator.internal.rules.HierarchicalModelRules;
 import org.mybatis.generator.internal.rules.Rules;
+
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static org.mybatis.generator.internal.util.StringUtility.isTrue;
+import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 
 /**
  * Base class for all code generator implementations. This class provides many
@@ -122,8 +107,7 @@ public abstract class IntrospectedTable {
     protected final Map<String, Object> attributes = new HashMap<>();
 
     /** Internal attributes are used to store commonly accessed items by all code generators. */
-    protected final Map<IntrospectedTable.InternalAttribute, String> internalAttributes =
-            new EnumMap<>(InternalAttribute.class);
+    protected final Map<IntrospectedTable.InternalAttribute, String> internalAttributes = new EnumMap<>(InternalAttribute.class);
 
     /**
      * Table remarks retrieved from database metadata.
@@ -138,6 +122,10 @@ public abstract class IntrospectedTable {
     protected IntrospectedTable(TargetRuntime targetRuntime) {
         this.targetRuntime = targetRuntime;
     }
+
+
+
+
 
     public FullyQualifiedTable getFullyQualifiedTable() {
         return fullyQualifiedTable;
@@ -409,27 +397,27 @@ public abstract class IntrospectedTable {
         setSqlMapFullyQualifiedRuntimeTableName(calculateSqlMapFullyQualifiedRuntimeTableName());
         setSqlMapAliasedFullyQualifiedRuntimeTableName(calculateSqlMapAliasedFullyQualifiedRuntimeTableName());
 
-        setCountByExampleStatementId("countByExample"); //$NON-NLS-1$
-        setDeleteByExampleStatementId("deleteByExample"); //$NON-NLS-1$
-        setDeleteByPrimaryKeyStatementId("deleteByPrimaryKey"); //$NON-NLS-1$
-        setInsertStatementId("insert"); //$NON-NLS-1$
-        setInsertSelectiveStatementId("insertSelective"); //$NON-NLS-1$
-        setSelectAllStatementId("selectAll"); //$NON-NLS-1$
-        setSelectByExampleStatementId("selectByExample"); //$NON-NLS-1$
-        setSelectByExampleWithBLOBsStatementId("selectByExampleWithBLOBs"); //$NON-NLS-1$
-        setSelectByPrimaryKeyStatementId("selectByPrimaryKey"); //$NON-NLS-1$
-        setUpdateByExampleStatementId("updateByExample"); //$NON-NLS-1$
-        setUpdateByExampleSelectiveStatementId("updateByExampleSelective"); //$NON-NLS-1$
-        setUpdateByExampleWithBLOBsStatementId("updateByExampleWithBLOBs"); //$NON-NLS-1$
-        setUpdateByPrimaryKeyStatementId("updateByPrimaryKey"); //$NON-NLS-1$
-        setUpdateByPrimaryKeySelectiveStatementId("updateByPrimaryKeySelective"); //$NON-NLS-1$
-        setUpdateByPrimaryKeyWithBLOBsStatementId("updateByPrimaryKeyWithBLOBs"); //$NON-NLS-1$
-        setBaseResultMapId("BaseResultMap"); //$NON-NLS-1$
-        setResultMapWithBLOBsId("ResultMapWithBLOBs"); //$NON-NLS-1$
-        setExampleWhereClauseId("Example_Where_Clause"); //$NON-NLS-1$
-        setBaseColumnListId("Base_Column_List"); //$NON-NLS-1$
-        setBlobColumnListId("Blob_Column_List"); //$NON-NLS-1$
-        setMyBatis3UpdateByExampleWhereClauseId("Update_By_Example_Where_Clause"); //$NON-NLS-1$
+        setCountByExampleStatementId("countByExample"); 
+        setDeleteByExampleStatementId("deleteByExample"); 
+        setDeleteByPrimaryKeyStatementId("deleteByPrimaryKey"); 
+        setInsertStatementId("insert"); 
+        setInsertSelectiveStatementId("insertSelective"); 
+        setSelectAllStatementId("selectAll"); 
+        setSelectByExampleStatementId("selectByExample"); 
+        setSelectByExampleWithBLOBsStatementId("selectByExampleWithBLOBs"); 
+        setSelectByPrimaryKeyStatementId("selectByPrimaryKey"); 
+        setUpdateByExampleStatementId("updateByExample"); 
+        setUpdateByExampleSelectiveStatementId("updateByExampleSelective"); 
+        setUpdateByExampleWithBLOBsStatementId("updateByExampleWithBLOBs"); 
+        setUpdateByPrimaryKeyStatementId("updateByPrimaryKey"); 
+        setUpdateByPrimaryKeySelectiveStatementId("updateByPrimaryKeySelective"); 
+        setUpdateByPrimaryKeyWithBLOBsStatementId("updateByPrimaryKeyWithBLOBs"); 
+        setBaseResultMapId("BaseResultMap"); 
+        setResultMapWithBLOBsId("ResultMapWithBLOBs"); 
+        setExampleWhereClauseId("Example_Where_Clause"); 
+        setBaseColumnListId("Base_Column_List"); 
+        setBlobColumnListId("Blob_Column_List"); 
+        setMyBatis3UpdateByExampleWhereClauseId("Update_By_Example_Where_Clause"); 
     }
 
     public void setBlobColumnListId(String s) {
@@ -701,7 +689,7 @@ public abstract class IntrospectedTable {
                 sb.append('.');
             }
             sb.append(fullyQualifiedTable.getDomainObjectName());
-            sb.append("Mapper"); //$NON-NLS-1$
+            sb.append("Mapper"); 
         }
         setMyBatis3JavaMapperType(sb.toString());
 
@@ -716,7 +704,7 @@ public abstract class IntrospectedTable {
                 sb.append('.');
             }
             sb.append(fullyQualifiedTable.getDomainObjectName());
-            sb.append("SqlProvider"); //$NON-NLS-1$
+            sb.append("SqlProvider"); 
         }
         setMyBatis3SqlProviderType(sb.toString());
 
@@ -731,7 +719,7 @@ public abstract class IntrospectedTable {
                 sb.append('.');
             }
             sb.append(fullyQualifiedTable.getDomainObjectName());
-            sb.append("DynamicSqlSupport"); //$NON-NLS-1$
+            sb.append("DynamicSqlSupport"); 
         }
         setMyBatisDynamicSqlSupportType(sb.toString());
 
@@ -757,7 +745,7 @@ public abstract class IntrospectedTable {
         sb.append(pakkage);
         sb.append('.');
         sb.append(fullyQualifiedTable.getDomainObjectName());
-        sb.append("Key"); //$NON-NLS-1$
+        sb.append("Key"); 
         setPrimaryKeyType(sb.toString());
 
         sb.setLength(0);
@@ -776,7 +764,7 @@ public abstract class IntrospectedTable {
         sb.append(pakkage);
         sb.append('.');
         sb.append(fullyQualifiedTable.getDomainObjectName());
-        sb.append("WithBLOBs"); //$NON-NLS-1$
+        sb.append("WithBLOBs"); 
         setRecordWithBLOBsType(sb.toString());
 
         String exampleTargetPackage = calculateJavaModelExamplePackage();
@@ -784,7 +772,7 @@ public abstract class IntrospectedTable {
         sb.append(exampleTargetPackage);
         sb.append('.');
         sb.append(fullyQualifiedTable.getDomainObjectName());
-        sb.append("Example"); //$NON-NLS-1$
+        sb.append("Example"); 
         setExampleType(sb.toString());
     }
 
@@ -838,10 +826,10 @@ public abstract class IntrospectedTable {
             } else {
                 sb.append(mapperName.substring(ind + 1));
             }
-            sb.append(".xml"); //$NON-NLS-1$
+            sb.append(".xml"); 
         } else {
             sb.append(fullyQualifiedTable.getDomainObjectName());
-            sb.append("Mapper.xml"); //$NON-NLS-1$
+            sb.append("Mapper.xml"); 
         }
         return sb.toString();
     }
@@ -854,7 +842,7 @@ public abstract class IntrospectedTable {
             sb.append(tableConfiguration.getMapperName());
         } else {
             sb.append(fullyQualifiedTable.getDomainObjectName());
-            sb.append("Mapper"); //$NON-NLS-1$
+            sb.append("Mapper"); 
         }
         return sb.toString();
     }

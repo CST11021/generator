@@ -18,8 +18,7 @@ package org.mybatis.generator.internal.db;
 import static org.mybatis.generator.internal.util.StringUtility.composeFullyQualifiedTableName;
 
 /**
- * This class holds the actual catalog, schema, and table name returned from the
- * database introspection.
+ * 此类保存从数据库自检返回的实际目录、模式和表名。
  *
  * @author Jeff Butler
  *

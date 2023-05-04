@@ -15,20 +15,14 @@
  */
 package org.mybatis.generator.internal;
 
-import java.util.List;
-import java.util.Properties;
-
 import org.mybatis.generator.api.CompositePlugin;
 import org.mybatis.generator.config.Context;
 
+import java.util.List;
+import java.util.Properties;
+
 /**
- * This class is for internal use only. It contains a list of plugins for the
- * current context and is used to aggregate plugins together. This class
- * implements the rule that if any plugin returns "false" from a method, then no
- * subsequent plugin is called.
- *
- * <p>This class does not follow the normal plugin lifecycle and should not be
- * subclassed by clients.
+ * 此类仅供内部使用。它包含当前上下文的插件列表，用于将插件聚合在一起。此类实施规则，如果任何插件从方法返回“false”，则不会调用后续插件。 <p>此类不遵循正常的插件生命周期，不应由客户端子类化。
  *
  * @author Jeff Butler
  *

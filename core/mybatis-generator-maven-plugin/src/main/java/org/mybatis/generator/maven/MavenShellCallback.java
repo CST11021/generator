@@ -45,7 +45,7 @@ public class MavenShellCallback extends DefaultShellCallback {
             if (!project.exists()) {
                 boolean rc = project.mkdirs();
                 if (!rc) {
-                    throw new ShellException(getString("Warning.10", //$NON-NLS-1$
+                    throw new ShellException(getString("Warning.10", 
                             project.getAbsolutePath()));
                 }
             }

@@ -27,14 +27,14 @@ public class DeleteByExampleElementGenerator extends AbstractXmlElementGenerator
 
     @Override
     public void addElements(XmlElement parentElement) {
-        XmlElement answer = new XmlElement("delete"); //$NON-NLS-1$
+        XmlElement answer = new XmlElement("delete");
 
-        answer.addAttribute(new Attribute("id", introspectedTable.getDeleteByExampleStatementId())); //$NON-NLS-1$
-        answer.addAttribute(new Attribute("parameterType", introspectedTable.getExampleType())); //$NON-NLS-1$
+        answer.addAttribute(new Attribute("id", introspectedTable.getDeleteByExampleStatementId()));
+        answer.addAttribute(new Attribute("parameterType", introspectedTable.getExampleType()));
 
         context.getCommentGenerator().addComment(answer);
 
-        String s = "delete from " + introspectedTable.getAliasedFullyQualifiedTableNameAtRuntime(); //$NON-NLS-1$
+        String s = "delete from " + introspectedTable.getAliasedFullyQualifiedTableNameAtRuntime();
         answer.addElement(new TextElement(s));
         answer.addElement(getExampleIncludeElement());
 

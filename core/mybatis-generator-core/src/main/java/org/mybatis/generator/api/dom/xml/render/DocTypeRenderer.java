@@ -21,19 +21,25 @@ import org.mybatis.generator.api.dom.xml.SystemDocType;
 
 public class DocTypeRenderer implements DocTypeVisitor<String> {
 
+    /**
+     * <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+     *
+     * @param docType
+     * @return
+     */
     @Override
     public String visit(PublicDocType docType) {
-        return "PUBLIC \"" //$NON-NLS-1$
+        return "PUBLIC \"" 
                 + docType.getDtdName()
-                + "\" \"" //$NON-NLS-1$
+                + "\" \"" 
                 + docType.getDtdLocation()
-                + "\""; //$NON-NLS-1$
+                + "\""; 
     }
 
     @Override
     public String visit(SystemDocType docType) {
-        return "SYSTEM \"" //$NON-NLS-1$
+        return "SYSTEM \"" 
                 + docType.getDtdLocation()
-                + "\""; //$NON-NLS-1$
+                + "\""; 
     }
 }

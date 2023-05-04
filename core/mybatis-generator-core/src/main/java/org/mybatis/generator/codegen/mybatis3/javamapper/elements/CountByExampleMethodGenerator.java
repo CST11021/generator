@@ -40,8 +40,8 @@ public class CountByExampleMethodGenerator extends AbstractJavaMapperMethodGener
         Method method = new Method(introspectedTable.getCountByExampleStatementId());
         method.setVisibility(JavaVisibility.PUBLIC);
         method.setAbstract(true);
-        method.setReturnType(new FullyQualifiedJavaType("long")); //$NON-NLS-1$
-        method.addParameter(new Parameter(fqjt, "example")); //$NON-NLS-1$
+        method.setReturnType(new FullyQualifiedJavaType("long"));
+        method.addParameter(new Parameter(fqjt, "example"));
         context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
 
         addMapperAnnotations(method);

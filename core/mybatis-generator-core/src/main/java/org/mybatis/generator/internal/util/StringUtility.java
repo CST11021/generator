@@ -60,12 +60,12 @@ public class StringUtility {
     }
 
     public static String escapeStringForJava(String s) {
-        StringTokenizer st = new StringTokenizer(s, "\"", true); //$NON-NLS-1$
+        StringTokenizer st = new StringTokenizer(s, "\"", true); 
         StringBuilder sb = new StringBuilder();
         while (st.hasMoreTokens()) {
             String token = st.nextToken();
-            if ("\"".equals(token)) { //$NON-NLS-1$
-                sb.append("\\\""); //$NON-NLS-1$
+            if ("\"".equals(token)) { 
+                sb.append("\\\""); 
             } else {
                 sb.append(token);
             }
@@ -75,14 +75,14 @@ public class StringUtility {
     }
 
     public static String escapeStringForKotlin(String s) {
-        StringTokenizer st = new StringTokenizer(s, "\"$", true); //$NON-NLS-1$
+        StringTokenizer st = new StringTokenizer(s, "\"$", true); 
         StringBuilder sb = new StringBuilder();
         while (st.hasMoreTokens()) {
             String token = st.nextToken();
-            if ("\"".equals(token)) { //$NON-NLS-1$
-                sb.append("\\\""); //$NON-NLS-1$
-            } else if ("$".equals(token)) { //$NON-NLS-1$
-                sb.append("\\$"); //$NON-NLS-1$
+            if ("\"".equals(token)) { 
+                sb.append("\\\""); 
+            } else if ("$".equals(token)) { 
+                sb.append("\\$"); 
             } else {
                 sb.append(token);
             }
@@ -92,7 +92,7 @@ public class StringUtility {
     }
 
     public static boolean isTrue(String s) {
-        return "true".equalsIgnoreCase(s); //$NON-NLS-1$
+        return "true".equalsIgnoreCase(s); 
     }
 
     public static boolean stringContainsSQLWildcard(String s) {
@@ -113,7 +113,7 @@ public class StringUtility {
     public static Set<String> tokenize(String in) {
         Set<String> answer = new HashSet<>();
         if (StringUtility.stringHasValue(in)) {
-            StringTokenizer st = new StringTokenizer(in, ","); //$NON-NLS-1$
+            StringTokenizer st = new StringTokenizer(in, ","); 
             while (st.hasMoreTokens()) {
                 String s = st.nextToken().trim();
                 if (s.length() > 0) {

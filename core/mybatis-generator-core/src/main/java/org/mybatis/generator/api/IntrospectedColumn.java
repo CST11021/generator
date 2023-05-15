@@ -94,6 +94,12 @@ public class IntrospectedColumn {
         properties = new Properties();
     }
 
+
+
+
+
+    // getter and setter
+
     public int getJdbcType() {
         return jdbcType;
     }

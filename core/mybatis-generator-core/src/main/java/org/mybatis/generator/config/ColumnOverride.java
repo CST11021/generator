@@ -15,12 +15,22 @@
  */
 package org.mybatis.generator.config;
 
+import java.util.List;
+
 import static org.mybatis.generator.internal.util.StringUtility.stringContainsSpace;
 import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
-import java.util.List;
-
+/**
+ * <!-- column：指定要覆盖配置的列 -->
+ * <!-- property：指定要覆盖配置的属性 -->
+ * <!-- delimitedColumnName：是否为列名添加定界符，例如`{column}` -->
+ * <!-- isGeneratedAlways：是否一定生成此列 -->
+ * <columnOverride column="customer_name" property="customerName" javaType="" jdbcType="" typeHandler="" delimitedColumnName="" isGeneratedAlways="">
+ *    <!-- 覆盖table或者javaModelGenerator级别的trimStrings属性配置 -->
+ *    <property name="trimStrings" value="true"/>
+ * <columnOverride/>
+ */
 public class ColumnOverride extends PropertyHolder {
 
     private final String columnName;

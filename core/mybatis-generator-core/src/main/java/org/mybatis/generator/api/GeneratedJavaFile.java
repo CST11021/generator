@@ -17,6 +17,9 @@ package org.mybatis.generator.api;
 
 import org.mybatis.generator.api.dom.java.CompilationUnit;
 
+/**
+ * 一个GeneratedJavaFile实例对应生成一个java类文件
+ */
 public class GeneratedJavaFile extends GeneratedFile {
 
     private final CompilationUnit compilationUnit;
@@ -25,22 +28,22 @@ public class GeneratedJavaFile extends GeneratedFile {
 
     private final JavaFormatter javaFormatter;
 
-    public GeneratedJavaFile(CompilationUnit compilationUnit,
-            String targetProject,
-            String fileEncoding,
-            JavaFormatter javaFormatter) {
+    public GeneratedJavaFile(CompilationUnit compilationUnit, String targetProject, String fileEncoding, JavaFormatter javaFormatter) {
         super(targetProject);
         this.compilationUnit = compilationUnit;
         this.fileEncoding = fileEncoding;
         this.javaFormatter = javaFormatter;
     }
 
-    public GeneratedJavaFile(CompilationUnit compilationUnit,
-            String targetProject,
-            JavaFormatter javaFormatter) {
+    public GeneratedJavaFile(CompilationUnit compilationUnit, String targetProject, JavaFormatter javaFormatter) {
         this(compilationUnit, targetProject, null, javaFormatter);
     }
 
+    /**
+     * 返回java类文件的文件内容
+     *
+     * @return
+     */
     @Override
     public String getFormattedContent() {
         return javaFormatter.getFormattedContent(compilationUnit);

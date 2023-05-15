@@ -32,8 +32,9 @@ public abstract class AbstractJavaType extends JavaElement {
 
     private final List<InnerInterface> innerInterfaces = new ArrayList<>();
 
+    /** 表示类的字段 */
     private final List<Field> fields = new ArrayList<>();
-
+    /** 表示类的方法 */
     private final List<Method> methods = new ArrayList<>();
 
     protected AbstractJavaType(FullyQualifiedJavaType type) {

@@ -40,17 +40,33 @@ public class PropertyRegistry {
      */
     public static final String ANY_ROOT_INTERFACE = "rootInterface";
 
+    // table 标签相关的属性
+
+    /** XML映射文件中生成的ResultMap使用列索引定义而不是列名称 */
     public static final String TABLE_USE_COLUMN_INDEXES = "useColumnIndexes";
+    /** 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate */
     public static final String TABLE_USE_ACTUAL_COLUMN_NAMES = "useActualColumnNames";
+    /** 是否把列名和列备注拼接起来生成实体类属性名 */
     public static final String TABLE_USE_COMPOUND_PROPERTY_NAMES = "useCompoundPropertyNames";
+    /** 默认为false，是否在运行时忽略别名 如果为true，则不会在生成表的时候把schema和catalog作为表的前缀 */
     public static final String TABLE_IGNORE_QUALIFIERS_AT_RUNTIME = "ignoreQualifiersAtRuntime";
+    /** 如果设置了runtimeCatalog，那么在生成的SQL中，使用该指定的catalog，而不是table元素上的catalog */
     public static final String TABLE_RUNTIME_CATALOG = "runtimeCatalog";
+    /** 如果设置了runtimeSchema，那么在生成的SQL中，使用该指定的schema，而不是table元素上的schema */
     public static final String TABLE_RUNTIME_SCHEMA = "runtimeSchema";
+    /** 如果设置了runtimeTableName，那么在生成的SQL中，使用该指定的tablename，而不是table元素上的tablename */
     public static final String TABLE_RUNTIME_TABLE_NAME = "runtimeTableName";
+    /** 指定是否只生成domain类，如果设置为true，只生成domain类，如果还配置了sqlMapGenerator，那么在mapper XML文件中，只生成resultMap元素 */
     public static final String TABLE_MODEL_ONLY = "modelOnly";
+    /** 注意，该属性只针对MyBatis3Simple有用，如果选择的runtime是MyBatis3Simple，那么会生成一个SelectAll方法，
+     如果指定了selectAllOrderByClause，那么会在该SQL中添加指定的这个order条件； */
     public static final String TABLE_SELECT_ALL_ORDER_BY_CLAUSE = "selectAllOrderByClause";
+
     public static final String TABLE_DYNAMIC_SQL_SUPPORT_CLASS_NAME = "dynamicSqlSupportClassName";
     public static final String TABLE_DYNAMIC_SQL_TABLE_OBJECT_NAME = "dynamicSqlTableObjectName";
+
+
+    // context标签相关的属性
 
     public static final String CONTEXT_BEGINNING_DELIMITER = "beginningDelimiter";
     public static final String CONTEXT_ENDING_DELIMITER = "endingDelimiter";
@@ -74,8 +90,7 @@ public class PropertyRegistry {
     public static final String COMMENT_GENERATOR_SUPPRESS_ALL_COMMENTS = "suppressAllComments";
     public static final String COMMENT_GENERATOR_ADD_REMARK_COMMENTS = "addRemarkComments";
     public static final String COMMENT_GENERATOR_DATE_FORMAT = "dateFormat";
-    public static final String COMMENT_GENERATOR_USE_LEGACY_GENERATED_ANNOTATION =
-            "useLegacyGeneratedAnnotation";
+    public static final String COMMENT_GENERATOR_USE_LEGACY_GENERATED_ANNOTATION = "useLegacyGeneratedAnnotation";
 
     public static final String COLUMN_OVERRIDE_FORCE_JAVA_TYPE = "forceJavaTypeIntoMapping";
 }

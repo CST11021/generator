@@ -15,29 +15,33 @@
  */
 package org.mybatis.generator.api.dom.java.render;
 
-import static org.mybatis.generator.api.dom.java.render.RenderingUtilities.renderImports;
-import static org.mybatis.generator.api.dom.java.render.RenderingUtilities.renderInnerClassNoIndent;
-import static org.mybatis.generator.api.dom.java.render.RenderingUtilities.renderPackage;
-import static org.mybatis.generator.api.dom.java.render.RenderingUtilities.renderStaticImports;
+import org.mybatis.generator.api.dom.java.TopLevelClass;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.mybatis.generator.api.dom.java.TopLevelClass;
+import static org.mybatis.generator.api.dom.java.render.RenderingUtilities.*;
 
+/**
+ * 生成java类的代码
+ */
 public class TopLevelClassRenderer {
 
     public String render(TopLevelClass topLevelClass) {
         List<String> lines = new ArrayList<>();
 
+        // 类最上面的注释
         lines.addAll(topLevelClass.getFileCommentLines());
+        // 类的包名
         lines.addAll(renderPackage(topLevelClass));
+        //
         lines.addAll(renderStaticImports(topLevelClass));
+        // import相关代码
         lines.addAll(renderImports(topLevelClass));
+        // 类代码
         lines.addAll(renderInnerClassNoIndent(topLevelClass, topLevelClass));
 
-        return lines.stream()
-                .collect(Collectors.joining(System.getProperty("line.separator"))); 
+        return lines.stream().collect(Collectors.joining(System.getProperty("line.separator")));
     }
 }

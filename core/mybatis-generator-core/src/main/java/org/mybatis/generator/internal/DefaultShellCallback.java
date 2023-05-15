@@ -15,13 +15,13 @@
  */
 package org.mybatis.generator.internal;
 
-import static org.mybatis.generator.internal.util.messages.Messages.getString;
+import org.mybatis.generator.api.ShellCallback;
+import org.mybatis.generator.exception.ShellException;
 
 import java.io.File;
 import java.util.StringTokenizer;
 
-import org.mybatis.generator.api.ShellCallback;
-import org.mybatis.generator.exception.ShellException;
+import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 public class DefaultShellCallback implements ShellCallback {
 
@@ -34,7 +34,7 @@ public class DefaultShellCallback implements ShellCallback {
 
     @Override
     public File getDirectory(String targetProject, String targetPackage) throws ShellException {
-        // targetProject is interpreted as a directory that must already exist
+        // targetProject: 必须是已经存在的目录
         //
         // targetPackage is interpreted as a subdirectory, but in package
         // format (with dots instead of slashes). The subdirectory will be
@@ -42,8 +42,7 @@ public class DefaultShellCallback implements ShellCallback {
 
         File targetProjectDirectory = new File(targetProject);
         if (!targetProjectDirectory.isDirectory()) {
-            throw new ShellException(getString("Warning.9", 
-                    targetProject));
+            throw new ShellException(getString("Warning.9", targetProject));
         }
 
         StringBuilder sb = new StringBuilder();
@@ -57,8 +56,7 @@ public class DefaultShellCallback implements ShellCallback {
         if (!directory.isDirectory()) {
             boolean rc = directory.mkdirs();
             if (!rc) {
-                throw new ShellException(getString("Warning.10", 
-                        directory.getAbsolutePath()));
+                throw new ShellException(getString("Warning.10", directory.getAbsolutePath()));
             }
         }
 

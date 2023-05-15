@@ -72,8 +72,7 @@ public class ObjectFactory {
      * @param classLoader
      *            the class loader
      */
-    public static synchronized void addExternalClassLoader(
-            ClassLoader classLoader) {
+    public static synchronized void addExternalClassLoader(ClassLoader classLoader) {
         ObjectFactory.externalClassLoaders.add(classLoader);
     }
 
@@ -88,8 +87,7 @@ public class ObjectFactory {
      * @throws ClassNotFoundException
      *             the class not found exception
      */
-    public static Class<?> externalClassForName(String type)
-            throws ClassNotFoundException {
+    public static Class<?> externalClassForName(String type) throws ClassNotFoundException {
 
         Class<?> clazz;
 
@@ -119,8 +117,7 @@ public class ObjectFactory {
         return answer;
     }
 
-    public static Class<?> internalClassForName(String type)
-            throws ClassNotFoundException {
+    public static Class<?> internalClassForName(String type) throws ClassNotFoundException {
         Class<?> clazz = null;
 
         try {
@@ -162,19 +159,16 @@ public class ObjectFactory {
 
         try {
             Class<?> clazz = internalClassForName(type);
-
             answer = clazz.getConstructor().newInstance();
         } catch (Exception e) {
-            throw new RuntimeException(getString(
-                    "RuntimeError.6", type), e); 
+            throw new RuntimeException(getString("RuntimeError.6", type), e);
 
         }
 
         return answer;
     }
 
-    public static JavaTypeResolver createJavaTypeResolver(Context context,
-            List<String> warnings) {
+    public static JavaTypeResolver createJavaTypeResolver(Context context, List<String> warnings) {
         JavaTypeResolverConfiguration config = context
                 .getJavaTypeResolverConfiguration();
         String type;
@@ -200,8 +194,7 @@ public class ObjectFactory {
         return answer;
     }
 
-    public static Plugin createPlugin(Context context,
-            PluginConfiguration pluginConfiguration) {
+    public static Plugin createPlugin(Context context, PluginConfiguration pluginConfiguration) {
         Plugin plugin = (Plugin) createInternalObject(pluginConfiguration
                 .getConfigurationType());
         plugin.setContext(context);
@@ -211,8 +204,7 @@ public class ObjectFactory {
 
     public static CommentGenerator createCommentGenerator(Context context) {
 
-        CommentGeneratorConfiguration config = context
-                .getCommentGeneratorConfiguration();
+        CommentGeneratorConfiguration config = context.getCommentGeneratorConfiguration();
         CommentGenerator answer;
 
         String type;
@@ -292,9 +284,7 @@ public class ObjectFactory {
         return answer;
     }
 
-    public static IntrospectedTable createIntrospectedTable(
-            TableConfiguration tableConfiguration, FullyQualifiedTable table,
-            Context context) {
+    public static IntrospectedTable createIntrospectedTable(TableConfiguration tableConfiguration, FullyQualifiedTable table, Context context) {
 
         IntrospectedTable answer = createIntrospectedTableForValidation(context);
         answer.setFullyQualifiedTable(table);
@@ -304,11 +294,9 @@ public class ObjectFactory {
     }
 
     /**
-     * Creates an introspected table implementation that is only usable for validation .
+     * 根据配置确定IntrospectedTable的实现
      *
-     *
-     * @param context
-     *            the context
+     * @param context the context
      * @return the introspected table
      */
     public static IntrospectedTable createIntrospectedTableForValidation(Context context) {

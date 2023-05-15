@@ -18,5 +18,12 @@ package org.mybatis.generator.codegen;
 import org.mybatis.generator.api.dom.xml.Document;
 
 public abstract class AbstractXmlGenerator extends AbstractGenerator {
+
+    /**
+     * 返回一个xml的document
+     *
+     * @return
+     */
     public abstract Document getDocument();
+
 }

@@ -24,14 +24,13 @@ public class GeneratorSqlmap {
 
 		List<String> warnings = new ArrayList<String>();
 
-
-		ConfigurationParser cp = new ConfigurationParser(warnings);
-		
-		Configuration config = cp.parseConfiguration(new File("whzTestGeneratorConfig.xml"));
-		DefaultShellCallback callback = new DefaultShellCallback(true);
-
-		MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
+		Configuration config = new ConfigurationParser(warnings).parseConfiguration(new File("whzTestGeneratorConfig.xml"));
+		MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, new DefaultShellCallback(true), warnings);
 		myBatisGenerator.generate(null);
+		System.out.println("告警信息");
+		for (String warning : warnings) {
+			System.out.println(warning);
+		}
 
 	}
 

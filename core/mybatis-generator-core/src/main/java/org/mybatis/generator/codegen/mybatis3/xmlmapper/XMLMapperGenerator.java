@@ -253,7 +253,7 @@ public class XMLMapperGenerator extends AbstractXmlGenerator {
     @Override
     public Document getDocument() {
         Document document = new Document(XmlConstants.MYBATIS3_MAPPER_PUBLIC_ID, XmlConstants.MYBATIS3_MAPPER_SYSTEM_ID);
-        // 设置 <mapper namespace="whz.ZlbBaidaFormDao"> 节点
+        // 创建 <mapper namespace="whz.ZlbBaidaFormDao"> root节点
         document.setRootElement(getSqlMapElement());
 
         if (!context.getPlugins().sqlMapDocumentGenerated(document, introspectedTable)) {

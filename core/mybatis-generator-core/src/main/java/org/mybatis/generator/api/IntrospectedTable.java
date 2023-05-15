@@ -30,9 +30,7 @@ import static org.mybatis.generator.internal.util.StringUtility.isTrue;
 import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 
 /**
- * Base class for all code generator implementations. This class provides many
- * of the housekeeping methods needed to implement a code generator, with only
- * the actual code generation methods left unimplemented.
+ * 所有代码生成器实现的基类。此类提供了实现代码生成器所需的许多内务处理方法，只有实际的代码生成方法未实现。
  *
  * @author Jeff Butler
  *
@@ -45,8 +43,11 @@ public abstract class IntrospectedTable {
     }
 
     protected enum InternalAttribute {
+        /**  */
         ATTR_PRIMARY_KEY_TYPE,
+        /** 表示model的全限定类名 */
         ATTR_BASE_RECORD_TYPE,
+        /** 表示model的全限定类名 */
         ATTR_RECORD_WITH_BLOBS_TYPE,
         ATTR_EXAMPLE_TYPE,
         ATTR_MYBATIS3_XML_MAPPER_PACKAGE,
@@ -288,8 +289,7 @@ public abstract class IntrospectedTable {
      *         the table has BLOB columns or not.
      */
     public String getRecordWithBLOBsType() {
-        return internalAttributes
-                .get(InternalAttribute.ATTR_RECORD_WITH_BLOBS_TYPE);
+        return internalAttributes.get(InternalAttribute.ATTR_RECORD_WITH_BLOBS_TYPE);
     }
 
     public String getMyBatis3SqlMapNamespace() {
@@ -876,22 +876,17 @@ public abstract class IntrospectedTable {
      * @param progressCallback
      *            the progress callback
      */
-    public abstract void calculateGenerators(List<String> warnings,
-            ProgressCallback progressCallback);
+    public abstract void calculateGenerators(List<String> warnings, ProgressCallback progressCallback);
 
     /**
-     * This method should return a list of generated Java files related to this
-     * table. This list could include various types of model classes, as well as
-     * DAO classes.
+     * 此方法应返回与此表相关的已生成 Java 文件的列表。这个列表可以包括各种类型的模型类，以及 DAO 类。
      *
      * @return the list of generated Java files for this table
      */
     public abstract List<GeneratedJavaFile> getGeneratedJavaFiles();
 
     /**
-     * This method should return a list of generated XML files related to this
-     * table. Most implementations will only return one file - the generated
-     * SqlMap file.
+     * 此方法应返回与此表相关的已生成 XML 文件的列表。大多数实现只会返回一个文件——生成的 SqlMap 文件。
      *
      * @return the list of generated XML files for this table
      */
@@ -958,15 +953,13 @@ public abstract class IntrospectedTable {
                 sqlMapNamespace);
     }
 
-    public void setSqlMapFullyQualifiedRuntimeTableName(
-            String fullyQualifiedRuntimeTableName) {
+    public void setSqlMapFullyQualifiedRuntimeTableName(String fullyQualifiedRuntimeTableName) {
         internalAttributes.put(
                 InternalAttribute.ATTR_FULLY_QUALIFIED_TABLE_NAME_AT_RUNTIME,
                 fullyQualifiedRuntimeTableName);
     }
 
-    public void setSqlMapAliasedFullyQualifiedRuntimeTableName(
-            String aliasedFullyQualifiedRuntimeTableName) {
+    public void setSqlMapAliasedFullyQualifiedRuntimeTableName(String aliasedFullyQualifiedRuntimeTableName) {
         internalAttributes
                 .put(
                         InternalAttribute.ATTR_ALIASED_FULLY_QUALIFIED_TABLE_NAME_AT_RUNTIME,

@@ -15,12 +15,20 @@
  */
 package org.mybatis.generator.config;
 
+import java.util.List;
+
 import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
-import java.util.List;
-
 /**
+ *
+ * 0或1个`<domainObjectRenamingRule>`用于指定实体类重命名规则：
+ * <!-- searchString中正则命中的实体类名部分会替换为replaceString -->
+ * <domainObjectRenamingRule searchString="^Sys" replaceString=""/>
+ * <!-- 例如 SysUser会变成User -->
+ * <!-- 例如 SysUserMapper会变成UserMapper -->
+ *
+ *
  * This class is used to specify a renaming rule for table's domain object name.
  * If domainObjectName is not configured, we'll build the domain object named
  * based on the tableName or runtimeTableName. And then we use the domain object

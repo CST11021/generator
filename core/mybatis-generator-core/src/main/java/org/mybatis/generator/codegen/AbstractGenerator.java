@@ -15,16 +15,20 @@
  */
 package org.mybatis.generator.codegen;
 
-import java.util.List;
-
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.ProgressCallback;
 import org.mybatis.generator.config.Context;
 
+import java.util.List;
+
 public abstract class AbstractGenerator {
+    /** 上下文配置 */
     protected Context context;
+    /** table的相信配置信息 */
     protected IntrospectedTable introspectedTable;
+    /** 用于保存告警信息 */
     protected List<String> warnings;
+    /** 用于扩展的回调程序 */
     protected ProgressCallback progressCallback;
 
     protected AbstractGenerator() {

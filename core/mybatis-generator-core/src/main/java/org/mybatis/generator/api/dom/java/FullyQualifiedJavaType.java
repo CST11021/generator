@@ -22,8 +22,7 @@ import java.util.StringTokenizer;
 import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
-public class FullyQualifiedJavaType implements
-        Comparable<FullyQualifiedJavaType> {
+public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType> {
 
     private static final String JAVA_LANG = "java.lang";
 
@@ -59,7 +58,7 @@ public class FullyQualifiedJavaType implements
 
     private final List<FullyQualifiedJavaType> typeArguments;
 
-    // the following three values are used for dealing with wildcard types
+    /** the following three values are used for dealing with wildcard types */
     private boolean wildcardType;
 
     private boolean boundedWildcard;
@@ -69,8 +68,7 @@ public class FullyQualifiedJavaType implements
     /**
      * Use this constructor to construct a generic type with the specified type parameters.
      *
-     * @param fullTypeSpecification
-     *            the full type specification
+     * @param fullTypeSpecification 完整的类型说明
      */
     public FullyQualifiedJavaType(String fullTypeSpecification) {
         super();
@@ -207,31 +205,6 @@ public class FullyQualifiedJavaType implements
         return baseShortName;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof FullyQualifiedJavaType)) {
-            return false;
-        }
-
-        FullyQualifiedJavaType other = (FullyQualifiedJavaType) obj;
-
-        return getFullyQualifiedName().equals(other.getFullyQualifiedName());
-    }
-
-    @Override
-    public int hashCode() {
-        return getFullyQualifiedName().hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return getFullyQualifiedName();
-    }
-
     public boolean isPrimitive() {
         return primitive;
     }
@@ -317,11 +290,6 @@ public class FullyQualifiedJavaType implements
         return generatedCriteriaInstance;
     }
 
-    @Override
-    public int compareTo(FullyQualifiedJavaType other) {
-        return getFullyQualifiedName().compareTo(other.getFullyQualifiedName());
-    }
-
     public void addTypeArgument(FullyQualifiedJavaType type) {
         typeArguments.add(type);
     }
@@ -335,11 +303,13 @@ public class FullyQualifiedJavaType implements
             if (spec.startsWith("extends ")) {
                 boundedWildcard = true;
                 extendsBoundedWildcard = true;
-                spec = spec.substring(8);  // "extends ".length()
+                // "extends ".length()
+                spec = spec.substring(8);
             } else if (spec.startsWith("super ")) {
                 boundedWildcard = true;
                 extendsBoundedWildcard = false;
-                spec = spec.substring(6);  // "super ".length()
+                // // "super ".length()
+                spec = spec.substring(6);
             } else {
                 boundedWildcard = false;
             }
@@ -352,8 +322,7 @@ public class FullyQualifiedJavaType implements
                 simpleParse(fullTypeSpecification.substring(0, index));
                 int endIndex = fullTypeSpecification.lastIndexOf('>');
                 if (endIndex == -1) {
-                    throw new RuntimeException(getString(
-                            "RuntimeError.22", fullTypeSpecification));
+                    throw new RuntimeException(getString("RuntimeError.22", fullTypeSpecification));
                 }
                 genericParse(fullTypeSpecification.substring(index, endIndex + 1));
             }
@@ -491,5 +460,40 @@ public class FullyQualifiedJavaType implements
 
     public List<FullyQualifiedJavaType> getTypeArguments() {
         return typeArguments;
+    }
+
+
+
+
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof FullyQualifiedJavaType)) {
+            return false;
+        }
+
+        FullyQualifiedJavaType other = (FullyQualifiedJavaType) obj;
+
+        return getFullyQualifiedName().equals(other.getFullyQualifiedName());
+    }
+
+    @Override
+    public int hashCode() {
+        return getFullyQualifiedName().hashCode();
+    }
+
+    @Override
+    public int compareTo(FullyQualifiedJavaType other) {
+        return getFullyQualifiedName().compareTo(other.getFullyQualifiedName());
+    }
+
+    @Override
+    public String toString() {
+        return getFullyQualifiedName();
     }
 }

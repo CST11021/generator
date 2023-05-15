@@ -15,16 +15,16 @@
  */
 package org.mybatis.generator.api;
 
-import static org.mybatis.generator.internal.util.StringUtility.composeFullyQualifiedTableName;
-import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
+import org.mybatis.generator.config.Context;
+import org.mybatis.generator.config.DomainObjectRenamingRule;
+import org.mybatis.generator.internal.util.JavaBeansUtil;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.mybatis.generator.config.Context;
-import org.mybatis.generator.config.DomainObjectRenamingRule;
-import org.mybatis.generator.internal.util.JavaBeansUtil;
+import static org.mybatis.generator.internal.util.StringUtility.composeFullyQualifiedTableName;
+import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 
 public class FullyQualifiedTable {
 
@@ -211,35 +211,6 @@ public class FullyQualifiedTable {
         return finalDomainObjectName;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof FullyQualifiedTable)) {
-            return false;
-        }
-
-        FullyQualifiedTable other = (FullyQualifiedTable) obj;
-
-        return Objects.equals(this.introspectedTableName, other.introspectedTableName)
-                && Objects.equals(this.introspectedCatalog, other.introspectedCatalog)
-                && Objects.equals(this.introspectedSchema, other.introspectedSchema);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(introspectedTableName, introspectedCatalog, introspectedCatalog);
-    }
-
-    @Override
-    public String toString() {
-        return composeFullyQualifiedTableName(
-                introspectedCatalog, introspectedSchema, introspectedTableName,
-                '.');
-    }
-
     public String getAlias() {
         return alias;
     }
@@ -316,5 +287,35 @@ public class FullyQualifiedTable {
 
     public String getDomainObjectSubPackage() {
         return domainObjectSubPackage;
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof FullyQualifiedTable)) {
+            return false;
+        }
+
+        FullyQualifiedTable other = (FullyQualifiedTable) obj;
+
+        return Objects.equals(this.introspectedTableName, other.introspectedTableName)
+                && Objects.equals(this.introspectedCatalog, other.introspectedCatalog)
+                && Objects.equals(this.introspectedSchema, other.introspectedSchema);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(introspectedTableName, introspectedCatalog, introspectedCatalog);
+    }
+
+    @Override
+    public String toString() {
+        return composeFullyQualifiedTableName(
+                introspectedCatalog, introspectedSchema, introspectedTableName,
+                '.');
     }
 }

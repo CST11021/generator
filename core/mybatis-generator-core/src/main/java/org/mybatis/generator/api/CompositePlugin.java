@@ -15,11 +15,6 @@
  */
 package org.mybatis.generator.api;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.stream.Collectors;
-
 import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.api.dom.java.Interface;
 import org.mybatis.generator.api.dom.java.Method;
@@ -32,16 +27,19 @@ import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.config.Context;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.stream.Collectors;
+
 /**
- * This class implements a composite plugin. It contains a list of plugins for the
- * current context and is used to aggregate plugins together. This class
- * implements the rule that if any plugin returns "false" from a method, then no
- * subsequent plugin is called.
+ * 复合插件
  *
  * @author Jeff Butler
  *
  */
 public abstract class CompositePlugin implements Plugin {
+
     private final List<Plugin> plugins = new ArrayList<>();
 
     protected CompositePlugin() {

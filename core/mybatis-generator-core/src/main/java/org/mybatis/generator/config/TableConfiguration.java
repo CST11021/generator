@@ -22,57 +22,69 @@ import java.util.*;
 import static org.mybatis.generator.internal.util.StringUtility.*;
 
 public class TableConfiguration extends PropertyHolder {
-
+    /**  */
     private boolean insertStatementEnabled;
-
+    /**  */
     private boolean selectByPrimaryKeyStatementEnabled;
-
+    /**  */
     private boolean selectByExampleStatementEnabled;
-
+    /**  */
     private boolean updateByPrimaryKeyStatementEnabled;
-
+    /**  */
     private boolean deleteByPrimaryKeyStatementEnabled;
-
+    /**  */
     private boolean deleteByExampleStatementEnabled;
-
+    /**  */
     private boolean countByExampleStatementEnabled;
-
+    /**  */
     private boolean updateByExampleStatementEnabled;
-
-    private final List<ColumnOverride> columnOverrides;
-
-    private final Map<IgnoredColumn, Boolean> ignoredColumns;
-
-    private GeneratedKey generatedKey;
-
+    /** 指定对应的主键列提供列表查询功能 */
     private String selectByPrimaryKeyQueryId;
-
+    /** 指定对应的查询ID提供列表查询功能 */
     private String selectByExampleQueryId;
 
-    private String catalog;
+    /** 主键的生成逻辑配置 */
+    private GeneratedKey generatedKey;
 
+
+    private final List<ColumnOverride> columnOverrides;
+    /** 0或N个`<ignoreColumn>`用于指定忽略生成的列： */
+    private final Map<IgnoredColumn, Boolean> ignoredColumns;
+
+    /**
+     * 数据catalog：一个数据库系统包含多个Catalog，每个Catalog又包含多个Schema，而每个Schema又包含多个数据库对象(表、视图、字段等)，
+     * 反过来讲一个数据库对象必然属于一个Schema，而该Schema又必然属于一个Catalog，这样我们就可以得到该数据库对象的完全限定名称从而解决命名
+     * 冲突的问题了；例如数据库对象表的完全限定名称就可以表示为：Catalog名称.Schema名称.表名称。这里还有一点需要注意的是，ＳＱＬ标准并不要求
+     * 每个数据库对象的完全限定名称是唯一的，就象域名一样，如果喜欢的话，每个ＩＰ地址都可以拥有多个域名。
+     */
+    private String catalog;
     private String schema;
 
+    /** DB的表明 */
     private String tableName;
-
-    private String domainObjectName;
-
+    /**  */
     private String alias;
 
+    /** 表对应的实体类名称，可通过.指定包路径 */
+    private String domainObjectName;
+    /** 表对应的Mapper接口类名称，可通过.指定包路径 */
+    private String mapperName;
+    /** 动态SQL提供类SqlProvider的类名称 */
+    private String sqlProviderName;
+    /** 覆盖<context>的defaultModelType属性 */
     private ModelType modelType;
 
+    /** 标记匹配表名称的时候，三方需要使用分隔符去标记生成的SQL */
+    private boolean delimitIdentifiers;
+    private boolean isAllColumnDelimitingEnabled;
     private boolean wildcardEscapingEnabled;
 
-    private boolean delimitIdentifiers;
-
+    /** 0或1个`<domainObjectRenamingRule>`用于指定实体类重命名规则 */
     private DomainObjectRenamingRule domainObjectRenamingRule;
-
+    /** 0或1个`<columnRenamingRule>`用于指定列重命名规则 */
     private ColumnRenamingRule columnRenamingRule;
 
-    private boolean isAllColumnDelimitingEnabled;
 
-    private String mapperName;
-    private String sqlProviderName;
 
     private final List<IgnoredColumnPattern> ignoredColumnPatterns = new ArrayList<>();
 
@@ -118,8 +130,7 @@ public class TableConfiguration extends PropertyHolder {
         return selectByPrimaryKeyStatementEnabled;
     }
 
-    public void setSelectByPrimaryKeyStatementEnabled(
-            boolean selectByPrimaryKeyStatementEnabled) {
+    public void setSelectByPrimaryKeyStatementEnabled(boolean selectByPrimaryKeyStatementEnabled) {
         this.selectByPrimaryKeyStatementEnabled = selectByPrimaryKeyStatementEnabled;
     }
 
@@ -127,8 +138,7 @@ public class TableConfiguration extends PropertyHolder {
         return updateByPrimaryKeyStatementEnabled;
     }
 
-    public void setUpdateByPrimaryKeyStatementEnabled(
-            boolean updateByPrimaryKeyStatementEnabled) {
+    public void setUpdateByPrimaryKeyStatementEnabled(boolean updateByPrimaryKeyStatementEnabled) {
         this.updateByPrimaryKeyStatementEnabled = updateByPrimaryKeyStatementEnabled;
     }
 
@@ -188,8 +198,7 @@ public class TableConfiguration extends PropertyHolder {
         return selectByExampleStatementEnabled;
     }
 
-    public void setSelectByExampleStatementEnabled(
-            boolean selectByExampleStatementEnabled) {
+    public void setSelectByExampleStatementEnabled(boolean selectByExampleStatementEnabled) {
         this.selectByExampleStatementEnabled = selectByExampleStatementEnabled;
     }
 
@@ -240,8 +249,7 @@ public class TableConfiguration extends PropertyHolder {
         return deleteByExampleStatementEnabled;
     }
 
-    public void setDeleteByExampleStatementEnabled(
-            boolean deleteByExampleStatementEnabled) {
+    public void setDeleteByExampleStatementEnabled(boolean deleteByExampleStatementEnabled) {
         this.deleteByExampleStatementEnabled = deleteByExampleStatementEnabled;
     }
 
@@ -358,8 +366,7 @@ public class TableConfiguration extends PropertyHolder {
         return countByExampleStatementEnabled;
     }
 
-    public void setCountByExampleStatementEnabled(
-            boolean countByExampleStatementEnabled) {
+    public void setCountByExampleStatementEnabled(boolean countByExampleStatementEnabled) {
         this.countByExampleStatementEnabled = countByExampleStatementEnabled;
     }
 
@@ -367,8 +374,7 @@ public class TableConfiguration extends PropertyHolder {
         return updateByExampleStatementEnabled;
     }
 
-    public void setUpdateByExampleStatementEnabled(
-            boolean updateByExampleStatementEnabled) {
+    public void setUpdateByExampleStatementEnabled(boolean updateByExampleStatementEnabled) {
         this.updateByExampleStatementEnabled = updateByExampleStatementEnabled;
     }
 
@@ -440,8 +446,7 @@ public class TableConfiguration extends PropertyHolder {
         return isAllColumnDelimitingEnabled;
     }
 
-    public void setAllColumnDelimitingEnabled(
-            boolean isAllColumnDelimitingEnabled) {
+    public void setAllColumnDelimitingEnabled(boolean isAllColumnDelimitingEnabled) {
         this.isAllColumnDelimitingEnabled = isAllColumnDelimitingEnabled;
     }
 

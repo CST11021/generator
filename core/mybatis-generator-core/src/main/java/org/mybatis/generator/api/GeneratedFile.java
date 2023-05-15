@@ -16,7 +16,7 @@
 package org.mybatis.generator.api;
 
 /**
- * Abstract class that holds information common to all generated files.
+ * 保存所有生成的文件共有的信息的抽象类
  *
  * @author Jeff Butler
  */
@@ -29,56 +29,49 @@ public abstract class GeneratedFile {
     }
 
     /**
-     * Returns the entire contents of the generated file. Clients
-     * can simply save the value returned from this method as the file contents.
-     * Subclasses such as @see org.mybatis.generator.api.GeneratedJavaFile offer
-     * more fine grained access to file parts, but still implement this method
-     * in the event that the entire contents are desired.
+     * 返回生成文件的全部内容。
+     * 客户端可以简单地将此方法返回的值保存为文件内容。诸如 @see org.mybatis.generator.api.GeneratedJavaFile 之类的子类提供了对文件部分的更细粒度的访问，但在需要全部内容的情况下仍然实现此方法。
      *
      * @return Returns the content.
      */
     public abstract String getFormattedContent();
 
     /**
-     * Get the file name (without any path). Clients should use this method to
-     * determine how to save the results.
+     * 返回生成的文件名
      *
      * @return Returns the file name.
      */
     public abstract String getFileName();
 
     /**
-     * Gets the target project. Clients can call this method to determine how to
-     * save the results.
-     *
-     * @return the target project
-     */
-    public String getTargetProject() {
-        return targetProject;
-    }
-
-    /**
-     * Get the target package for the file. Clients should use this method to
-     * determine how to save the results.
+     * 返回文件所在的包路径
      *
      * @return Returns the target project.
      */
     public abstract String getTargetPackage();
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return getFileName();
-    }
-
     /**
-     * Checks if is mergeable.
+     * 是否可合并
      *
      * @return true, if is mergeable
      */
     public abstract boolean isMergeable();
 
+    /**
+     * 文件的Encoding
+     *
+     * @return
+     */
     public abstract String getFileEncoding();
+
+
+
+    public String getTargetProject() {
+        return targetProject;
+    }
+
+    @Override
+    public String toString() {
+        return getFileName();
+    }
 }

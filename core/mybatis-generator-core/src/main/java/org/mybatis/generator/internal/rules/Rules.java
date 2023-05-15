@@ -28,9 +28,7 @@ import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 public interface Rules {
 
     /**
-     * Implements the rule for generating the insert SQL Map element and DAO
-     * method. If the insert statement is allowed, then generate the element and
-     * method.
+     * 实现用于生成插入 SQL Map 元素和 DAO 方法的规则。如果允许插入语句，则生成元素和方法。
      *
      * @return true if the element and method should be generated
      */

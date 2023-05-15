@@ -15,7 +15,17 @@
  */
 package org.mybatis.generator.internal;
 
-import static org.mybatis.generator.internal.util.StringUtility.isTrue;
+import org.mybatis.generator.api.CommentGenerator;
+import org.mybatis.generator.api.IntrospectedColumn;
+import org.mybatis.generator.api.IntrospectedTable;
+import org.mybatis.generator.api.MyBatisGenerator;
+import org.mybatis.generator.api.dom.java.*;
+import org.mybatis.generator.api.dom.kotlin.KotlinFile;
+import org.mybatis.generator.api.dom.xml.TextElement;
+import org.mybatis.generator.api.dom.xml.XmlElement;
+import org.mybatis.generator.config.MergeConstants;
+import org.mybatis.generator.config.PropertyRegistry;
+import org.mybatis.generator.internal.util.StringUtility;
 
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
@@ -24,25 +34,11 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.Set;
 
-import org.mybatis.generator.api.CommentGenerator;
-import org.mybatis.generator.api.IntrospectedColumn;
-import org.mybatis.generator.api.IntrospectedTable;
-import org.mybatis.generator.api.MyBatisGenerator;
-import org.mybatis.generator.api.dom.java.Field;
-import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
-import org.mybatis.generator.api.dom.java.InnerClass;
-import org.mybatis.generator.api.dom.java.InnerEnum;
-import org.mybatis.generator.api.dom.java.JavaElement;
-import org.mybatis.generator.api.dom.java.Method;
-import org.mybatis.generator.api.dom.java.Parameter;
-import org.mybatis.generator.api.dom.java.TopLevelClass;
-import org.mybatis.generator.api.dom.kotlin.KotlinFile;
-import org.mybatis.generator.api.dom.xml.TextElement;
-import org.mybatis.generator.api.dom.xml.XmlElement;
-import org.mybatis.generator.config.MergeConstants;
-import org.mybatis.generator.config.PropertyRegistry;
-import org.mybatis.generator.internal.util.StringUtility;
+import static org.mybatis.generator.internal.util.StringUtility.isTrue;
 
+/**
+ * 注释的代码生成
+ */
 public class DefaultCommentGenerator implements CommentGenerator {
 
     private final Properties properties = new Properties();
@@ -56,8 +52,7 @@ public class DefaultCommentGenerator implements CommentGenerator {
 
     private SimpleDateFormat dateFormat;
 
-    private FullyQualifiedJavaType generatedImport =
-            new FullyQualifiedJavaType("jakarta.annotation.Generated");
+    private FullyQualifiedJavaType generatedImport = new FullyQualifiedJavaType("jakarta.annotation.Generated");
 
     public DefaultCommentGenerator() {
         super();
@@ -249,8 +244,7 @@ public class DefaultCommentGenerator implements CommentGenerator {
     }
 
     @Override
-    public void addFieldComment(Field field, IntrospectedTable introspectedTable,
-            IntrospectedColumn introspectedColumn) {
+    public void addFieldComment(Field field, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn) {
         if (suppressAllComments) {
             return;
         }
@@ -321,8 +315,7 @@ public class DefaultCommentGenerator implements CommentGenerator {
     }
 
     @Override
-    public void addGetterComment(Method method, IntrospectedTable introspectedTable,
-            IntrospectedColumn introspectedColumn) {
+    public void addGetterComment(Method method, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn) {
         if (suppressAllComments) {
             return;
         }
@@ -353,8 +346,7 @@ public class DefaultCommentGenerator implements CommentGenerator {
     }
 
     @Override
-    public void addSetterComment(Method method, IntrospectedTable introspectedTable,
-            IntrospectedColumn introspectedColumn) {
+    public void addSetterComment(Method method, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn) {
         if (suppressAllComments) {
             return;
         }
@@ -388,16 +380,14 @@ public class DefaultCommentGenerator implements CommentGenerator {
     }
 
     @Override
-    public void addGeneralMethodAnnotation(Method method, IntrospectedTable introspectedTable,
-            Set<FullyQualifiedJavaType> imports) {
+    public void addGeneralMethodAnnotation(Method method, IntrospectedTable introspectedTable, Set<FullyQualifiedJavaType> imports) {
         imports.add(generatedImport);
         String comment = "Source Table: " + introspectedTable.getFullyQualifiedTable().toString();
         method.addAnnotation(getGeneratedAnnotation(comment));
     }
 
     @Override
-    public void addGeneralMethodAnnotation(Method method, IntrospectedTable introspectedTable,
-            IntrospectedColumn introspectedColumn, Set<FullyQualifiedJavaType> imports) {
+    public void addGeneralMethodAnnotation(Method method, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn, Set<FullyQualifiedJavaType> imports) {
         imports.add(generatedImport);
         String comment = "Source field: "
                 + introspectedTable.getFullyQualifiedTable().toString() + "."
@@ -406,16 +396,14 @@ public class DefaultCommentGenerator implements CommentGenerator {
     }
 
     @Override
-    public void addFieldAnnotation(Field field, IntrospectedTable introspectedTable,
-            Set<FullyQualifiedJavaType> imports) {
+    public void addFieldAnnotation(Field field, IntrospectedTable introspectedTable, Set<FullyQualifiedJavaType> imports) {
         imports.add(generatedImport);
         String comment = "Source Table: " + introspectedTable.getFullyQualifiedTable().toString();
         field.addAnnotation(getGeneratedAnnotation(comment));
     }
 
     @Override
-    public void addFieldAnnotation(Field field, IntrospectedTable introspectedTable,
-            IntrospectedColumn introspectedColumn, Set<FullyQualifiedJavaType> imports) {
+    public void addFieldAnnotation(Field field, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn, Set<FullyQualifiedJavaType> imports) {
         imports.add(generatedImport);
         String comment = "Source field: "
                 + introspectedTable.getFullyQualifiedTable().toString() + "."
@@ -437,8 +425,7 @@ public class DefaultCommentGenerator implements CommentGenerator {
     }
 
     @Override
-    public void addClassAnnotation(InnerClass innerClass, IntrospectedTable introspectedTable,
-            Set<FullyQualifiedJavaType> imports) {
+    public void addClassAnnotation(InnerClass innerClass, IntrospectedTable introspectedTable, Set<FullyQualifiedJavaType> imports) {
         imports.add(generatedImport);
         String comment = "Source Table: " + introspectedTable.getFullyQualifiedTable().toString();
         innerClass.addAnnotation(getGeneratedAnnotation(comment));

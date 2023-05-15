@@ -21,6 +21,17 @@ import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 /**
+ *
+ * <!-- column：指定要覆盖配置的列 -->
+ * <!-- property：指定要覆盖配置的属性 -->
+ * <!-- delimitedColumnName：是否为列名添加定界符，例如`{column}` -->
+ * <!-- isGeneratedAlways：是否一定生成此列 -->
+ * <columnOverride column="customer_name" property="customerName" javaType="" jdbcType="" typeHandler="" delimitedColumnName="" isGeneratedAlways="">
+ *    <!-- 覆盖table或者javaModelGenerator级别的trimStrings属性配置 -->
+ *    <property name="trimStrings" value="true"/>
+ * <columnOverride/>
+ *
+ *
  * This class is used to specify a renaming rule for columns in a table. This
  * renaming rule will be run against all column names before calculating the
  * corresponding property name. The most common use case is when columns in a

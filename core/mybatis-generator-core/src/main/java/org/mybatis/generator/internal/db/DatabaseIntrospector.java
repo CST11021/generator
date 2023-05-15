@@ -544,13 +544,8 @@ public class DatabaseIntrospector {
         for (Map.Entry<ActualTableName, List<IntrospectedColumn>> entry : columns.entrySet()) {
             ActualTableName atn = entry.getKey();
 
-            // we only use the returned catalog and schema if something was
-            // actually
-            // specified on the table configuration. If something was returned
-            // from the DB for these fields, but nothing was specified on the
-            // table
-            // configuration, then some sort of DB default is being returned
-            // and we don't want that in our SQL
+            // 如果在表配置中实际指定了某些内容，我们只会使用返回的目录和模式。如果从数据库中为这些字段返回了一些东西，但在表配置中没有指定任何内容，
+            // 那么就会返回某种数据库默认值，我们不希望在 SQL 中出现这种情况
             FullyQualifiedTable table = new FullyQualifiedTable(
                     stringHasValue(tc.getCatalog()) ? atn.getCatalog() : null,
                     stringHasValue(tc.getSchema()) ? atn.getSchema() : null,

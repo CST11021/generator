@@ -29,17 +29,16 @@ import static org.mybatis.generator.internal.util.messages.Messages.getString;
  * @author Jeff Butler
  */
 public class GeneratedKey {
-
+    /** 指定主键列 */
     private final String column;
-
+    /** 查询主键的SQL语句，例如填写了MySql，则使用SELECT LAST_INSERT_ID() */
     private final String runtimeSqlStatement;
-
+    /** true的时候，指定selectKey标签的order为AFTER */
     private final boolean isIdentity;
-
+    /** 可选值为pre或者post，pre指定selectKey标签的order为BEFORE，post指定selectKey标签的order为AFTER */
     private final String type;
 
-    public GeneratedKey(String column, String configuredSqlStatement,
-            boolean isIdentity, String type) {
+    public GeneratedKey(String column, String configuredSqlStatement, boolean isIdentity, String type) {
         super();
         this.column = column;
         this.type = type;
@@ -71,8 +70,7 @@ public class GeneratedKey {
 
     public void validate(List<String> errors, String tableName) {
         if (!stringHasValue(runtimeSqlStatement)) {
-            errors.add(getString("ValidationError.7", 
-                    tableName));
+            errors.add(getString("ValidationError.7", tableName));
         }
 
         if (stringHasValue(type)
@@ -82,13 +80,11 @@ public class GeneratedKey {
         }
 
         if ("pre".equals(type) && isIdentity) { 
-            errors.add(getString("ValidationError.23", 
-                    tableName));
+            errors.add(getString("ValidationError.23", tableName));
         }
 
         if ("post".equals(type) && !isIdentity) { 
-            errors.add(getString("ValidationError.24", 
-                    tableName));
+            errors.add(getString("ValidationError.24", tableName));
         }
     }
 

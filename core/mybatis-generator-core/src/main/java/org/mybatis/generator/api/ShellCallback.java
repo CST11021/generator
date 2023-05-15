@@ -15,9 +15,9 @@
  */
 package org.mybatis.generator.api;
 
-import java.io.File;
-
 import org.mybatis.generator.exception.ShellException;
+
+import java.io.File;
 
 /**
  * This interface defines methods that a shell should support to enable
@@ -35,18 +35,7 @@ import org.mybatis.generator.exception.ShellException;
 public interface ShellCallback {
 
     /**
-     * This method is called to ask the shell to resolve a project/package combination into a directory on the file
-     * system. This method is called repeatedly (once for each generated file), so it would be wise for an implementing
-     * class to cache results.
-     *
-     * <p>The returned <code>java.io.File</code> object:
-     * <ul>
-     * <li>Must be a directory</li>
-     * <li>Must exist</li>
-     * </ul>
-     *
-     * <p>The default shell callback interprets both values as directories and simply concatenates the two values to
-     * generate the default directory.
+     * 根据targetProject + targetPackage 返回生成文件的保存目录
      *
      * @param targetProject
      *            the target project
@@ -58,8 +47,7 @@ public interface ShellCallback {
      *             generator will not save the file it is currently working on. The generator will add the exception
      *             message to the list of warnings automatically.
      */
-    File getDirectory(String targetProject, String targetPackage)
-            throws ShellException;
+    File getDirectory(String targetProject, String targetPackage) throws ShellException;
 
     /**
      * This method is called if a newly generated Java file would
@@ -103,28 +91,13 @@ public interface ShellCallback {
      *             existing file will remain undisturbed. The generator will add the
      *             exception message to the list of warnings automatically.
      */
-    default String mergeJavaFile(String newFileSource, File existingFile,
-            String[] javadocTags, String fileEncoding) throws ShellException {
+    default String mergeJavaFile(String newFileSource, File existingFile, String[] javadocTags, String fileEncoding) throws ShellException {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * After all files are saved to the file system, this method is called
-     * once for each unique project that was affected by the generation
-     * run. This method is useful if your IDE needs to be informed that file
-     * system objects have been created or updated. If you are running
-     * outside of an IDE, your implementation need not do anything in this
-     * method.
-     *
-     * @param project
-     *            the project to be refreshed
-     */
-    default void refreshProject(String project) {}
-
-    /**
-     * Return true if the callback supports Java merging, otherwise false.
-     * The <code>mergeJavaFile()</code> method will be called only if this
-     * method returns <code>true</code>.
+     * 如果回调支持 Java 合并，则返回 true，否则返回 false。
+     * mergeJavaFile()方法只有在该方法返回 true 时才会被调用。
      *
      * @return a boolean specifying whether Java merge is supported or not
      */
@@ -133,13 +106,19 @@ public interface ShellCallback {
     }
 
     /**
-     * Return true if the generator should overwrite an existing file if one exists.
-     * This method will be called only if <code>isMergeSupported()</code>
-     * returns <code>false</code> and a file exists that would be overwritten by
-     * a generated file. If you return <code>true</code>, then we will log a
-     * warning specifying what file was overwritten.
+     * 如果生成器应覆盖现有文件（如果存在），则返回 true。
+     * 仅当 isMergeSupported() 返回 false 并且存在将被生成的文件覆盖的文件时，才会调用此方法。如果您返回 true，那么我们将记录一条警告，指出哪个文件被覆盖了。
      *
      * @return true if you want to overwrite existing files
      */
     boolean isOverwriteEnabled();
+
+    /**
+     * 在将所有文件保存到文件系统后，将针对受生成运行影响的每个唯一项目调用此方法一次。如果您的 ide 需要被告知文件系统对象已创建或更新，则此方法很有用。如果您在 ide 之外运行，则您的实现不需要在此方法中执行任何操作。
+     *
+     * @param project
+     *            the project to be refreshed
+     */
+    default void refreshProject(String project) {}
+
 }

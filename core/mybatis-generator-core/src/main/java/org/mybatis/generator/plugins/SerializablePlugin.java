@@ -15,9 +15,6 @@
  */
 package org.mybatis.generator.plugins;
 
-import java.util.List;
-import java.util.Properties;
-
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.IntrospectedTable.TargetRuntime;
 import org.mybatis.generator.api.PluginAdapter;
@@ -28,15 +25,11 @@ import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.api.dom.kotlin.KotlinFile;
 import org.mybatis.generator.api.dom.kotlin.KotlinType;
 
+import java.util.List;
+import java.util.Properties;
+
 /**
- * This plugin adds the java.io.Serializable marker interface to all generated
- * model objects.
- *
- * <p>This plugin demonstrates adding capabilities to generated Java artifacts, and
- * shows the proper way to add imports to a compilation unit.
- *
- * <p>Important: This is a simplistic implementation of serializable and does not
- * attempt to do any versioning of classes.
+ * 这个插件将java.io.Serializable标记接口添加到所有生成的model对象中。
  *
  * @author Jeff Butler
  *
@@ -56,7 +49,7 @@ public class SerializablePlugin extends PluginAdapter {
 
     @Override
     public boolean validate(List<String> warnings) {
-        // this plugin is always valid
+        // 这个插件总是有效的
         return true;
     }
 
@@ -68,28 +61,24 @@ public class SerializablePlugin extends PluginAdapter {
     }
 
     @Override
-    public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass,
-            IntrospectedTable introspectedTable) {
+    public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         makeSerializable(topLevelClass, introspectedTable);
         return true;
     }
 
     @Override
-    public boolean modelPrimaryKeyClassGenerated(TopLevelClass topLevelClass,
-            IntrospectedTable introspectedTable) {
+    public boolean modelPrimaryKeyClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         makeSerializable(topLevelClass, introspectedTable);
         return true;
     }
 
     @Override
-    public boolean modelRecordWithBLOBsClassGenerated(
-            TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+    public boolean modelRecordWithBLOBsClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         makeSerializable(topLevelClass, introspectedTable);
         return true;
     }
 
-    protected void makeSerializable(TopLevelClass topLevelClass,
-            IntrospectedTable introspectedTable) {
+    protected void makeSerializable(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         if (addGWTInterface) {
             topLevelClass.addImportedType(gwtSerializable);
             topLevelClass.addSuperInterface(gwtSerializable);
@@ -99,16 +88,14 @@ public class SerializablePlugin extends PluginAdapter {
             topLevelClass.addImportedType(serializable);
             topLevelClass.addSuperInterface(serializable);
 
-            Field field = new Field("serialVersionUID",
-                    new FullyQualifiedJavaType("long"));
+            Field field = new Field("serialVersionUID", new FullyQualifiedJavaType("long"));
             field.setFinal(true);
             field.setInitializationString("1L");
             field.setStatic(true);
             field.setVisibility(JavaVisibility.PRIVATE);
 
             if (introspectedTable.getTargetRuntime() == TargetRuntime.MYBATIS3_DSQL) {
-                context.getCommentGenerator().addFieldAnnotation(field, introspectedTable,
-                        topLevelClass.getImportedTypes());
+                context.getCommentGenerator().addFieldAnnotation(field, introspectedTable, topLevelClass.getImportedTypes());
             } else {
                 context.getCommentGenerator().addFieldComment(field, introspectedTable);
             }
@@ -118,8 +105,7 @@ public class SerializablePlugin extends PluginAdapter {
     }
 
     @Override
-    public boolean kotlinDataClassGenerated(KotlinFile kotlinFile, KotlinType dataClass,
-            IntrospectedTable introspectedTable) {
+    public boolean kotlinDataClassGenerated(KotlinFile kotlinFile, KotlinType dataClass, IntrospectedTable introspectedTable) {
         kotlinFile.addImport("java.io.Serializable");
         dataClass.addSuperType("Serializable");
         return true;

@@ -16,6 +16,7 @@
 package org.mybatis.generator.api.dom.java;
 
 public class PrimitiveTypeWrapper extends FullyQualifiedJavaType {
+
     private static PrimitiveTypeWrapper booleanInstance;
     private static PrimitiveTypeWrapper byteInstance;
     private static PrimitiveTypeWrapper characterInstance;
@@ -36,8 +37,7 @@ public class PrimitiveTypeWrapper extends FullyQualifiedJavaType {
      * @param toPrimitiveMethod
      *            the method that returns the wrapped primitive
      */
-    private PrimitiveTypeWrapper(String fullyQualifiedName,
-            String toPrimitiveMethod) {
+    private PrimitiveTypeWrapper(String fullyQualifiedName, String toPrimitiveMethod) {
         super(fullyQualifiedName);
         this.toPrimitiveMethod = toPrimitiveMethod;
     }
@@ -46,30 +46,9 @@ public class PrimitiveTypeWrapper extends FullyQualifiedJavaType {
         return toPrimitiveMethod;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof PrimitiveTypeWrapper)) {
-            return false;
-        }
-
-        PrimitiveTypeWrapper other = (PrimitiveTypeWrapper) obj;
-
-        return getFullyQualifiedName().equals(other.getFullyQualifiedName());
-    }
-
-    @Override
-    public int hashCode() {
-        return getFullyQualifiedName().hashCode();
-    }
-
     public static PrimitiveTypeWrapper getBooleanInstance() {
         if (booleanInstance == null) {
-            booleanInstance = new PrimitiveTypeWrapper("java.lang.Boolean",
-                    "booleanValue()");
+            booleanInstance = new PrimitiveTypeWrapper("java.lang.Boolean", "booleanValue()");
         }
 
         return booleanInstance;
@@ -137,4 +116,26 @@ public class PrimitiveTypeWrapper extends FullyQualifiedJavaType {
 
         return shortInstance;
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof PrimitiveTypeWrapper)) {
+            return false;
+        }
+
+        PrimitiveTypeWrapper other = (PrimitiveTypeWrapper) obj;
+
+        return getFullyQualifiedName().equals(other.getFullyQualifiedName());
+    }
+
+    @Override
+    public int hashCode() {
+        return getFullyQualifiedName().hashCode();
+    }
+
 }

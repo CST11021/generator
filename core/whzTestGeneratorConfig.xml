@@ -3,53 +3,71 @@
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
+
+    <!-- context内的配置有后顺序要求，顺序如下：
+    context (property*, plugin*, commentGenerator?, (connectionFactory | jdbcConnection), javaTypeResolver?,
+                         javaModelGenerator, sqlMapGenerator?, javaClientGenerator?, table+) -->
     <context id="DB2Tables" targetRuntime="MyBatis3">
 
-        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+        <!-- 1. property -->
+        <property name="javaTargetProject" value="mybatis-generator-core/src/test/java"/>
+        <property name="javaTargetPackage" value="com.whz"/>
+        <property name="xmlTargetProject" value="mybatis-generator-core/src/test/java"/>
+        <property name="xmlTargetPackage" value="whzTestMapper"/>
+
+        <!-- 2. plugin -->
+        <!--<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />-->
         <!--<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"></plugin>
-
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin>-->
-        <!--<commentGenerator type="org.mybatis.generator.internal.ZcyCommentGenerator">-->
-        <!--    &lt;!&ndash; 这个元素用来去除指定生成的注释中是否包含生成的日期 false:表示保护 &ndash;&gt;-->
-        <!--    &lt;!&ndash; 如果生成日期，会造成即使修改一个字段，整个实体类所有属性都会发生变化，不利于版本控制，所以设置为true &ndash;&gt;-->
-        <!--    <property name="suppressDate" value="true"/>-->
-        <!--    &lt;!&ndash; 是否去除自动生成的注释 true：是 ： false:否 &ndash;&gt;-->
-        <!--    <property name="suppressAllComments" value="false"/>-->
-        <!--</commentGenerator>-->
 
+        <!-- 3. commentGenerator -->
+        <commentGenerator type="org.mybatis.generator.internal.DefaultCommentGenerator">
+            <!-- 这个元素用来去除指定生成的注释中是否包含生成的日期 false:表示保护 -->
+            <!-- 如果生成日期，会造成即使修改一个字段，整个实体类所有属性都会发生变化，不利于版本控制，所以设置为true -->
+            <property name="suppressDate" value="true"/>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="false"/>
+        </commentGenerator>
+
+        <!-- 4. jdbcConnection -->
         <!--数据库链接URL，用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://10.100.185.238:3306/db_sop?useUnicode=true&amp;characterEncoding=UTF8&amp;allowMultiQueries=true&amp;useSSL=false" userId="zlb_dev_user"
+                        connectionURL="jdbc:mysql://10.100.185.238:3306/db_sop?useUnicode=true&amp;characterEncoding=UTF8&amp;allowMultiQueries=true&amp;useSSL=false"
+                        userId="zlb_dev_user"
                         password="OsDFdjhByD4">
         </jdbcConnection>
+
+        <!-- 5. javaTypeResolver -->
         <javaTypeResolver>
             <!-- This property is used to specify whether MyBatis Generator should
                 force the use of java.math.BigDecimal for DECIMAL and NUMERIC fields, -->
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-
-
+        <!-- 6. javaModelGenerator -->
         <!-- 生成模型的包名和位置 -->
-        <javaModelGenerator targetPackage="whz" targetProject="src/main/java">
+        <javaModelGenerator targetProject="mybatis-generator-core/src/test/java" targetPackage="whz">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
+        <!-- 7. sqlMapGenerator -->
         <!-- 生成映射文件的包名和位置 -->
-        <sqlMapGenerator targetPackage="whz" targetProject="src/main/resources">
+        <sqlMapGenerator targetProject="mybatis-generator-core/src/test/java" targetPackage="whz" >
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
+        <!-- 8. javaClientGenerator -->
         <!-- 生成DAO的包名和位置 -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="whz" targetProject="src/main/java">
+        <javaClientGenerator targetProject="mybatis-generator-core/src/test/java" targetPackage="whz" type="XMLMAPPER">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-
-
-
-        <table tableName="zlb_baida_form">
+        <!-- 9. table -->
+        <table tableName="zlb_baida_form" selectByPrimaryKeyQueryId="code">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        </table>
+        <table tableName="zlb_baida_snapshot">
             <property name="selectAllOrderByClause" value="id desc"/>
             <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
         </table>

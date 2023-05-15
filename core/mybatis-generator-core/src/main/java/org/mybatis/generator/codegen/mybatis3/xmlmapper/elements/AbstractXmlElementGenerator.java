@@ -49,8 +49,7 @@ public abstract class AbstractXmlElementGenerator extends AbstractGenerator {
      *            the generated key for the current table
      * @return the selectKey element
      */
-    protected XmlElement getSelectKey(IntrospectedColumn introspectedColumn,
-            GeneratedKey generatedKey) {
+    protected XmlElement getSelectKey(IntrospectedColumn introspectedColumn, GeneratedKey generatedKey) {
         String identityColumnType = introspectedColumn.getFullyQualifiedJavaType().getFullyQualifiedName();
 
         XmlElement answer = new XmlElement("selectKey"); 
@@ -207,6 +206,12 @@ public abstract class AbstractXmlElementGenerator extends AbstractGenerator {
         return answer;
     }
 
+    /**
+     * 创建<constructor>标签
+     *
+     * @param includeBlobColumns
+     * @return
+     */
     protected XmlElement buildConstructorElement(boolean includeBlobColumns) {
         XmlElement constructor = new XmlElement("constructor"); 
 
@@ -214,14 +219,11 @@ public abstract class AbstractXmlElementGenerator extends AbstractGenerator {
             XmlElement resultElement = new XmlElement("idArg"); 
 
             resultElement.addAttribute(buildColumnAttribute(introspectedColumn));
-            resultElement.addAttribute(new Attribute("jdbcType", 
-                    introspectedColumn.getJdbcTypeName()));
-            resultElement.addAttribute(new Attribute("javaType", 
-                    introspectedColumn.getFullyQualifiedJavaType().getFullyQualifiedName()));
+            resultElement.addAttribute(new Attribute("jdbcType", introspectedColumn.getJdbcTypeName()));
+            resultElement.addAttribute(new Attribute("javaType", introspectedColumn.getFullyQualifiedJavaType().getFullyQualifiedName()));
 
             if (stringHasValue(introspectedColumn.getTypeHandler())) {
-                resultElement.addAttribute(
-                        new Attribute("typeHandler", introspectedColumn.getTypeHandler())); 
+                resultElement.addAttribute(new Attribute("typeHandler", introspectedColumn.getTypeHandler()));
             }
 
             constructor.addElement(resultElement);
@@ -237,27 +239,21 @@ public abstract class AbstractXmlElementGenerator extends AbstractGenerator {
             XmlElement resultElement = new XmlElement("arg"); 
 
             resultElement.addAttribute(buildColumnAttribute(introspectedColumn));
-            resultElement.addAttribute(new Attribute("jdbcType", 
-                    introspectedColumn.getJdbcTypeName()));
+            resultElement.addAttribute(new Attribute("jdbcType", introspectedColumn.getJdbcTypeName()));
 
             if (introspectedColumn.getFullyQualifiedJavaType().isPrimitive()) {
                 // need to use the MyBatis type alias for a primitive byte
-                String s = '_'
-                        + introspectedColumn.getFullyQualifiedJavaType().getShortName();
+                String s = '_' + introspectedColumn.getFullyQualifiedJavaType().getShortName();
                 resultElement.addAttribute(new Attribute("javaType", s)); 
-            } else if ("byte[]".equals(introspectedColumn.getFullyQualifiedJavaType() 
-                    .getFullyQualifiedName())) {
+            } else if ("byte[]".equals(introspectedColumn.getFullyQualifiedJavaType().getFullyQualifiedName())) {
                 // need to use the MyBatis type alias for a primitive byte arry
-                resultElement.addAttribute(new Attribute("javaType", 
-                        "_byte[]")); 
+                resultElement.addAttribute(new Attribute("javaType", "_byte[]"));
             } else {
-                resultElement.addAttribute(new Attribute("javaType", 
-                        introspectedColumn.getFullyQualifiedJavaType().getFullyQualifiedName()));
+                resultElement.addAttribute(new Attribute("javaType", introspectedColumn.getFullyQualifiedJavaType().getFullyQualifiedName()));
             }
 
             if (stringHasValue(introspectedColumn.getTypeHandler())) {
-                resultElement.addAttribute(new Attribute(
-                        "typeHandler", introspectedColumn.getTypeHandler())); 
+                resultElement.addAttribute(new Attribute("typeHandler", introspectedColumn.getTypeHandler()));
             }
 
             constructor.addElement(resultElement);

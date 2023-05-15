@@ -15,9 +15,9 @@
  */
 package org.mybatis.generator.api;
 
-import java.util.Properties;
-
 import org.mybatis.generator.config.Context;
+
+import java.util.Properties;
 
 /**
  * This class is a convenient base class for implementing plugins.
@@ -29,7 +29,9 @@ import org.mybatis.generator.config.Context;
  *
  */
 public abstract class PluginAdapter implements Plugin {
+
     protected Context context;
+
     protected final Properties properties = new Properties();
 
     protected PluginAdapter() {}

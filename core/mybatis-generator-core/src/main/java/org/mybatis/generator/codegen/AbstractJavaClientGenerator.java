@@ -34,20 +34,18 @@ public abstract class AbstractJavaClientGenerator extends AbstractJavaGenerator 
     }
 
     /**
-     * Returns true is a matching XML generator is required.
+     * 如果需要匹配的 XML 生成器，则返回 true。
      *
-     * @return true if matching XML is generator required
+     * @return 如果生成器需要匹配的 XML，则为真
      */
     public boolean requiresXMLGenerator() {
         return requiresXMLGenerator;
     }
 
     /**
-     * Returns an instance of the XML generator associated
-     * with this client generator.
+     * 返回与此客户端生成器关联的 XML 生成器的实例。
      *
-     * @return the matched XML generator.  May return null if no
-     *     XML is required by this generator
+     * @return 匹配的 XML 生成器。如果此生成器不需要 XML，则可能返回 null
      */
     public abstract AbstractXmlGenerator getMatchedXMLGenerator();
 }

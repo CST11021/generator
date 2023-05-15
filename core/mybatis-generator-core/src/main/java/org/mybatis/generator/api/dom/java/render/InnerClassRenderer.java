@@ -15,13 +15,13 @@
  */
 package org.mybatis.generator.api.dom.java.render;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.mybatis.generator.api.dom.java.CompilationUnit;
 import org.mybatis.generator.api.dom.java.InnerClass;
 import org.mybatis.generator.api.dom.java.JavaDomUtils;
 import org.mybatis.generator.internal.util.CustomCollectors;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class InnerClassRenderer {
 
@@ -45,6 +45,13 @@ public class InnerClassRenderer {
         return lines;
     }
 
+    /**
+     * 生成声明类的第一行代码，例如：public class InnerClassRenderer {
+     *
+     * @param innerClass
+     * @param compilationUnit
+     * @return
+     */
     private String renderFirstLine(InnerClass innerClass, CompilationUnit compilationUnit) {
         StringBuilder sb = new StringBuilder();
 
@@ -72,16 +79,29 @@ public class InnerClassRenderer {
         return sb.toString();
     }
 
+    /**
+     * 生成继承父类的代码
+     *
+     * @param innerClass
+     * @param compilationUnit
+     * @return
+     */
     private String renderSuperClass(InnerClass innerClass, CompilationUnit compilationUnit) {
         return innerClass.getSuperClass()
                 .map(sc -> " extends " + JavaDomUtils.calculateTypeName(compilationUnit, sc))
                 .orElse("");
     }
 
-    // should return an empty string if no super interfaces
+    /**
+     * 生成实现接口的代码
+     *
+     * @param innerClass
+     * @param compilationUnit
+     * @return
+     */
     private String renderSuperInterfaces(InnerClass innerClass, CompilationUnit compilationUnit) {
         return innerClass.getSuperInterfaceTypes().stream()
                 .map(tp -> JavaDomUtils.calculateTypeName(compilationUnit, tp))
-                .collect(CustomCollectors.joining(", ", " implements ", ""));   //$NON-NLS-3$
+                .collect(CustomCollectors.joining(", ", " implements ", ""));
     }
 }

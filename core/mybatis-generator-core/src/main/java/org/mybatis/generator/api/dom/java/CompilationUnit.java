@@ -19,8 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * This interface describes methods common to all Java compilation units (Java
- * classes, interfaces, and enums).
+ * 该接口描述了所有 Java 编译单元（Java类、接口和枚举）通用的方法。
  *
  * @author Jeff Butler
  */
@@ -32,6 +31,11 @@ public interface CompilationUnit {
 
     FullyQualifiedJavaType getType();
 
+    /**
+     * 添加import代码
+     *
+     * @param importedType
+     */
     void addImportedType(FullyQualifiedJavaType importedType);
 
     void addImportedTypes(Set<FullyQualifiedJavaType> importedTypes);

@@ -30,9 +30,35 @@ public class ResultMapWithoutBLOBsElementGenerator extends AbstractXmlElementGen
         this.isSimple = isSimple;
     }
 
+    /**
+     *
+     <resultMap id="BaseResultMap" type="whz.ZlbBaidaForm">
+         <id column="id" jdbcType="BIGINT" property="id" />
+         <result column="code" jdbcType="VARCHAR" property="code" />
+         <result column="name" jdbcType="VARCHAR" property="name" />
+         <result column="description" jdbcType="VARCHAR" property="description" />
+         <result column="belong" jdbcType="VARCHAR" property="belong" />
+         <result column="tenant_code" jdbcType="VARCHAR" property="tenantCode" />
+         <result column="org_id" jdbcType="BIGINT" property="orgId" />
+         <result column="creator" jdbcType="BIGINT" property="creator" />
+         <result column="modifier" jdbcType="BIGINT" property="modifier" />
+         <result column="r_add_time" jdbcType="TIMESTAMP" property="rAddTime" />
+         <result column="r_modified_time" jdbcType="TIMESTAMP" property="rModifiedTime" />
+         <result column="is_delete" jdbcType="TINYINT" property="isDelete" />
+     </resultMap>
+
+     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="whz.ZlbBaidaFormWithBLOBs">
+         <result column="pc_scheme" jdbcType="LONGVARCHAR" property="pcScheme" />
+         <result column="app_scheme" jdbcType="LONGVARCHAR" property="appScheme" />
+     </resultMap>
+
+     * @param parentElement
+     */
     @Override
     public void addElements(XmlElement parentElement) {
+        // 创建<resultMap>标签
         XmlElement answer = new XmlElement("resultMap");
+        // 添加id属性
         answer.addAttribute(new Attribute("id", introspectedTable.getBaseResultMapId()));
 
         String returnType;
@@ -46,13 +72,16 @@ public class ResultMapWithoutBLOBsElementGenerator extends AbstractXmlElementGen
             }
         }
 
+        // 添加type属性
         answer.addAttribute(new Attribute("type", returnType));
 
         context.getCommentGenerator().addComment(answer);
 
         if (introspectedTable.isConstructorBased()) {
+            // 创建<constructor>标签
             addResultMapConstructorElements(answer);
         } else {
+            // 创建一个<id>标签和多个<result>标签
             addResultMapElements(answer);
         }
 
@@ -61,6 +90,11 @@ public class ResultMapWithoutBLOBsElementGenerator extends AbstractXmlElementGen
         }
     }
 
+    /**
+     * 创建一个<id>标签和多个<result>标签
+     *
+     * @param answer
+     */
     private void addResultMapElements(XmlElement answer) {
         buildResultMapItems(ResultElementType.ID, introspectedTable.getPrimaryKeyColumns()).forEach(answer::addElement);
 
@@ -74,6 +108,11 @@ public class ResultMapWithoutBLOBsElementGenerator extends AbstractXmlElementGen
         buildResultMapItems(ResultElementType.RESULT, columns).forEach(answer::addElement);
     }
 
+    /**
+     * 创建<constructor>标签
+     *
+     * @param answer
+     */
     private void addResultMapConstructorElements(XmlElement answer) {
         answer.addElement(buildConstructorElement(isSimple));
     }

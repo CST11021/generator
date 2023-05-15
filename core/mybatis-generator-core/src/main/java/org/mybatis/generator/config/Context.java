@@ -60,6 +60,8 @@ public class Context extends PropertyHolder {
     private PluginAggregator pluginAggregator;
     private CommentGenerator commentGenerator;
     private Boolean autoDelimitKeywords;
+
+    /** 用于生成代码的实现 */
     private JavaFormatter javaFormatter;
     private XmlFormatter xmlFormatter;
     private KotlinFormatter kotlinFormatter;
@@ -102,8 +104,7 @@ public class Context extends PropertyHolder {
         return sqlMapGeneratorConfiguration;
     }
 
-    public void addPluginConfiguration(
-            PluginConfiguration pluginConfiguration) {
+    public void addPluginConfiguration(PluginConfiguration pluginConfiguration) {
         pluginConfigurations.add(pluginConfiguration);
     }
 

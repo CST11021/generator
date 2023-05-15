@@ -1,0 +1,43 @@
+XmlFormatter: 接收一个 Document 对象，返回渲染的xml文本
+JavaFormatter: 用于生成java类文件代码
+KotlinFormatter: 用于生成kotlin类文件代码
+
+DatabaseIntrospector:解析数据库字段
+IntrospectedTable: table相关配置，包括：TargetRuntime、primaryKeyColumns、baseColumns、blobColumns
+    IntrospectedTableKotlinImpl
+    IntrospectedTableMyBatis3Impl
+    IntrospectedTableMyBatis3DynamicSqlImpl
+    IntrospectedTableMyBatis3SimpleImpl
+    
+IntrospectedColumn: 字段相关的信息，包括：jdbcType、actualColumnName、javaProperty、isAutoIncrement、nullable、defaultValue等
+
+
+代码生成
+AbstractGenerator
+XMLMapperGenerator
+JavaMapperGenerator
+
+
+配置类:
+    PluginConfiguration
+    CommentGeneratorConfiguration
+    ConnectionFactoryConfiguration
+    JDBCConnectionConfiguration
+    JavaTypeResolverConfiguration
+    JavaModelGeneratorConfiguration
+    SqlMapGeneratorConfiguration
+    JavaClientGeneratorConfiguration
+    TableConfiguration
+
+
+
+
+GeneratedFile
+    GeneratedXmlFile
+    GeneratedJavaFile
+            DefaultJavaFormatter
+                TopLevelClassRenderer
+                    InnerClassRenderer
+    GeneratedKotlinFile
+
+

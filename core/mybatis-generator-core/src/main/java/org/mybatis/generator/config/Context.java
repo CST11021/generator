@@ -77,10 +77,10 @@ public class Context extends PropertyHolder {
     private ModelType defaultModelType;
 
     /** The beginning delimiter. */
-    private String beginningDelimiter = "\""; //$NON-NLS-1$
+    private String beginningDelimiter = "\"";
 
     /** The ending delimiter. */
-    private String endingDelimiter = "\""; //$NON-NLS-1$
+    private String endingDelimiter = "\"";
 
     /** The comment generator configuration. */
     private CommentGeneratorConfiguration commentGeneratorConfiguration;
@@ -203,15 +203,15 @@ public class Context extends PropertyHolder {
      */
     public void validate(List<String> errors) {
         if (!stringHasValue(id)) {
-            errors.add(getString("ValidationError.16")); //$NON-NLS-1$
+            errors.add(getString("ValidationError.16"));
         }
 
         if (jdbcConnectionConfiguration == null && connectionFactoryConfiguration == null) {
             // must specify one
-            errors.add(getString("ValidationError.10", id)); //$NON-NLS-1$
+            errors.add(getString("ValidationError.10", id));
         } else if (jdbcConnectionConfiguration != null && connectionFactoryConfiguration != null) {
             // must not specify both
-            errors.add(getString("ValidationError.10", id)); //$NON-NLS-1$
+            errors.add(getString("ValidationError.10", id));
         } else if (jdbcConnectionConfiguration != null) {
             jdbcConnectionConfiguration.validate(errors);
         } else {
@@ -219,7 +219,7 @@ public class Context extends PropertyHolder {
         }
             
         if (javaModelGeneratorConfiguration == null) {
-            errors.add(getString("ValidationError.8", id)); //$NON-NLS-1$
+            errors.add(getString("ValidationError.8", id));
         } else {
             javaModelGeneratorConfiguration.validate(errors, id);
         }
@@ -232,19 +232,19 @@ public class Context extends PropertyHolder {
         try {
             it = ObjectFactory.createIntrospectedTableForValidation(this);
         } catch (Exception e) {
-            errors.add(getString("ValidationError.25", id)); //$NON-NLS-1$
+            errors.add(getString("ValidationError.25", id));
         }
         
         if (it != null && it.requiresXMLGenerator()) {
             if (sqlMapGeneratorConfiguration == null) {
-                errors.add(getString("ValidationError.9", id)); //$NON-NLS-1$
+                errors.add(getString("ValidationError.9", id));
             } else {
                 sqlMapGeneratorConfiguration.validate(errors, id);
             }
         }
 
         if (tableConfigurations.size() == 0) {
-            errors.add(getString("ValidationError.3", id)); //$NON-NLS-1$
+            errors.add(getString("ValidationError.3", id));
         } else {
             for (int i = 0; i < tableConfigurations.size(); i++) {
                 TableConfiguration tc = tableConfigurations.get(i);
@@ -349,23 +349,23 @@ public class Context extends PropertyHolder {
      * @return the XML representation of this context
      */
     public XmlElement toXmlElement() {
-        XmlElement xmlElement = new XmlElement("context"); //$NON-NLS-1$
+        XmlElement xmlElement = new XmlElement("context");
         
-        xmlElement.addAttribute(new Attribute("id", id)); //$NON-NLS-1$
+        xmlElement.addAttribute(new Attribute("id", id));
         
         if (defaultModelType != ModelType.CONDITIONAL) {
             xmlElement.addAttribute(new Attribute(
-                    "defaultModelType", defaultModelType.getModelType())); //$NON-NLS-1$
+                    "defaultModelType", defaultModelType.getModelType()));
         }
 
         if (stringHasValue(introspectedColumnImpl)) {
             xmlElement.addAttribute(new Attribute(
-                    "introspectedColumnImpl", introspectedColumnImpl)); //$NON-NLS-1$
+                    "introspectedColumnImpl", introspectedColumnImpl));
         }
 
         if (stringHasValue(targetRuntime)) {
             xmlElement.addAttribute(new Attribute(
-                    "targetRuntime", targetRuntime)); //$NON-NLS-1$
+                    "targetRuntime", targetRuntime));
         }
 
         addPropertyXmlElements(xmlElement);
@@ -627,7 +627,7 @@ public class Context extends PropertyHolder {
         Connection connection = null;
 
         try {
-            callback.startTask(getString("Progress.0")); //$NON-NLS-1$
+            callback.startTask(getString("Progress.0"));
             connection = getConnection();
 
             DatabaseIntrospector databaseIntrospector = new DatabaseIntrospector(
@@ -644,11 +644,11 @@ public class Context extends PropertyHolder {
                 }
 
                 if (!tc.areAnyStatementsEnabled()) {
-                    warnings.add(getString("Warning.0", tableName)); //$NON-NLS-1$
+                    warnings.add(getString("Warning.0", tableName));
                     continue;
                 }
 
-                callback.startTask(getString("Progress.1", tableName)); //$NON-NLS-1$
+                callback.startTask(getString("Progress.1", tableName));
                 List<IntrospectedTable> tables = databaseIntrospector
                         .introspectTables(tc);
 
@@ -706,7 +706,7 @@ public class Context extends PropertyHolder {
             if (plugin.validate(warnings)) {
                 pluginAggregator.addPlugin(plugin);
             } else {
-                warnings.add(getString("Warning.24", //$NON-NLS-1$
+                warnings.add(getString("Warning.24",
                         pluginConfiguration.getConfigurationType(), id));
             }
         }

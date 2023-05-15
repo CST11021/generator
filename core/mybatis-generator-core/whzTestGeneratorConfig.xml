@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!--
+    targetRuntime配置：
+        Mybatis3：提供基本的基于动态SQL的CRUD方法和xxxByExample方法，会生成XML映射文件
+        Mybatis3Simple：提供基本的基于动态SQL的CRUD方法，会生成XML映射文件
+    -->
+    <context id="DB2Tables" targetRuntime="Mybatis3">
+
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <commentGenerator type="org.mybatis.generator.internal.ZcyCommentGenerator">
+        <!--<commentGenerator type="org.mybatis.generator.internal.DefaultCommentGenerator">-->
+            <!-- 这个元素用来去除指定生成的注释中是否包含生成的日期 false:表示保护 -->
+            <!-- 如果生成日期，会造成即使修改一个字段，整个实体类所有属性都会发生变化，不利于版本控制，所以设置为true -->
+            <property name="suppressDate" value="true"/>
+            <!-- 移除注释 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!--数据库链接URL，用户名、密码 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://10.100.185.238:3306/db_sop?useUnicode=true&amp;characterEncoding=UTF8&amp;allowMultiQueries=true&amp;useSSL=false" userId="zlb_dev_user"
+                        password="OsDFdjhByD4">
+        </jdbcConnection>
+
+        <!-- 生成模型的包名和位置 -->
+        <javaModelGenerator targetPackage="whz" targetProject="src/test/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 生成映射文件的包名和位置 -->
+        <sqlMapGenerator targetPackage="whz" targetProject="src/test/java">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- 生成DAO的包名和位置 -->
+        <javaClientGenerator targetPackage="whz" targetProject="src/test/java" type="XMLMAPPER" >
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <table tableName="zlb_baida_form">
+            <!--  -->
+            <property name="enableSelectByPrimaryKey" value="true"/>
+            <property name="enableSelectByExample" value="true"/>
+            <property name="enableUpdateByPrimaryKey" value="true"/>
+            <property name="enableDeleteByPrimaryKey" value="true"/>
+            <property name="enableDeleteByExample" value="true"/>
+            <property name="enableCountByExample" value="true"/>
+            <property name="enableUpdateByExample" value="true"/>
+            <!-- 指定对应的主键列提供列表查询功能 -->
+            <property name="selectByPrimaryKeyQueryId" value="true"/>
+            <!-- 指定对应的查询ID提供列表查询功能 -->
+            <property name="selectByExampleQueryId" value="true"/>
+
+            <!-- XML映射文件中生成的ResultMap使用列索引定义而不是列名称 -->
+            <property name="useColumnIndexes" value="false"/>
+            <!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->
+            <property name="useActualColumnNames" value="false"/>
+            <!--是否把列名和列备注拼接起来生成实体类属性名-->
+            <property name="useCompoundPropertyNames" value="false"/>
+
+            <!-- 默认为false，是否在运行时忽略别名 如果为true，则不会在生成表的时候把schema和catalog作为表的前缀-->
+            <property name="ignoreQualifiersAtRuntime" value="false"/>
+            <!-- 如果设置了runtimeCatalog，那么在生成的SQL中，使用该指定的catalog，而不是table元素上的catalog-->
+            <!--<property name="runtimeSchema" value="false"/>-->
+            <!-- 如果设置了runtimeTableName，那么在生成的SQL中，使用该指定的tablename，而不是table元素上的tablename -->
+            <!--<property name="runtimeTableName" value="false"/>-->
+            <!-- 指定是否只生成domain类，如果设置为true，只生成domain类，如果还配置了sqlMapGenerator，那么在mapper XML文件中，只生成resultMap元素 -->
+            <property name="modelOnly" value="false"/>
+            <!--
+            注意，该属性只针对MyBatis3Simple有用，如果选择的runtime是MyBatis3Simple，那么会生成一个SelectAll方法，
+            如果指定了selectAllOrderByClause，那么会在该SQL中添加指定的这个order条件；
+            -->
+            <property name="selectAllOrderByClause" value="id desc"/>
+
+
+            <!-- column：指定主键列 -->
+            <!-- sqlStatement：查询主键的SQL语句，例如填写了MySql，则使用SELECT LAST_INSERT_ID() -->
+            <!-- type：可选值为pre或者post，pre指定selectKey标签的order为BEFORE，post指定selectKey标签的order为AFTER -->
+            <!-- identity：true的时候，指定selectKey标签的order为AFTER -->
+            <!--<generatedKey column="id" sqlStatement="JDBC" identity="true"/>-->
+
+            <!-- searchString中正则命中的实体类名部分会替换为replaceString -->
+            <!--<domainObjectRenamingRule searchString="^Sys" replaceString=""/>-->
+
+            <!-- column：指定要覆盖配置的列 -->
+            <!-- property：指定要覆盖配置的属性 -->
+            <!-- delimitedColumnName：是否为列名添加定界符，例如`{column}` -->
+            <!-- isGeneratedAlways：是否一定生成此列 -->
+            <!--<columnOverride-->
+            <!--        column="string_boolean" property="stringBoolean"-->
+            <!--        javaType="boolean" jdbcType="INTEGER"-->
+            <!--        typeHandler="mbg.test.mb3.common.StringBooleanTypeHandler"-->
+            <!--        delimitedColumnName="true" isGeneratedAlways="true"/>-->
+
+            <!--0或N个`<ignoreColumn>`用于指定忽略生成的列：-->
+            <!--<ignoreColumn column="version" delimitedColumnName="false"/>-->
+
+        </table>
+
+    </context>
+</generatorConfiguration>
+

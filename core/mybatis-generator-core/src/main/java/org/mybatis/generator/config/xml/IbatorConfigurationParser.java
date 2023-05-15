@@ -54,11 +54,11 @@ public class IbatorConfigurationParser extends MyBatisGeneratorConfigurationPars
                 continue;
             }
 
-            if ("properties".equals(childNode.getNodeName())) { //$NON-NLS-1$
+            if ("properties".equals(childNode.getNodeName())) {
                 parseProperties(configuration, childNode);
-            } else if ("classPathEntry".equals(childNode.getNodeName())) { //$NON-NLS-1$
+            } else if ("classPathEntry".equals(childNode.getNodeName())) {
                 parseClassPathEntry(configuration, childNode);
-            } else if ("ibatorContext".equals(childNode.getNodeName())) { //$NON-NLS-1$
+            } else if ("ibatorContext".equals(childNode.getNodeName())) {
                 parseIbatorContext(configuration, childNode);
             }
         }
@@ -69,11 +69,11 @@ public class IbatorConfigurationParser extends MyBatisGeneratorConfigurationPars
     private void parseIbatorContext(Configuration configuration, Node node) {
 
         Properties attributes = parseAttributes(node);
-        String defaultModelType = attributes.getProperty("defaultModelType"); //$NON-NLS-1$
-        String targetRuntime = attributes.getProperty("targetRuntime"); //$NON-NLS-1$
+        String defaultModelType = attributes.getProperty("defaultModelType");
+        String targetRuntime = attributes.getProperty("targetRuntime");
         String introspectedColumnImpl = attributes
-                .getProperty("introspectedColumnImpl"); //$NON-NLS-1$
-        String id = attributes.getProperty("id"); //$NON-NLS-1$
+                .getProperty("introspectedColumnImpl");
+        String id = attributes.getProperty("id");
 
         ModelType mt = defaultModelType == null ? null : ModelType
                 .getModelType(defaultModelType);
@@ -97,23 +97,23 @@ public class IbatorConfigurationParser extends MyBatisGeneratorConfigurationPars
                 continue;
             }
 
-            if ("property".equals(childNode.getNodeName())) { //$NON-NLS-1$
+            if ("property".equals(childNode.getNodeName())) {
                 parseProperty(context, childNode);
-            } else if ("ibatorPlugin".equals(childNode.getNodeName())) { //$NON-NLS-1$
+            } else if ("ibatorPlugin".equals(childNode.getNodeName())) {
                 parseIbatorPlugin(context, childNode);
-            } else if ("commentGenerator".equals(childNode.getNodeName())) { //$NON-NLS-1$
+            } else if ("commentGenerator".equals(childNode.getNodeName())) {
                 parseCommentGenerator(context, childNode);
-            } else if ("jdbcConnection".equals(childNode.getNodeName())) { //$NON-NLS-1$
+            } else if ("jdbcConnection".equals(childNode.getNodeName())) {
                 parseJdbcConnection(context, childNode);
-            } else if ("javaModelGenerator".equals(childNode.getNodeName())) { //$NON-NLS-1$
+            } else if ("javaModelGenerator".equals(childNode.getNodeName())) {
                 parseJavaModelGenerator(context, childNode);
-            } else if ("javaTypeResolver".equals(childNode.getNodeName())) { //$NON-NLS-1$
+            } else if ("javaTypeResolver".equals(childNode.getNodeName())) {
                 parseJavaTypeResolver(context, childNode);
-            } else if ("sqlMapGenerator".equals(childNode.getNodeName())) { //$NON-NLS-1$
+            } else if ("sqlMapGenerator".equals(childNode.getNodeName())) {
                 parseSqlMapGenerator(context, childNode);
-            } else if ("daoGenerator".equals(childNode.getNodeName())) { //$NON-NLS-1$
+            } else if ("daoGenerator".equals(childNode.getNodeName())) {
                 parseDaoGenerator(context, childNode);
-            } else if ("table".equals(childNode.getNodeName())) { //$NON-NLS-1$
+            } else if ("table".equals(childNode.getNodeName())) {
                 parseTable(context, childNode);
             }
         }
@@ -125,7 +125,7 @@ public class IbatorConfigurationParser extends MyBatisGeneratorConfigurationPars
         context.addPluginConfiguration(pluginConfiguration);
 
         Properties attributes = parseAttributes(node);
-        String type = attributes.getProperty("type"); //$NON-NLS-1$
+        String type = attributes.getProperty("type");
 
         pluginConfiguration.setConfigurationType(type);
 
@@ -137,7 +137,7 @@ public class IbatorConfigurationParser extends MyBatisGeneratorConfigurationPars
                 continue;
             }
 
-            if ("property".equals(childNode.getNodeName())) { //$NON-NLS-1$
+            if ("property".equals(childNode.getNodeName())) {
                 parseProperty(pluginConfiguration, childNode);
             }
         }
@@ -149,11 +149,11 @@ public class IbatorConfigurationParser extends MyBatisGeneratorConfigurationPars
         context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
 
         Properties attributes = parseAttributes(node);
-        String type = attributes.getProperty("type"); //$NON-NLS-1$
-        String targetPackage = attributes.getProperty("targetPackage"); //$NON-NLS-1$
-        String targetProject = attributes.getProperty("targetProject"); //$NON-NLS-1$
+        String type = attributes.getProperty("type");
+        String targetPackage = attributes.getProperty("targetPackage");
+        String targetProject = attributes.getProperty("targetProject");
         String implementationPackage = attributes
-                .getProperty("implementationPackage"); //$NON-NLS-1$
+                .getProperty("implementationPackage");
 
         javaClientGeneratorConfiguration.setConfigurationType(type);
         javaClientGeneratorConfiguration.setTargetPackage(targetPackage);
@@ -169,7 +169,7 @@ public class IbatorConfigurationParser extends MyBatisGeneratorConfigurationPars
                 continue;
             }
 
-            if ("property".equals(childNode.getNodeName())) { //$NON-NLS-1$
+            if ("property".equals(childNode.getNodeName())) {
                 parseProperty(javaClientGeneratorConfiguration, childNode);
             }
         }

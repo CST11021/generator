@@ -37,12 +37,10 @@ public class MixedMapperGenerator extends XMLMapperGenerator {
     }
 
     @Override
-    protected void addUpdateByPrimaryKeyWithBLOBsElement(
-            XmlElement parentElement) {
+    protected void addUpdateByPrimaryKeyWithBLOBsElement(XmlElement parentElement) {
     }
 
     @Override
-    protected void addUpdateByPrimaryKeyWithoutBLOBsElement(
-            XmlElement parentElement) {
+    protected void addUpdateByPrimaryKeyWithoutBLOBsElement(XmlElement parentElement) {
     }
 }

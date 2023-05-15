@@ -1,0 +1,154 @@
+配置类:
+    PluginConfiguration
+        properties
+    CommentGeneratorConfiguration
+        properties
+    ConnectionFactoryConfiguration
+        properties
+    JDBCConnectionConfiguration
+        driverClass
+        connectionURL
+        userId
+        password
+        properties
+    JavaTypeResolverConfiguration
+        properties
+    JavaModelGeneratorConfiguration
+        targetPackage
+        targetProject
+        properties
+    SqlMapGeneratorConfiguration
+        targetPackage
+        targetProject
+        properties
+    JavaClientGeneratorConfiguration:
+        targetPackage
+        targetProject
+        properties
+    TableConfiguration
+
+
+XmlFormatter: 接收一个 Document 对象，返回渲染的xml文本
+JavaFormatter: 用于生成java类文件代码
+KotlinFormatter: 用于生成kotlin类文件代码
+
+DatabaseIntrospector:解析数据库字段
+IntrospectedTable: table相关配置，包括：TargetRuntime、primaryKeyColumns、baseColumns、blobColumns
+    IntrospectedTableKotlinImpl
+    IntrospectedTableMyBatis3Impl
+    IntrospectedTableMyBatis3DynamicSqlImpl
+    IntrospectedTableMyBatis3SimpleImpl
+
+IntrospectedColumn: 字段相关的信息，包括：jdbcType、actualColumnName、javaProperty、isAutoIncrement、nullable、defaultValue等
+
+
+代码生成
+AbstractGenerator
+    XMLMapperGenerator
+    JavaMapperGenerator
+
+        AbstractJavaClientGenerator
+        AbstractJavaGenerator
+        AbstractJavaMapperMethodGenerator
+        AbstractJavaProviderMethodGenerator
+        AbstractKotlinGenerator
+        AbstractXmlElementGenerator
+        AbstractXmlGenerator
+
+        AnnotatedClientGenerator
+        AnnotatedCountByExampleMethodGenerator
+        AnnotatedDeleteByExampleMethodGenerator
+        AnnotatedDeleteByPrimaryKeyMethodGenerator
+        AnnotatedInsertMethodGenerator
+        AnnotatedInsertSelectiveMethodGenerator
+        AnnotatedSelectAllMethodGenerator
+        AnnotatedSelectByExampleWithBLOBsMethodGenerator
+        AnnotatedSelectByExampleWithoutBLOBsMethodGenerator
+        AnnotatedSelectByPrimaryKeyMethodGenerator
+        AnnotatedUpdateByExampleSelectiveMethodGenerator
+        AnnotatedUpdateByExampleWithBLOBsMethodGenerator
+        AnnotatedUpdateByExampleWithoutBLOBsMethodGenerator
+        AnnotatedUpdateByPrimaryKeySelectiveMethodGenerator
+        AnnotatedUpdateByPrimaryKeyWithBLOBsMethodGenerator
+        AnnotatedUpdateByPrimaryKeyWithoutBLOBsMethodGenerator
+
+        BaseColumnListElementGenerator
+        BaseRecordGenerator
+        BlobColumnListElementGenerator
+
+        CountByExampleElementGenerator
+        CountByExampleMethodGenerator
+        DeleteByExampleElementGenerator
+        DeleteByExampleMethodGenerator
+        DeleteByPrimaryKeyElementGenerator
+        DeleteByPrimaryKeyMethodGenerator
+        DynamicSqlMapperGenerator
+        DynamicSqlModelGenerator
+        ExampleGenerator
+        ExampleWhereClauseElementGenerator
+        InsertElementGenerator
+        InsertMethodGenerator
+        InsertSelectiveElementGenerator
+        InsertSelectiveMethodGenerator
+        KotlinDataClassGenerator
+        KotlinMapperAndExtensionsGenerator
+        MixedClientGenerator
+        MixedMapperGenerator
+        PrimaryKeyGenerator
+        ProviderApplyWhereMethodGenerator
+        ProviderCountByExampleMethodGenerator
+        ProviderDeleteByExampleMethodGenerator
+        ProviderInsertSelectiveMethodGenerator
+        ProviderSelectByExampleWithBLOBsMethodGenerator
+        ProviderSelectByExampleWithoutBLOBsMethodGenerator
+        ProviderUpdateByExampleSelectiveMethodGenerator
+        ProviderUpdateByExampleWithBLOBsMethodGenerator
+        ProviderUpdateByExampleWithoutBLOBsMethodGenerator
+        ProviderUpdateByPrimaryKeySelectiveMethodGenerator
+        RecordWithBLOBsGenerator
+        ResultMapWithBLOBsElementGenerator
+        ResultMapWithoutBLOBsElementGenerator
+        SelectAllMethodGenerator
+        SelectByExampleWithBLOBsElementGenerator
+        SelectByExampleWithBLOBsMethodGenerator
+        SelectByExampleWithoutBLOBsElementGenerator
+        SelectByExampleWithoutBLOBsMethodGenerator
+        SelectByPrimaryKeyElementGenerator
+        SelectByPrimaryKeyMethodGenerator
+        SimpleAnnotatedClientGenerator
+        SimpleJavaClientGenerator
+        SimpleModelGenerator
+        SimpleSelectAllElementGenerator
+        SimpleSelectByPrimaryKeyElementGenerator
+        SimpleXMLMapperGenerator
+        SqlProviderGenerator
+        UpdateByExampleSelectiveElementGenerator
+        UpdateByExampleSelectiveMethodGenerator
+        UpdateByExampleWithBLOBsElementGenerator
+        UpdateByExampleWithBLOBsMethodGenerator
+        UpdateByExampleWithoutBLOBsElementGenerator
+        UpdateByExampleWithoutBLOBsMethodGenerator
+        UpdateByPrimaryKeySelectiveElementGenerator
+        UpdateByPrimaryKeySelectiveMethodGenerator
+        UpdateByPrimaryKeyWithBLOBsElementGenerator
+        UpdateByPrimaryKeyWithBLOBsMethodGenerator
+        UpdateByPrimaryKeyWithoutBLOBsElementGenerator
+        UpdateByPrimaryKeyWithoutBLOBsMethodGenerator
+
+
+
+
+
+GeneratedFile
+    GeneratedXmlFile
+    GeneratedJavaFile: 一个GeneratedJavaFile实例对应生成一个java类文件
+            DefaultJavaFormatter
+                TopLevelClassRenderer
+                    InnerClassRenderer
+    GeneratedKotlinFile
+
+
+
+
+
+

@@ -27,5 +27,11 @@ public abstract class Element {
         super();
     }
 
+    /**
+     * 返回标签的内容
+     *
+     * @param indentLevel
+     * @return
+     */
     public abstract String getFormattedContent(int indentLevel);
 }

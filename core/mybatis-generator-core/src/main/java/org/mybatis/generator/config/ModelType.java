@@ -18,13 +18,17 @@ package org.mybatis.generator.config;
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 /**
- * Typesafe enum of different model types
+ * defaultModelType：控制Domain类的生成行为。执行引擎为MyBatis3DynamicSql或者MyBatis3Kotlin时忽略此配置，可选值：
  * 
  * @author Jeff Butler
  */
 public enum ModelType {
+
+    /** 默认值，类似hierarchical，但是只有一个主键的时候会合并所有属性生成在同一个类 */
     HIERARCHICAL("hierarchical"),
+    /** 所有内容全部生成在一个对象中 */
     FLAT("flat"),
+    /** 键生成一个XXKey对象，Blob等单独生成一个对象，其他简单属性在一个对象中 */
     CONDITIONAL("conditional");
 
     private final String modelType;
@@ -48,8 +52,7 @@ public enum ModelType {
         } else if (CONDITIONAL.getModelType().equalsIgnoreCase(type)) {
             return CONDITIONAL;
         } else {
-            throw new RuntimeException(getString(
-                    "RuntimeError.13", type));
+            throw new RuntimeException(getString("RuntimeError.13", type));
         }
     }
 }

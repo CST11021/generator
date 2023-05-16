@@ -31,6 +31,19 @@ import org.mybatis.generator.config.Context;
  *
  */
 public interface XmlFormatter {
+
+    /**
+     * 设置上下文配置信息
+     *
+     * @param context
+     */
     void setContext(Context context);
+
+    /**
+     * 获取xml document的文本内容
+     *
+     * @param document
+     * @return
+     */
     String getFormattedContent(Document document);
 }

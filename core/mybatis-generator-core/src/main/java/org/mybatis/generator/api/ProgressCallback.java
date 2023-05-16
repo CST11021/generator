@@ -42,31 +42,23 @@ package org.mybatis.generator.api;
  * @author Jeff Butler
  */
 public interface ProgressCallback {
+
     /**
-     * Called to note the start of the introspection phase, and to note the
-     * maximum number of startTask messages that will be sent for the
-     * introspection phase.
+     * 1 生成代码开始前的回调
      * 
-     * @param totalTasks
-     *            the maximum number of times startTask will be called for the
-     *            introspection phase.
+     * @param totalTasks    本次要执行表数量
      */
     void introspectionStarted(int totalTasks);
 
     /**
-     * Called to note the start of the generation phase, and to note the maximum
-     * number of startTask messages that will be sent for the generation phase.
+     * 2 生成代码开始前的回调
      * 
-     * @param totalTasks
-     *            the maximum number of times startTask will be called for the
-     *            generation phase.
+     * @param totalTasks    本次要执行表数量
      */
     void generationStarted(int totalTasks);
 
     /**
-     * Called to note the start of the file saving phase, and to note the
-     * maximum number of startTask messages that will be sent for the file
-     * saving phase phase.
+     * 3 生成代码开始前的回调
      * 
      * @param totalTasks
      *            the maximum number of times startTask will be called for the
@@ -75,7 +67,7 @@ public interface ProgressCallback {
     void saveStarted(int totalTasks);
 
     /**
-     * Called to denote the beginning of a save task
+     * 4 每个表执行前都会调用一次方法
      * 
      * @param taskName
      *            a descriptive name of the current work step
@@ -83,18 +75,15 @@ public interface ProgressCallback {
     void startTask(String taskName);
 
     /**
-     * This method is called when all generated files have been saved
+     * 5 所有任务执行完成回调
      */
     void done();
 
     /**
-     * The method is called periodically during a long running method.
-     * If the the implementation throws <code>InterruptedException</code> then
-     * the method will be canceled. Any files that have already been saved will
-     * remain on the file system.
+     * 在长时间运行的方法中，周期性地调用该方法。如果实现抛出InterruptedException那么该方法将被取消。任何已经保存的文件都将 保留在文件系统中。
      * 
-     * @throws InterruptedException
-     *             if the operation should be halted
+     * @throws InterruptedException if the operation should be halted
      */
     void checkCancel() throws InterruptedException;
+
 }

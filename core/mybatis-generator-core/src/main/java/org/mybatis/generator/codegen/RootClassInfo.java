@@ -1,21 +1,23 @@
 /**
- *    Copyright 2006-2016 the original author or authors.
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Copyright 2006-2016 the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.mybatis.generator.codegen;
 
-import static org.mybatis.generator.internal.util.messages.Messages.getString;
+import org.mybatis.generator.api.IntrospectedColumn;
+import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
+import org.mybatis.generator.internal.ObjectFactory;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -25,26 +27,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.mybatis.generator.api.IntrospectedColumn;
-import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
-import org.mybatis.generator.internal.ObjectFactory;
+import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 /**
- * 
+ *
  * @author Jeff Butler
- * 
+ *
  */
 public class RootClassInfo {
 
     private static Map<String, RootClassInfo> rootClassInfoMap;
 
     static {
-        rootClassInfoMap = Collections
-                .synchronizedMap(new HashMap<String, RootClassInfo>());
+        rootClassInfoMap = Collections.synchronizedMap(new HashMap<String, RootClassInfo>());
     }
 
-    public static RootClassInfo getInstance(String className,
-            List<String> warnings) {
+    public static RootClassInfo getInstance(String className, List<String> warnings) {
         RootClassInfo classInfo = rootClassInfoMap.get(className);
         if (classInfo == null) {
             classInfo = new RootClassInfo(className, warnings);
@@ -59,7 +57,7 @@ public class RootClassInfo {
      * a generation run to clear the cached root class info in case there has been a change.
      * For example, when using the eclipse launcher, the cache would be kept until eclipse
      * was restarted.
-     * 
+     *
      */
     public static void reset() {
         rootClassInfoMap.clear();
@@ -78,7 +76,7 @@ public class RootClassInfo {
         if (className == null) {
             return;
         }
-        
+
         FullyQualifiedJavaType fqjt = new FullyQualifiedJavaType(className);
         String nameWithoutGenerics = fqjt.getFullyQualifiedNameWithoutTypeParameters();
         if (!nameWithoutGenerics.equals(className)) {

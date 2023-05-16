@@ -15,20 +15,6 @@
  */
 package org.mybatis.generator.api;
 
-import static org.mybatis.generator.internal.util.ClassloaderUtility.getCustomClassloader;
-import static org.mybatis.generator.internal.util.messages.Messages.getString;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.mybatis.generator.codegen.RootClassInfo;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.Context;
@@ -36,9 +22,19 @@ import org.mybatis.generator.config.MergeConstants;
 import org.mybatis.generator.exception.InvalidConfigurationException;
 import org.mybatis.generator.exception.ShellException;
 import org.mybatis.generator.internal.DefaultShellCallback;
-import org.mybatis.generator.internal.ObjectFactory;
 import org.mybatis.generator.internal.NullProgressCallback;
+import org.mybatis.generator.internal.ObjectFactory;
 import org.mybatis.generator.internal.XmlFileMergerJaxp;
+
+import java.io.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.mybatis.generator.internal.util.ClassloaderUtility.getCustomClassloader;
+import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 /**
  * This class is the main interface to MyBatis generator. A typical execution of the tool involves these steps:
@@ -57,21 +53,18 @@ public class MyBatisGenerator {
 
     /** The configuration. */
     private Configuration configuration;
-
-    /** The shell callback. */
-    private ShellCallback shellCallback;
-
     /** The generated java files. */
     private List<GeneratedJavaFile> generatedJavaFiles;
-
     /** The generated xml files. */
     private List<GeneratedXmlFile> generatedXmlFiles;
 
     /** The warnings. */
     private List<String> warnings;
-
     /** The projects. */
     private Set<String> projects;
+    /** The shell callback. */
+    private ShellCallback shellCallback;
+
 
     /**
      * Constructs a MyBatisGenerator object.
@@ -92,8 +85,7 @@ public class MyBatisGenerator {
      * @throws InvalidConfigurationException
      *             if the specified configuration is invalid
      */
-    public MyBatisGenerator(Configuration configuration, ShellCallback shellCallback,
-            List<String> warnings) throws InvalidConfigurationException {
+    public MyBatisGenerator(Configuration configuration, ShellCallback shellCallback, List<String> warnings) throws InvalidConfigurationException {
         super();
         if (configuration == null) {
             throw new IllegalArgumentException(getString("RuntimeError.2"));
@@ -120,103 +112,17 @@ public class MyBatisGenerator {
     }
 
     /**
-     * This is the main method for generating code. This method is long running, but progress can be provided and the
-     * method can be canceled through the ProgressCallback interface. This version of the method runs all configured
-     * contexts.
+     * 核心实现函数
      *
-     * @param callback
-     *            an instance of the ProgressCallback interface, or <code>null</code> if you do not require progress
-     *            information
+     * @param callback                  扩展函数
+     * @param contextIds                指定哪些context配置要执行，为空的话，默认全部配置都执行
+     * @param fullyQualifiedTableNames  指定哪些表要进行代码生成
+     * @param writeFiles                是否将代码写入文件
      * @throws SQLException
-     *             the SQL exception
      * @throws IOException
-     *             Signals that an I/O exception has occurred.
      * @throws InterruptedException
-     *             if the method is canceled through the ProgressCallback
      */
-    public void generate(ProgressCallback callback) throws SQLException,
-            IOException, InterruptedException {
-        generate(callback, null, null, true);
-    }
-
-    /**
-     * This is the main method for generating code. This method is long running, but progress can be provided and the
-     * method can be canceled through the ProgressCallback interface.
-     *
-     * @param callback
-     *            an instance of the ProgressCallback interface, or <code>null</code> if you do not require progress
-     *            information
-     * @param contextIds
-     *            a set of Strings containing context ids to run. Only the contexts with an id specified in this list
-     *            will be run. If the list is null or empty, than all contexts are run.
-     * @throws SQLException
-     *             the SQL exception
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     * @throws InterruptedException
-     *             if the method is canceled through the ProgressCallback
-     */
-    public void generate(ProgressCallback callback, Set<String> contextIds)
-            throws SQLException, IOException, InterruptedException {
-        generate(callback, contextIds, null, true);
-    }
-
-    /**
-     * This is the main method for generating code. This method is long running, but progress can be provided and the
-     * method can be cancelled through the ProgressCallback interface.
-     *
-     * @param callback
-     *            an instance of the ProgressCallback interface, or <code>null</code> if you do not require progress
-     *            information
-     * @param contextIds
-     *            a set of Strings containing context ids to run. Only the contexts with an id specified in this list
-     *            will be run. If the list is null or empty, than all contexts are run.
-     * @param fullyQualifiedTableNames
-     *            a set of table names to generate. The elements of the set must be Strings that exactly match what's
-     *            specified in the configuration. For example, if table name = "foo" and schema = "bar", then the fully
-     *            qualified table name is "foo.bar". If the Set is null or empty, then all tables in the configuration
-     *            will be used for code generation.
-     * @throws SQLException
-     *             the SQL exception
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     * @throws InterruptedException
-     *             if the method is canceled through the ProgressCallback
-     */
-    public void generate(ProgressCallback callback, Set<String> contextIds,
-            Set<String> fullyQualifiedTableNames) throws SQLException,
-            IOException, InterruptedException {
-        generate(callback, contextIds, fullyQualifiedTableNames, true);
-    }
-
-    /**
-     * This is the main method for generating code. This method is long running, but progress can be provided and the
-     * method can be cancelled through the ProgressCallback interface.
-     *
-     * @param callback
-     *            an instance of the ProgressCallback interface, or <code>null</code> if you do not require progress
-     *            information
-     * @param contextIds
-     *            a set of Strings containing context ids to run. Only the contexts with an id specified in this list
-     *            will be run. If the list is null or empty, than all contexts are run.
-     * @param fullyQualifiedTableNames
-     *            a set of table names to generate. The elements of the set must be Strings that exactly match what's
-     *            specified in the configuration. For example, if table name = "foo" and schema = "bar", then the fully
-     *            qualified table name is "foo.bar". If the Set is null or empty, then all tables in the configuration
-     *            will be used for code generation.
-     * @param writeFiles
-     *            if true, then the generated files will be written to disk.  If false,
-     *            then the generator runs but nothing is written
-     * @throws SQLException
-     *             the SQL exception
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     * @throws InterruptedException
-     *             if the method is canceled through the ProgressCallback
-     */
-    public void generate(ProgressCallback callback, Set<String> contextIds,
-            Set<String> fullyQualifiedTableNames, boolean writeFiles) throws SQLException,
-            IOException, InterruptedException {
+    public void generate(ProgressCallback callback, Set<String> contextIds, Set<String> fullyQualifiedTableNames, boolean writeFiles) throws SQLException, IOException, InterruptedException {
 
         if (callback == null) {
             callback = new NullProgressCallback();
@@ -253,9 +159,9 @@ public class MyBatisGenerator {
         }
         callback.introspectionStarted(totalSteps);
 
+        // 确定每个table使用的代码生成实现模式
         for (Context context : contextsToRun) {
-            context.introspectTables(callback, warnings,
-                    fullyQualifiedTableNames);
+            context.introspectTables(callback, warnings, fullyQualifiedTableNames);
         }
 
         // now run the generates
@@ -265,26 +171,32 @@ public class MyBatisGenerator {
         }
         callback.generationStarted(totalSteps);
 
+
+
+
+        // 初始化代码生成实例，每一个GeneratedFile实例，生成一个代码文件
         for (Context context : contextsToRun) {
-            context.generateFiles(callback, generatedJavaFiles,
-                    generatedXmlFiles, warnings);
+            context.generateFiles(callback, generatedJavaFiles, generatedXmlFiles, warnings);
         }
 
-        // now save the files
+        // 将生成的代码保存到文件
         if (writeFiles) {
-            callback.saveStarted(generatedXmlFiles.size()
-                + generatedJavaFiles.size());
+            // @扩展点
+            callback.saveStarted(generatedXmlFiles.size() + generatedJavaFiles.size());
 
+            // 生成xml文件
             for (GeneratedXmlFile gxf : generatedXmlFiles) {
                 projects.add(gxf.getTargetProject());
                 writeGeneratedXmlFile(gxf, callback);
             }
 
+            // 生成java文件
             for (GeneratedJavaFile gjf : generatedJavaFiles) {
                 projects.add(gjf.getTargetProject());
                 writeGeneratedJavaFile(gjf, callback);
             }
 
+            // @扩展点
             for (String project : projects) {
                 shellCallback.refreshProject(project);
             }
@@ -293,8 +205,20 @@ public class MyBatisGenerator {
         callback.done();
     }
 
-    private void writeGeneratedJavaFile(GeneratedJavaFile gjf, ProgressCallback callback)
-            throws InterruptedException, IOException {
+    public void generate(ProgressCallback callback) throws SQLException, IOException, InterruptedException {
+        generate(callback, null, null, true);
+    }
+
+    public void generate(ProgressCallback callback, Set<String> contextIds) throws SQLException, IOException, InterruptedException {
+        generate(callback, contextIds, null, true);
+    }
+
+    public void generate(ProgressCallback callback, Set<String> contextIds, Set<String> fullyQualifiedTableNames) throws SQLException, IOException, InterruptedException {
+        generate(callback, contextIds, fullyQualifiedTableNames, true);
+    }
+
+
+    private void writeGeneratedJavaFile(GeneratedJavaFile gjf, ProgressCallback callback) throws InterruptedException, IOException {
         File targetFile;
         String source;
         try {
@@ -324,44 +248,38 @@ public class MyBatisGenerator {
             }
 
             callback.checkCancel();
-            callback.startTask(getString(
-                    "Progress.15", targetFile.getName()));
+            callback.startTask(getString("Progress.15", targetFile.getName()));
             writeFile(targetFile, source, gjf.getFileEncoding());
         } catch (ShellException e) {
             warnings.add(e.getMessage());
         }
     }
 
-    private void writeGeneratedXmlFile(GeneratedXmlFile gxf, ProgressCallback callback)
-            throws InterruptedException, IOException {
+    private void writeGeneratedXmlFile(GeneratedXmlFile gxf, ProgressCallback callback) throws InterruptedException, IOException {
+        // 目标文件
         File targetFile;
+        // 代码内容
         String source;
         try {
-            File directory = shellCallback.getDirectory(gxf
-                    .getTargetProject(), gxf.getTargetPackage());
+            File directory = shellCallback.getDirectory(gxf.getTargetProject(), gxf.getTargetPackage());
             targetFile = new File(directory, gxf.getFileName());
             if (targetFile.exists()) {
                 if (gxf.isMergeable()) {
-                    source = XmlFileMergerJaxp.getMergedSource(gxf,
-                            targetFile);
+                    source = XmlFileMergerJaxp.getMergedSource(gxf, targetFile);
                 } else if (shellCallback.isOverwriteEnabled()) {
                     source = gxf.getFormattedContent();
-                    warnings.add(getString("Warning.11",
-                            targetFile.getAbsolutePath()));
+                    warnings.add(getString("Warning.11", targetFile.getAbsolutePath()));
                 } else {
                     source = gxf.getFormattedContent();
-                    targetFile = getUniqueFileName(directory, gxf
-                            .getFileName());
-                    warnings.add(getString(
-                            "Warning.2", targetFile.getAbsolutePath()));
+                    targetFile = getUniqueFileName(directory, gxf.getFileName());
+                    warnings.add(getString("Warning.2", targetFile.getAbsolutePath()));
                 }
             } else {
                 source = gxf.getFormattedContent();
             }
 
             callback.checkCancel();
-            callback.startTask(getString(
-                    "Progress.15", targetFile.getName()));
+            callback.startTask(getString("Progress.15", targetFile.getName()));
             writeFile(targetFile, source, "UTF-8");
         } catch (ShellException e) {
             warnings.add(e.getMessage());
@@ -369,16 +287,12 @@ public class MyBatisGenerator {
     }
     
     /**
-     * Writes, or overwrites, the contents of the specified file.
+     * 将代码写入文件
      *
-     * @param file
-     *            the file
-     * @param content
-     *            the content
-     * @param fileEncoding
-     *            the file encoding
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
+     * @param file          the file
+     * @param content       代码内容
+     * @param fileEncoding  the file encoding
+     * @throws IOException  Signals that an I/O exception has occurred.
      */
     private void writeFile(File file, String content, String fileEncoding) throws IOException {
         FileOutputStream fos = new FileOutputStream(file, false);

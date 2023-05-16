@@ -153,12 +153,10 @@ public final class PluginAggregator implements Plugin {
         return rc;
     }
 
-    public List<GeneratedJavaFile> contextGenerateAdditionalJavaFiles(
-            IntrospectedTable introspectedTable) {
+    public List<GeneratedJavaFile> contextGenerateAdditionalJavaFiles(IntrospectedTable introspectedTable) {
         List<GeneratedJavaFile> answer = new ArrayList<GeneratedJavaFile>();
         for (Plugin plugin : plugins) {
-            List<GeneratedJavaFile> temp = plugin
-                    .contextGenerateAdditionalJavaFiles(introspectedTable);
+            List<GeneratedJavaFile> temp = plugin.contextGenerateAdditionalJavaFiles(introspectedTable);
             if (temp != null) {
                 answer.addAll(temp);
             }
@@ -166,12 +164,10 @@ public final class PluginAggregator implements Plugin {
         return answer;
     }
 
-    public List<GeneratedXmlFile> contextGenerateAdditionalXmlFiles(
-            IntrospectedTable introspectedTable) {
+    public List<GeneratedXmlFile> contextGenerateAdditionalXmlFiles(IntrospectedTable introspectedTable) {
         List<GeneratedXmlFile> answer = new ArrayList<GeneratedXmlFile>();
         for (Plugin plugin : plugins) {
-            List<GeneratedXmlFile> temp = plugin
-                    .contextGenerateAdditionalXmlFiles(introspectedTable);
+            List<GeneratedXmlFile> temp = plugin.contextGenerateAdditionalXmlFiles(introspectedTable);
             if (temp != null) {
                 answer.addAll(temp);
             }
@@ -179,8 +175,7 @@ public final class PluginAggregator implements Plugin {
         return answer;
     }
 
-    public boolean modelPrimaryKeyClassGenerated(TopLevelClass tlc,
-            IntrospectedTable introspectedTable) {
+    public boolean modelPrimaryKeyClassGenerated(TopLevelClass tlc, IntrospectedTable introspectedTable) {
         boolean rc = true;
 
         for (Plugin plugin : plugins) {
@@ -842,8 +837,7 @@ public final class PluginAggregator implements Plugin {
     public List<GeneratedJavaFile> contextGenerateAdditionalJavaFiles() {
         List<GeneratedJavaFile> answer = new ArrayList<GeneratedJavaFile>();
         for (Plugin plugin : plugins) {
-            List<GeneratedJavaFile> temp = plugin
-                    .contextGenerateAdditionalJavaFiles();
+            List<GeneratedJavaFile> temp = plugin.contextGenerateAdditionalJavaFiles();
             if (temp != null) {
                 answer.addAll(temp);
             }

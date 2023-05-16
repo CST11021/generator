@@ -85,7 +85,7 @@ public abstract class IntrospectedTable {
         /** The ATT r_ mybati s3_ xm l_ mappe r_ fil e_ name. */
         ATTR_MYBATIS3_XML_MAPPER_FILE_NAME,
         
-        /** also used as XML Mapper namespace if a Java mapper is generated. */
+        /** 表示Mapper接口的全限定类名 */
         ATTR_MYBATIS3_JAVA_MAPPER_TYPE,
         
         /** used as XML Mapper namespace if no client is generated. */
@@ -96,70 +96,55 @@ public abstract class IntrospectedTable {
         
         /** The attr aliased fully qualified table name at runtime. */
         ATTR_ALIASED_FULLY_QUALIFIED_TABLE_NAME_AT_RUNTIME,
-        
-        /** The attr count by example statement id. */
+
+
+        // xml中的statementId
+
+        /** countByExample */
         ATTR_COUNT_BY_EXAMPLE_STATEMENT_ID,
-        
-        /** The attr delete by example statement id. */
+        /** deleteByExample */
         ATTR_DELETE_BY_EXAMPLE_STATEMENT_ID,
-        
-        /** The attr delete by primary key statement id. */
+        /** deleteByPrimaryKey */
         ATTR_DELETE_BY_PRIMARY_KEY_STATEMENT_ID,
-        
-        /** The attr insert statement id. */
+        /** insert */
         ATTR_INSERT_STATEMENT_ID,
-        
-        /** The attr insert selective statement id. */
+        /** insertSelective */
         ATTR_INSERT_SELECTIVE_STATEMENT_ID,
-        
-        /** The attr select all statement id. */
+        /** selectAll */
         ATTR_SELECT_ALL_STATEMENT_ID,
-        
-        /** The attr select by example statement id. */
+        /** selectByExample */
         ATTR_SELECT_BY_EXAMPLE_STATEMENT_ID,
-        
-        /** The attr select by example with blobs statement id. */
+        /** selectByExampleWithBLOBs */
         ATTR_SELECT_BY_EXAMPLE_WITH_BLOBS_STATEMENT_ID,
-        
-        /** The attr select by primary key statement id. */
+        /** selectByPrimaryKey */
         ATTR_SELECT_BY_PRIMARY_KEY_STATEMENT_ID,
-        
-        /** The attr update by example statement id. */
+        /** updateByExample */
         ATTR_UPDATE_BY_EXAMPLE_STATEMENT_ID,
-        
-        /** The attr update by example selective statement id. */
+        /** updateByExampleSelective */
         ATTR_UPDATE_BY_EXAMPLE_SELECTIVE_STATEMENT_ID,
-        
-        /** The attr update by example with blobs statement id. */
+        /** updateByExampleWithBLOBs */
         ATTR_UPDATE_BY_EXAMPLE_WITH_BLOBS_STATEMENT_ID,
-        
-        /** The attr update by primary key statement id. */
+        /** updateByPrimaryKey */
         ATTR_UPDATE_BY_PRIMARY_KEY_STATEMENT_ID,
-        
-        /** The attr update by primary key selective statement id. */
+        /** updateByPrimaryKeySelective */
         ATTR_UPDATE_BY_PRIMARY_KEY_SELECTIVE_STATEMENT_ID,
-        
-        /** The attr update by primary key with blobs statement id. */
+        /** updateByPrimaryKeyWithBLOBs */
         ATTR_UPDATE_BY_PRIMARY_KEY_WITH_BLOBS_STATEMENT_ID,
-        
-        /** The attr base result map id. */
+        /** BaseResultMap */
         ATTR_BASE_RESULT_MAP_ID,
-        
-        /** The attr result map with blobs id. */
+        /** ResultMapWithBLOBs */
         ATTR_RESULT_MAP_WITH_BLOBS_ID,
-        
-        /** The attr example where clause id. */
+        /** Example_Where_Clause */
         ATTR_EXAMPLE_WHERE_CLAUSE_ID,
-        
-        /** The attr base column list id. */
+        /** Base_Column_List */
         ATTR_BASE_COLUMN_LIST_ID,
-        
-        /** The attr blob column list id. */
+        /** Blob_Column_List */
         ATTR_BLOB_COLUMN_LIST_ID,
-        
-        /** The ATT r_ mybati s3_ updat e_ b y_ exampl e_ wher e_ claus e_ id. */
+        /** Update_By_Example_Where_Clause */
         ATTR_MYBATIS3_UPDATE_BY_EXAMPLE_WHERE_CLAUSE_ID,
-        
+
+
+
         /** The ATT r_ mybati s3_ sq l_ provide r_ type. */
         ATTR_MYBATIS3_SQL_PROVIDER_TYPE
     }
@@ -743,10 +728,14 @@ public abstract class IntrospectedTable {
      * Initialize.
      */
     public void initialize() {
+        // 设置Mapper接口的全限定类名
         calculateJavaClientAttributes();
+        // 设置Model实体的全限定类名
         calculateModelAttributes();
+        // 设置xml要生成的代码的statementId
         calculateXmlAttributes();
 
+        // 确定model代码的生成方式
         if (tableConfiguration.getModelType() == ModelType.HIERARCHICAL) {
             rules = new HierarchicalModelRules(this);
         } else if (tableConfiguration.getModelType() == ModelType.FLAT) {
@@ -755,6 +744,7 @@ public abstract class IntrospectedTable {
             rules = new ConditionalModelRules(this);
         }
 
+        // 初始化插件
         context.getPlugins().initialized(this);
     }
 
@@ -768,6 +758,7 @@ public abstract class IntrospectedTable {
         setMyBatis3XmlMapperPackage(calculateSqlMapPackage());
 
         setIbatis2SqlMapNamespace(calculateIbatis2SqlMapNamespace());
+        // 例如： <mapper namespace="whz.ZlbBaidaFormMapper">  指定这个namespace
         setMyBatis3FallbackSqlMapNamespace(calculateMyBatis3FallbackSqlMapNamespace());
         
         setSqlMapFullyQualifiedRuntimeTableName(calculateSqlMapFullyQualifiedRuntimeTableName());
@@ -1031,8 +1022,7 @@ public abstract class IntrospectedTable {
      *            the new count by example statement id
      */
     public void setCountByExampleStatementId(String s) {
-        internalAttributes.put(
-                InternalAttribute.ATTR_COUNT_BY_EXAMPLE_STATEMENT_ID, s);
+        internalAttributes.put(InternalAttribute.ATTR_COUNT_BY_EXAMPLE_STATEMENT_ID, s);
     }
 
     /**
@@ -1301,7 +1291,7 @@ public abstract class IntrospectedTable {
     }
 
     /**
-     * Calculate java client attributes.
+     * 设置Mapper接口的全限定类名
      */
     protected void calculateJavaClientAttributes() {
         if (context.getJavaClientGeneratorConfiguration() == null) {
@@ -1315,6 +1305,7 @@ public abstract class IntrospectedTable {
         sb.append("DAOImpl");
         setDAOImplementationType(sb.toString());
 
+        // 设置DAO接口的全限定类名
         sb.setLength(0);
         sb.append(calculateJavaClientInterfacePackage());
         sb.append('.');
@@ -1322,6 +1313,7 @@ public abstract class IntrospectedTable {
         sb.append("DAO");
         setDAOInterfaceType(sb.toString());
 
+        // 设置Mapper接口的全限定类名
         sb.setLength(0);
         sb.append(calculateJavaClientInterfacePackage());
         sb.append('.');
@@ -1466,7 +1458,7 @@ public abstract class IntrospectedTable {
     }
     
     /**
-     * Calculate my batis3 fallback sql map namespace.
+     * 例如： <mapper namespace="whz.ZlbBaidaFormMapper">  指定这个namespace
      *
      * @return the string
      */
@@ -1532,8 +1524,7 @@ public abstract class IntrospectedTable {
      * @param progressCallback
      *            the progress callback
      */
-    public abstract void calculateGenerators(List<String> warnings,
-            ProgressCallback progressCallback);
+    public abstract void calculateGenerators(List<String> warnings, ProgressCallback progressCallback);
 
     /**
      * This method should return a list of generated Java files related to this
@@ -1773,13 +1764,12 @@ public abstract class IntrospectedTable {
     }
 
     /**
-     * Gets the my batis3 java mapper type.
+     * 返回Mapper接口的全限定类名
      *
      * @return the my batis3 java mapper type
      */
     public String getMyBatis3JavaMapperType() {
-        return internalAttributes
-                .get(InternalAttribute.ATTR_MYBATIS3_JAVA_MAPPER_TYPE);
+        return internalAttributes.get(InternalAttribute.ATTR_MYBATIS3_JAVA_MAPPER_TYPE);
     }
 
     /**
@@ -1789,9 +1779,7 @@ public abstract class IntrospectedTable {
      *            the new my batis3 java mapper type
      */
     public void setMyBatis3JavaMapperType(String mybatis3JavaMapperType) {
-        internalAttributes.put(
-                InternalAttribute.ATTR_MYBATIS3_JAVA_MAPPER_TYPE,
-                mybatis3JavaMapperType);
+        internalAttributes.put(InternalAttribute.ATTR_MYBATIS3_JAVA_MAPPER_TYPE, mybatis3JavaMapperType);
     }
 
     /**
@@ -1800,8 +1788,7 @@ public abstract class IntrospectedTable {
      * @return the my batis3 sql provider type
      */
     public String getMyBatis3SqlProviderType() {
-        return internalAttributes
-                .get(InternalAttribute.ATTR_MYBATIS3_SQL_PROVIDER_TYPE);
+        return internalAttributes.get(InternalAttribute.ATTR_MYBATIS3_SQL_PROVIDER_TYPE);
     }
 
     /**
@@ -1811,9 +1798,7 @@ public abstract class IntrospectedTable {
      *            the new my batis3 sql provider type
      */
     public void setMyBatis3SqlProviderType(String mybatis3SqlProviderType) {
-        internalAttributes.put(
-                InternalAttribute.ATTR_MYBATIS3_SQL_PROVIDER_TYPE,
-                mybatis3SqlProviderType);
+        internalAttributes.put(InternalAttribute.ATTR_MYBATIS3_SQL_PROVIDER_TYPE, mybatis3SqlProviderType);
     }
     
     /**

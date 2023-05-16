@@ -65,8 +65,7 @@ public abstract class PluginAdapter implements Plugin {
         return null;
     }
 
-    public List<GeneratedJavaFile> contextGenerateAdditionalJavaFiles(
-            IntrospectedTable introspectedTable) {
+    public List<GeneratedJavaFile> contextGenerateAdditionalJavaFiles(IntrospectedTable introspectedTable) {
         return null;
     }
 

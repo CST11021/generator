@@ -15,9 +15,9 @@
  */
 package org.mybatis.generator.api;
 
-import java.io.File;
-
 import org.mybatis.generator.exception.ShellException;
+
+import java.io.File;
 
 /**
  * This interface defines methods that a shell should support to enable
@@ -58,8 +58,7 @@ public interface ShellCallback {
      *             generator will not save the file it is currently working on. The generator will add the exception
      *             message to the list of warnings automatically.
      */
-    File getDirectory(String targetProject, String targetPackage)
-            throws ShellException;
+    File getDirectory(String targetProject, String targetPackage) throws ShellException;
 
     /**
      * This method is called if a newly generated Java file would
@@ -103,8 +102,7 @@ public interface ShellCallback {
      *             existing file will remain undisturbed. The generator will add the
      *             exception message to the list of warnings automatically.
      */
-    String mergeJavaFile(String newFileSource, String existingFileFullPath,
-            String[] javadocTags, String fileEncoding) throws ShellException;
+    String mergeJavaFile(String newFileSource, String existingFileFullPath, String[] javadocTags, String fileEncoding) throws ShellException;
 
     /**
      * After all files are saved to the file system, this method is called

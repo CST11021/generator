@@ -15,46 +15,32 @@
  */
 package org.mybatis.generator.internal.db;
 
-import static org.mybatis.generator.internal.util.JavaBeansUtil.getCamelCaseString;
-import static org.mybatis.generator.internal.util.JavaBeansUtil.getValidPropertyName;
-import static org.mybatis.generator.internal.util.StringUtility.composeFullyQualifiedTableName;
-import static org.mybatis.generator.internal.util.StringUtility.isTrue;
-import static org.mybatis.generator.internal.util.StringUtility.stringContainsSQLWildcard;
-import static org.mybatis.generator.internal.util.StringUtility.stringContainsSpace;
-import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-import static org.mybatis.generator.internal.util.messages.Messages.getString;
-
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.TreeMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.mybatis.generator.api.FullyQualifiedTable;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.JavaTypeResolver;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.JavaReservedWords;
-import org.mybatis.generator.config.ColumnOverride;
-import org.mybatis.generator.config.Context;
-import org.mybatis.generator.config.GeneratedKey;
-import org.mybatis.generator.config.PropertyRegistry;
-import org.mybatis.generator.config.TableConfiguration;
+import org.mybatis.generator.config.*;
 import org.mybatis.generator.internal.ObjectFactory;
 import org.mybatis.generator.logging.Log;
 import org.mybatis.generator.logging.LogFactory;
 
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.mybatis.generator.internal.util.JavaBeansUtil.getCamelCaseString;
+import static org.mybatis.generator.internal.util.JavaBeansUtil.getValidPropertyName;
+import static org.mybatis.generator.internal.util.StringUtility.*;
+import static org.mybatis.generator.internal.util.messages.Messages.getString;
+
 /**
- * The Class DatabaseIntrospector.
+ * 根据db的元数据信息返回一个 List<IntrospectedTable>
  *
  * @author Jeff Butler
  */
@@ -62,16 +48,12 @@ public class DatabaseIntrospector {
 
     /** The database meta data. */
     private DatabaseMetaData databaseMetaData;
-    
     /** The java type resolver. */
     private JavaTypeResolver javaTypeResolver;
-    
     /** The warnings. */
     private List<String> warnings;
-    
     /** The context. */
     private Context context;
-    
     /** The logger. */
     private Log logger;
 
@@ -87,15 +69,70 @@ public class DatabaseIntrospector {
      * @param warnings
      *            the warnings
      */
-    public DatabaseIntrospector(Context context,
-            DatabaseMetaData databaseMetaData,
-            JavaTypeResolver javaTypeResolver, List<String> warnings) {
+    public DatabaseIntrospector(Context context, DatabaseMetaData databaseMetaData, JavaTypeResolver javaTypeResolver, List<String> warnings) {
         super();
         this.context = context;
         this.databaseMetaData = databaseMetaData;
         this.javaTypeResolver = javaTypeResolver;
         this.warnings = warnings;
         logger = LogFactory.getLog(getClass());
+    }
+
+    /**
+     * 返回一个IntrospectedTable集合
+     *
+     * @param tc
+     *            the tc
+     * @return a list of introspected tables
+     * @throws SQLException
+     *             the SQL exception
+     */
+    public List<IntrospectedTable> introspectTables(TableConfiguration tc) throws SQLException {
+
+        // get the raw columns from the DB
+        Map<ActualTableName, List<IntrospectedColumn>> columns = getColumns(tc);
+
+        if (columns.isEmpty()) {
+            warnings.add(getString("Warning.19", tc.getCatalog(), tc.getSchema(), tc.getTableName()));
+            return null;
+        }
+
+        removeIgnoredColumns(tc, columns);
+        calculateExtraColumnInformation(tc, columns);
+        applyColumnOverrides(tc, columns);
+        calculateIdentityColumns(tc, columns);
+
+        List<IntrospectedTable> introspectedTables = calculateIntrospectedTables(tc, columns);
+
+        // now introspectedTables has all the columns from all the
+        // tables in the configuration. Do some validation...
+
+        Iterator<IntrospectedTable> iter = introspectedTables.iterator();
+        while (iter.hasNext()) {
+            IntrospectedTable introspectedTable = iter.next();
+
+            if (!introspectedTable.hasAnyColumns()) {
+                // add warning that the table has no columns, remove from the
+                // list
+                String warning = getString("Warning.1", introspectedTable.getFullyQualifiedTable().toString());
+                warnings.add(warning);
+                iter.remove();
+            } else if (!introspectedTable.hasPrimaryKeyColumns()
+                    && !introspectedTable.hasBaseColumns()) {
+                // add warning that the table has only BLOB columns, remove from
+                // the list
+                String warning = getString("Warning.18", introspectedTable.getFullyQualifiedTable().toString());
+                warnings.add(warning);
+                iter.remove();
+            } else {
+                // now make sure that all columns called out in the
+                // configuration
+                // actually exist
+                reportIntrospectionWarnings(introspectedTable, tc, introspectedTable.getFullyQualifiedTable());
+            }
+        }
+
+        return introspectedTables;
     }
 
     /**
@@ -106,8 +143,7 @@ public class DatabaseIntrospector {
      * @param introspectedTable
      *            the introspected table
      */
-    private void calculatePrimaryKey(FullyQualifiedTable table,
-            IntrospectedTable introspectedTable) {
+    private void calculatePrimaryKey(FullyQualifiedTable table, IntrospectedTable introspectedTable) {
         ResultSet rs = null;
 
         try {
@@ -166,9 +202,7 @@ public class DatabaseIntrospector {
      * @param table
      *            the table
      */
-    private void reportIntrospectionWarnings(
-            IntrospectedTable introspectedTable,
-            TableConfiguration tableConfiguration, FullyQualifiedTable table) {
+    private void reportIntrospectionWarnings(IntrospectedTable introspectedTable, TableConfiguration tableConfiguration, FullyQualifiedTable table) {
         // make sure that every column listed in column overrides
         // actually exists in the table
         for (ColumnOverride columnOverride : tableConfiguration
@@ -207,69 +241,6 @@ public class DatabaseIntrospector {
     }
 
     /**
-     * Returns a List of IntrospectedTable elements that matches the specified table configuration.
-     *
-     * @param tc
-     *            the tc
-     * @return a list of introspected tables
-     * @throws SQLException
-     *             the SQL exception
-     */
-    public List<IntrospectedTable> introspectTables(TableConfiguration tc)
-            throws SQLException {
-
-        // get the raw columns from the DB
-        Map<ActualTableName, List<IntrospectedColumn>> columns = getColumns(tc);
-
-        if (columns.isEmpty()) {
-            warnings.add(getString("Warning.19", tc.getCatalog(),
-                    tc.getSchema(), tc.getTableName()));
-            return null;
-        }
-
-        removeIgnoredColumns(tc, columns);
-        calculateExtraColumnInformation(tc, columns);
-        applyColumnOverrides(tc, columns);
-        calculateIdentityColumns(tc, columns);
-
-        List<IntrospectedTable> introspectedTables = calculateIntrospectedTables(
-                tc, columns);
-
-        // now introspectedTables has all the columns from all the
-        // tables in the configuration. Do some validation...
-
-        Iterator<IntrospectedTable> iter = introspectedTables.iterator();
-        while (iter.hasNext()) {
-            IntrospectedTable introspectedTable = iter.next();
-
-            if (!introspectedTable.hasAnyColumns()) {
-                // add warning that the table has no columns, remove from the
-                // list
-                String warning = getString(
-                                "Warning.1", introspectedTable.getFullyQualifiedTable().toString());
-                warnings.add(warning);
-                iter.remove();
-            } else if (!introspectedTable.hasPrimaryKeyColumns()
-                    && !introspectedTable.hasBaseColumns()) {
-                // add warning that the table has only BLOB columns, remove from
-                // the list
-                String warning = getString(
-                                "Warning.18", introspectedTable.getFullyQualifiedTable().toString());
-                warnings.add(warning);
-                iter.remove();
-            } else {
-                // now make sure that all columns called out in the
-                // configuration
-                // actually exist
-                reportIntrospectionWarnings(introspectedTable, tc,
-                        introspectedTable.getFullyQualifiedTable());
-            }
-        }
-
-        return introspectedTables;
-    }
-
-    /**
      * Removes the ignored columns.
      *
      * @param tc
@@ -277,8 +248,7 @@ public class DatabaseIntrospector {
      * @param columns
      *            the columns
      */
-    private void removeIgnoredColumns(TableConfiguration tc,
-            Map<ActualTableName, List<IntrospectedColumn>> columns) {
+    private void removeIgnoredColumns(TableConfiguration tc, Map<ActualTableName, List<IntrospectedColumn>> columns) {
         for (Map.Entry<ActualTableName, List<IntrospectedColumn>> entry : columns
                 .entrySet()) {
             Iterator<IntrospectedColumn> tableColumns = entry.getValue()
@@ -307,8 +277,7 @@ public class DatabaseIntrospector {
      * @param columns
      *            the columns
      */
-    private void calculateExtraColumnInformation(TableConfiguration tc,
-            Map<ActualTableName, List<IntrospectedColumn>> columns) {
+    private void calculateExtraColumnInformation(TableConfiguration tc, Map<ActualTableName, List<IntrospectedColumn>> columns) {
         StringBuilder sb = new StringBuilder();
         Pattern pattern = null;
         String replaceString = null;
@@ -411,8 +380,7 @@ public class DatabaseIntrospector {
      * @param columns
      *            the columns
      */
-    private void calculateIdentityColumns(TableConfiguration tc,
-            Map<ActualTableName, List<IntrospectedColumn>> columns) {
+    private void calculateIdentityColumns(TableConfiguration tc, Map<ActualTableName, List<IntrospectedColumn>> columns) {
         GeneratedKey gk = tc.getGeneratedKey();
         if (gk == null) {
             // no generated key, then no identity or sequence columns
@@ -460,8 +428,7 @@ public class DatabaseIntrospector {
      * @param columns
      *            the columns
      */
-    private void applyColumnOverrides(TableConfiguration tc,
-            Map<ActualTableName, List<IntrospectedColumn>> columns) {
+    private void applyColumnOverrides(TableConfiguration tc, Map<ActualTableName, List<IntrospectedColumn>> columns) {
         for (Map.Entry<ActualTableName, List<IntrospectedColumn>> entry : columns
                 .entrySet()) {
             for (IntrospectedColumn introspectedColumn : entry.getValue()) {
@@ -525,8 +492,7 @@ public class DatabaseIntrospector {
      * @throws SQLException
      *             the SQL exception
      */
-    private Map<ActualTableName, List<IntrospectedColumn>> getColumns(
-            TableConfiguration tc) throws SQLException {
+    private Map<ActualTableName, List<IntrospectedColumn>> getColumns(TableConfiguration tc) throws SQLException {
         String localCatalog;
         String localSchema;
         String localTableName;
@@ -696,9 +662,8 @@ public class DatabaseIntrospector {
      *            the columns
      * @return the list
      */
-    private List<IntrospectedTable> calculateIntrospectedTables(
-            TableConfiguration tc,
-            Map<ActualTableName, List<IntrospectedColumn>> columns) {
+    private List<IntrospectedTable> calculateIntrospectedTables(TableConfiguration tc, Map<ActualTableName, List<IntrospectedColumn>> columns) {
+
         boolean delimitIdentifiers = tc.isDelimitIdentifiers()
                 || stringContainsSpace(tc.getCatalog())
                 || stringContainsSpace(tc.getSchema())
@@ -706,8 +671,7 @@ public class DatabaseIntrospector {
 
         List<IntrospectedTable> answer = new ArrayList<IntrospectedTable>();
 
-        for (Map.Entry<ActualTableName, List<IntrospectedColumn>> entry : columns
-                .entrySet()) {
+        for (Map.Entry<ActualTableName, List<IntrospectedColumn>> entry : columns.entrySet()) {
             ActualTableName atn = entry.getKey();
 
             // we only use the returned catalog and schema if something was
@@ -718,10 +682,8 @@ public class DatabaseIntrospector {
             // configuration, then some sort of DB default is being returned
             // and we don't want that in our SQL
             FullyQualifiedTable table = new FullyQualifiedTable(
-                    stringHasValue(tc.getCatalog()) ? atn
-                            .getCatalog() : null,
-                    stringHasValue(tc.getSchema()) ? atn
-                            .getSchema() : null,
+                    stringHasValue(tc.getCatalog()) ? atn.getCatalog() : null,
+                    stringHasValue(tc.getSchema()) ? atn.getSchema() : null,
                     atn.getTableName(),
                     tc.getDomainObjectName(),
                     tc.getAlias(),
@@ -729,10 +691,10 @@ public class DatabaseIntrospector {
                     tc.getProperty(PropertyRegistry.TABLE_RUNTIME_CATALOG),
                     tc.getProperty(PropertyRegistry.TABLE_RUNTIME_SCHEMA),
                     tc.getProperty(PropertyRegistry.TABLE_RUNTIME_TABLE_NAME),
-                    delimitIdentifiers, context);
+                    delimitIdentifiers, context
+            );
 
-            IntrospectedTable introspectedTable = ObjectFactory
-                    .createIntrospectedTable(tc, table, context);
+            IntrospectedTable introspectedTable = ObjectFactory.createIntrospectedTable(tc, table, context);
 
             for (IntrospectedColumn introspectedColumn : entry.getValue()) {
                 introspectedTable.addColumn(introspectedColumn);
@@ -760,8 +722,7 @@ public class DatabaseIntrospector {
         try {
             FullyQualifiedTable fqt = introspectedTable.getFullyQualifiedTable();
 
-            ResultSet rs = databaseMetaData.getTables(fqt.getIntrospectedCatalog(), fqt.getIntrospectedSchema(),
-                    fqt.getIntrospectedTableName(), null);
+            ResultSet rs = databaseMetaData.getTables(fqt.getIntrospectedCatalog(), fqt.getIntrospectedSchema(), fqt.getIntrospectedTableName(), null);
             if (rs.next()) {
                 String remarks = rs.getString("REMARKS");
                 String tableType = rs.getString("TABLE_TYPE");

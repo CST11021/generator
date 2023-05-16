@@ -36,6 +36,20 @@ public class XMLMapperGenerator extends AbstractXmlGenerator {
         super();
     }
 
+    @Override
+    public Document getDocument() {
+        Document document = new Document(
+                XmlConstants.MYBATIS3_MAPPER_PUBLIC_ID,
+                XmlConstants.MYBATIS3_MAPPER_SYSTEM_ID);
+        document.setRootElement(getSqlMapElement());
+
+        if (!context.getPlugins().sqlMapDocumentGenerated(document, introspectedTable)) {
+            document = null;
+        }
+
+        return document;
+    }
+
     protected XmlElement getSqlMapElement() {
         FullyQualifiedTable table = introspectedTable.getFullyQualifiedTable();
         progressCallback.startTask(getString("Progress.12", table.toString()));
@@ -221,17 +235,4 @@ public class XMLMapperGenerator extends AbstractXmlGenerator {
         elementGenerator.addElements(parentElement);
     }
 
-    @Override
-    public Document getDocument() {
-        Document document = new Document(
-                XmlConstants.MYBATIS3_MAPPER_PUBLIC_ID,
-                XmlConstants.MYBATIS3_MAPPER_SYSTEM_ID);
-        document.setRootElement(getSqlMapElement());
-
-        if (!context.getPlugins().sqlMapDocumentGenerated(document, introspectedTable)) {
-            document = null;
-        }
-
-        return document;
-    }
 }

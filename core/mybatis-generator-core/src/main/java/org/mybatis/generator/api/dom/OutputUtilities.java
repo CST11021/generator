@@ -15,10 +15,10 @@
  */
 package org.mybatis.generator.api.dom;
 
+import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
+
 import java.util.Set;
 import java.util.TreeSet;
-
-import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 
 /**
  * The Class OutputUtilities.
@@ -61,13 +61,10 @@ public class OutputUtilities {
     }
 
     /**
-     * Utility method that indents the buffer by the default amount for XML (two
-     * spaces per indent level).
+     * 缩进
      * 
-     * @param sb
-     *            a StringBuilder to append to
-     * @param indentLevel
-     *            the required indent level
+     * @param sb            a StringBuilder to append to
+     * @param indentLevel   缩进次数
      */
     public static void xmlIndent(StringBuilder sb, int indentLevel) {
         for (int i = 0; i < indentLevel; i++) {

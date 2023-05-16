@@ -26,33 +26,56 @@ public class Document {
     
     /** The public id. */
     private String publicId;
-
     /** The system id. */
     private String systemId;
-
-    /** The root element. */
+    /** root标签 */
     private XmlElement rootElement;
 
-    /**
-     * Instantiates a new document.
-     *
-     * @param publicId
-     *            the public id
-     * @param systemId
-     *            the system id
-     */
     public Document(String publicId, String systemId) {
         super();
         this.publicId = publicId;
         this.systemId = systemId;
     }
-
-    /**
-     * Instantiates a new document.
-     */
     public Document() {
         super();
     }
+
+
+    /**
+     * <?xml version="1.0" encoding="UTF-8"?>
+     * <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+     * <mapper>
+     *     ...
+     * </mapper>
+     *
+     * @return the formatted content
+     */
+    public String getFormattedContent() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+
+        if (publicId != null && systemId != null) {
+            OutputUtilities.newLine(sb);
+            sb.append("<!DOCTYPE ");
+            sb.append(rootElement.getName());
+            sb.append(" PUBLIC \"");
+            sb.append(publicId);
+            sb.append("\" \"");
+            sb.append(systemId);
+            sb.append("\">");
+        }
+
+        // 折行
+        OutputUtilities.newLine(sb);
+        // 获取<mapper>root标签内容
+        sb.append(rootElement.getFormattedContent(0));
+
+        return sb.toString();
+    }
+
+
+    // getter and setter ...
 
     /**
      * Gets the root element.
@@ -89,32 +112,5 @@ public class Document {
      */
     public String getSystemId() {
         return systemId;
-    }
-
-    /**
-     * Gets the formatted content.
-     *
-     * @return the formatted content
-     */
-    public String getFormattedContent() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-
-        if (publicId != null && systemId != null) {
-            OutputUtilities.newLine(sb);
-            sb.append("<!DOCTYPE ");
-            sb.append(rootElement.getName());
-            sb.append(" PUBLIC \"");
-            sb.append(publicId);
-            sb.append("\" \"");
-            sb.append(systemId);
-            sb.append("\">");
-        }
-
-        OutputUtilities.newLine(sb);
-        sb.append(rootElement.getFormattedContent(0));
-
-        return sb.toString();
     }
 }

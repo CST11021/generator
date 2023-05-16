@@ -15,11 +15,11 @@
  */
 package org.mybatis.generator.api.dom.xml;
 
+import org.mybatis.generator.api.dom.OutputUtilities;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.mybatis.generator.api.dom.OutputUtilities;
 
 /**
  * The Class XmlElement.
@@ -28,34 +28,21 @@ import org.mybatis.generator.api.dom.OutputUtilities;
  */
 public class XmlElement extends Element {
     
-    /** The attributes. */
+    /** 标签属性 */
     private List<Attribute> attributes;
 
-    /** The elements. */
+    /** 子节点 */
     private List<Element> elements;
 
-    /** The name. */
+    /** 标签名 */
     private String name;
 
-    /**
-     * Instantiates a new xml element.
-     *
-     * @param name
-     *            the name
-     */
     public XmlElement(String name) {
         super();
         attributes = new ArrayList<Attribute>();
         elements = new ArrayList<Element>();
         this.name = name;
     }
-    
-    /**
-     * Copy constructor. Not a truly deep copy, but close enough for most purposes.
-     *
-     * @param original
-     *            the original
-     */
     public XmlElement(XmlElement original) {
         super();
         attributes = new ArrayList<Attribute>();
@@ -64,6 +51,51 @@ public class XmlElement extends Element {
         elements.addAll(original.elements);
         this.name = original.name;
     }
+
+
+    /**
+     * 返回标签内容
+     *
+     * @param indentLevel
+     * @return
+     */
+    @Override
+    public String getFormattedContent(int indentLevel) {
+        StringBuilder sb = new StringBuilder();
+
+        OutputUtilities.xmlIndent(sb, indentLevel);
+        sb.append('<');
+        sb.append(name);
+
+        Collections.sort(attributes);
+        for (Attribute att : attributes) {
+            sb.append(' ');
+            sb.append(att.getFormattedContent());
+        }
+
+        if (elements.size() > 0) {
+            sb.append(">");
+            for (Element element : elements) {
+                OutputUtilities.newLine(sb);
+                sb.append(element.getFormattedContent(indentLevel + 1));
+            }
+            // 折行
+            OutputUtilities.newLine(sb);
+            // 缩进
+            OutputUtilities.xmlIndent(sb, indentLevel);
+            sb.append("</");
+            sb.append(name);
+            sb.append('>');
+
+        } else {
+            sb.append(" />");
+        }
+
+        return sb.toString();
+    }
+
+
+    // getter and setter ...
 
     /**
      * Gets the attributes.
@@ -122,42 +154,6 @@ public class XmlElement extends Element {
      */
     public String getName() {
         return name;
-    }
-
-    /* (non-Javadoc)
-     * @see org.mybatis.generator.api.dom.xml.Element#getFormattedContent(int)
-     */
-    @Override
-    public String getFormattedContent(int indentLevel) {
-        StringBuilder sb = new StringBuilder();
-
-        OutputUtilities.xmlIndent(sb, indentLevel);
-        sb.append('<');
-        sb.append(name);
-
-        Collections.sort(attributes);
-        for (Attribute att : attributes) {
-            sb.append(' ');
-            sb.append(att.getFormattedContent());
-        }
-
-        if (elements.size() > 0) {
-            sb.append(">");
-            for (Element element : elements) {
-                OutputUtilities.newLine(sb);
-                sb.append(element.getFormattedContent(indentLevel + 1));
-            }
-            OutputUtilities.newLine(sb);
-            OutputUtilities.xmlIndent(sb, indentLevel);
-            sb.append("</");
-            sb.append(name);
-            sb.append('>');
-
-        } else {
-            sb.append(" />");
-        }
-
-        return sb.toString();
     }
 
     /**

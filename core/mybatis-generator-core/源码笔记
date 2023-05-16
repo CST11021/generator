@@ -1,3 +1,31 @@
+
+ConfigurationParser -> Configuration
+创建：MyBatisGenerator
+初始化插件实例和代码生成实现类的实例：Context.generateFiles 注意：这里插件可以给每个表生成额外的代码文件
+    1、初始化：PluginAggregator
+
+    2、introspectedTable.initialize();
+    // 设置Mapper接口的全限定类名
+    // 设置Model实体的全限定类名
+    // 设置xml要生成的代码的statementId
+    // 确定model代码的生成方式
+    // 初始化插件
+
+    3、创建 GeneratedFile 实例：
+        List<GeneratedJavaFile>
+        List<GeneratedXmlFile>
+
+        // 1 初始化 javaModelGenerators 实例
+        // 2 初始化 clientGenerators 实例
+        IntrospectedTableMyBatis3Impl.getGeneratedJavaFiles()
+        // 3 初始化 xmlMapperGenerator 实例
+        IntrospectedTableMyBatis3Impl.getGeneratedXmlFiles()
+
+        // 初始化插件实例
+        PluginAggregator.contextGenerateAdditionalJavaFiles()
+        PluginAggregator.contextGenerateAdditionalXmlFiles()
+
+
 配置类:
     PluginConfiguration
         properties

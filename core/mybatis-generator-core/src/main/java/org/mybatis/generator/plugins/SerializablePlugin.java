@@ -15,15 +15,16 @@
  */
 package org.mybatis.generator.plugins;
 
-import java.util.List;
-import java.util.Properties;
-
-import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.IntrospectedTable;
+import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.JavaVisibility;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * This plugin adds the java.io.Serializable marker interface to all generated
@@ -64,37 +65,36 @@ public class SerializablePlugin extends PluginAdapter {
     }
     
     @Override
-    public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass,
-            IntrospectedTable introspectedTable) {
+    public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         makeSerializable(topLevelClass, introspectedTable);
         return true;
     }
 
     @Override
-    public boolean modelPrimaryKeyClassGenerated(TopLevelClass topLevelClass,
-            IntrospectedTable introspectedTable) {
+    public boolean modelPrimaryKeyClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         makeSerializable(topLevelClass, introspectedTable);
         return true;
     }
 
     @Override
-    public boolean modelRecordWithBLOBsClassGenerated(
-            TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+    public boolean modelRecordWithBLOBsClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         makeSerializable(topLevelClass, introspectedTable);
         return true;
     }
 
-    protected void makeSerializable(TopLevelClass topLevelClass,
-            IntrospectedTable introspectedTable) {
+    protected void makeSerializable(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         if (addGWTInterface) {
             topLevelClass.addImportedType(gwtSerializable);
             topLevelClass.addSuperInterface(gwtSerializable);
         }
         
         if (!suppressJavaInterface) {
+            // 导入Serializable：import java.io.Serializable;
             topLevelClass.addImportedType(serializable);
+            // 实现Serializable接口：implements Serializable
             topLevelClass.addSuperInterface(serializable);
 
+            // 创建一个serialVersionUID字段
             Field field = new Field();
             field.setFinal(true);
             field.setInitializationString("1L");

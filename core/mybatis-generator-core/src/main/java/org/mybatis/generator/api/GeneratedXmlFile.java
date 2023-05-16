@@ -55,9 +55,7 @@ public class GeneratedXmlFile extends GeneratedFile {
      * @param xmlFormatter
      *            the xml formatter
      */
-    public GeneratedXmlFile(Document document, String fileName,
-            String targetPackage, String targetProject, boolean isMergeable,
-            XmlFormatter xmlFormatter) {
+    public GeneratedXmlFile(Document document, String fileName, String targetPackage, String targetProject, boolean isMergeable, XmlFormatter xmlFormatter) {
         super(targetProject);
         this.document = document;
         this.fileName = fileName;
@@ -66,8 +64,10 @@ public class GeneratedXmlFile extends GeneratedFile {
         this.xmlFormatter = xmlFormatter;
     }
 
-    /* (non-Javadoc)
-     * @see org.mybatis.generator.api.GeneratedFile#getFormattedContent()
+    /**
+     * 获取mybatis的xml的SQL代码
+     *
+     * @return
      */
     @Override
     public String getFormattedContent() {
@@ -94,9 +94,6 @@ public class GeneratedXmlFile extends GeneratedFile {
         return targetPackage;
     }
 
-    /* (non-Javadoc)
-     * @see org.mybatis.generator.api.GeneratedFile#isMergeable()
-     */
     @Override
     public boolean isMergeable() {
         return isMergeable;

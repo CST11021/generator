@@ -616,6 +616,7 @@ public class Context extends PropertyHolder {
             callback.startTask(getString("Progress.0"));
             connection = getConnection();
 
+
             DatabaseIntrospector databaseIntrospector = new DatabaseIntrospector(this, connection.getMetaData(), javaTypeResolver, warnings);
             for (TableConfiguration tc : tableConfigurations) {
                 String tableName = composeFullyQualifiedTableName(tc.getCatalog(), tc.getSchema(), tc.getTableName(), '.');

@@ -25,8 +25,7 @@ import java.util.ResourceBundle;
 public class Messages {
     private static final String BUNDLE_NAME = "org.mybatis.generator.internal.util.messages.messages";
 
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
-            .getBundle(BUNDLE_NAME);
+    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
     private Messages() {
     }
@@ -41,8 +40,7 @@ public class Messages {
 
     public static String getString(String key, String parm1) {
         try {
-            return MessageFormat.format(RESOURCE_BUNDLE.getString(key),
-                    new Object[] { parm1 });
+            return MessageFormat.format(RESOURCE_BUNDLE.getString(key), new Object[] { parm1 });
         } catch (MissingResourceException e) {
             return '!' + key + '!';
         }

@@ -159,6 +159,8 @@ public class MyBatisGenerator {
         }
         callback.introspectionStarted(totalSteps);
 
+
+
         // 确定每个table使用的代码生成实现模式
         for (Context context : contextsToRun) {
             context.introspectTables(callback, warnings, fullyQualifiedTableNames);
@@ -222,26 +224,22 @@ public class MyBatisGenerator {
         File targetFile;
         String source;
         try {
-            File directory = shellCallback.getDirectory(gjf
-                    .getTargetProject(), gjf.getTargetPackage());
+            File directory = shellCallback.getDirectory(gjf.getTargetProject(), gjf.getTargetPackage());
             targetFile = new File(directory, gjf.getFileName());
             if (targetFile.exists()) {
                 if (shellCallback.isMergeSupported()) {
-                    source = shellCallback.mergeJavaFile(gjf
-                            .getFormattedContent(), targetFile
-                            .getAbsolutePath(),
+                    source = shellCallback.mergeJavaFile(
+                            gjf.getFormattedContent(),
+                            targetFile.getAbsolutePath(),
                             MergeConstants.OLD_ELEMENT_TAGS,
                             gjf.getFileEncoding());
                 } else if (shellCallback.isOverwriteEnabled()) {
                     source = gjf.getFormattedContent();
-                    warnings.add(getString("Warning.11",
-                            targetFile.getAbsolutePath()));
+                    warnings.add(getString("Warning.11", targetFile.getAbsolutePath()));
                 } else {
                     source = gjf.getFormattedContent();
-                    targetFile = getUniqueFileName(directory, gjf
-                            .getFileName());
-                    warnings.add(getString(
-                            "Warning.2", targetFile.getAbsolutePath()));
+                    targetFile = getUniqueFileName(directory, gjf.getFileName());
+                    warnings.add(getString("Warning.2", targetFile.getAbsolutePath()));
                 }
             } else {
                 source = gjf.getFormattedContent();

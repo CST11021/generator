@@ -26,16 +26,14 @@ package org.mybatis.generator.config;
 public class PropertyRegistry {
     public static final String ANY_ENABLE_SUB_PACKAGES = "enableSubPackages";
 
-    /**
-     * recognized by table and java model generator
-     */
+    // recognized by table and java model generator
+
+    /** model类要继承的父类 */
     public static final String ANY_ROOT_CLASS = "rootClass";
     public static final String ANY_IMMUTABLE = "immutable";
     public static final String ANY_CONSTRUCTOR_BASED = "constructorBased";
 
-    /**
-     * recognized by table and java client generator
-     */
+    /** 表示Mapper接口要继承的父接口 */
     public static final String ANY_ROOT_INTERFACE = "rootInterface";
 
     public static final String TABLE_USE_COLUMN_INDEXES = "useColumnIndexes";

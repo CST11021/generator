@@ -15,17 +15,13 @@
  */
 package org.mybatis.generator.codegen;
 
-import static org.mybatis.generator.internal.util.JavaBeansUtil.getGetterMethodName;
+import org.mybatis.generator.api.dom.java.*;
+import org.mybatis.generator.config.PropertyRegistry;
 
 import java.util.List;
 import java.util.Properties;
 
-import org.mybatis.generator.api.dom.java.CompilationUnit;
-import org.mybatis.generator.api.dom.java.Field;
-import org.mybatis.generator.api.dom.java.JavaVisibility;
-import org.mybatis.generator.api.dom.java.Method;
-import org.mybatis.generator.api.dom.java.TopLevelClass;
-import org.mybatis.generator.config.PropertyRegistry;
+import static org.mybatis.generator.internal.util.JavaBeansUtil.getGetterMethodName;
 
 /**
  * 
@@ -33,6 +29,7 @@ import org.mybatis.generator.config.PropertyRegistry;
  * 
  */
 public abstract class AbstractJavaGenerator extends AbstractGenerator {
+
     public abstract List<CompilationUnit> getCompilationUnits();
 
     public static Method getGetter(Field field) {

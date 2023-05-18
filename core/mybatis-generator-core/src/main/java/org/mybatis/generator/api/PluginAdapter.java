@@ -73,43 +73,35 @@ public abstract class PluginAdapter implements Plugin {
         return null;
     }
 
-    public List<GeneratedXmlFile> contextGenerateAdditionalXmlFiles(
-            IntrospectedTable introspectedTable) {
+    public List<GeneratedXmlFile> contextGenerateAdditionalXmlFiles(IntrospectedTable introspectedTable) {
         return null;
     }
 
-    public boolean clientCountByExampleMethodGenerated(Method method,
-            Interface interfaze, IntrospectedTable introspectedTable) {
+    public boolean clientCountByExampleMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
         return true;
     }
 
-    public boolean clientCountByExampleMethodGenerated(Method method,
-            TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+    public boolean clientCountByExampleMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         return true;
     }
 
-    public boolean clientDeleteByExampleMethodGenerated(Method method,
-            Interface interfaze, IntrospectedTable introspectedTable) {
+    public boolean clientDeleteByExampleMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
         return true;
     }
 
-    public boolean clientDeleteByExampleMethodGenerated(Method method,
-            TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+    public boolean clientDeleteByExampleMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         return true;
     }
 
-    public boolean clientDeleteByPrimaryKeyMethodGenerated(Method method,
-            Interface interfaze, IntrospectedTable introspectedTable) {
+    public boolean clientDeleteByPrimaryKeyMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
         return true;
     }
 
-    public boolean clientDeleteByPrimaryKeyMethodGenerated(Method method,
-            TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+    public boolean clientDeleteByPrimaryKeyMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         return true;
     }
 
-    public boolean clientInsertMethodGenerated(Method method, Interface interfaze,
-            IntrospectedTable introspectedTable) {
+    public boolean clientInsertMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
         return true;
     }
 

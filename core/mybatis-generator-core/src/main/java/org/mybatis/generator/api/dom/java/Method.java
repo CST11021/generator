@@ -15,12 +15,12 @@
  */
 package org.mybatis.generator.api.dom.java;
 
+import org.mybatis.generator.api.dom.OutputUtilities;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
-
-import org.mybatis.generator.api.dom.OutputUtilities;
 
 /**
  * The Class Method.
@@ -31,27 +31,22 @@ public class Method extends JavaElement {
 
     /** The body lines. */
     private List<String> bodyLines;
-
     /** The constructor. */
     private boolean constructor;
-
     /** The return type. */
     private FullyQualifiedJavaType returnType;
-
     /** The name. */
     private String name;
-
     /** The parameters. */
     private List<Parameter> parameters;
-
     /** The exceptions. */
     private List<FullyQualifiedJavaType> exceptions;
-    
     /** The is synchronized. */
     private boolean isSynchronized;
-    
     /** The is native. */
     private boolean isNative;
+
+
 
     /**
      * Instantiates a new method.
@@ -60,7 +55,6 @@ public class Method extends JavaElement {
         // use a default name to avoid malformed code
         this("bar");
     }
-    
     /**
      * Instantiates a new method.
      *
@@ -74,7 +68,6 @@ public class Method extends JavaElement {
         exceptions = new ArrayList<FullyQualifiedJavaType>();
         this.name = name;
     }
-    
     /**
      * Copy constructor. Not a truly deep copy, but close enough for most purposes.
      *
@@ -95,6 +88,11 @@ public class Method extends JavaElement {
         this.isNative = original.isNative;
         this.isSynchronized = original.isSynchronized;
     }
+
+
+
+
+
 
     /**
      * Gets the body lines.

@@ -15,60 +15,47 @@
  */
 package org.mybatis.generator.api.dom.java;
 
-import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-import static org.mybatis.generator.internal.util.messages.Messages.getString;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
+import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 /**
  * The Class FullyQualifiedJavaType.
  *
  * @author Jeff Butler
  */
-public class FullyQualifiedJavaType implements
-        Comparable<FullyQualifiedJavaType> {
+public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType> {
     
     /** The Constant JAVA_LANG. */
     private static final String JAVA_LANG = "java.lang";
-    
     /** The int instance. */
     private static FullyQualifiedJavaType intInstance = null;
-    
     /** The string instance. */
     private static FullyQualifiedJavaType stringInstance = null;
-    
     /** The boolean primitive instance. */
     private static FullyQualifiedJavaType booleanPrimitiveInstance = null;
-    
     /** The object instance. */
     private static FullyQualifiedJavaType objectInstance = null;
-    
     /** The date instance. */
     private static FullyQualifiedJavaType dateInstance = null;
-    
     /** The criteria instance. */
     private static FullyQualifiedJavaType criteriaInstance = null;
-    
     /** The generated criteria instance. */
     private static FullyQualifiedJavaType generatedCriteriaInstance = null;
 
     /** The short name without any generic arguments. */
     private String baseShortName;
-
     /** The fully qualified name without any generic arguments. */
     private String baseQualifiedName;
-
     /** The explicitly imported. */
     private boolean explicitlyImported;
-    
     /** The package name. */
     private String packageName;
-    
     /** The primitive. */
     private boolean primitive;
-    
     /** The is array. */
     private boolean isArray;
     
@@ -236,45 +223,7 @@ public class FullyQualifiedJavaType implements
         return baseShortName;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
 
-        if (!(obj instanceof FullyQualifiedJavaType)) {
-            return false;
-        }
-
-        FullyQualifiedJavaType other = (FullyQualifiedJavaType) obj;
-
-        return getFullyQualifiedName().equals(other.getFullyQualifiedName());
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        return getFullyQualifiedName().hashCode();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return getFullyQualifiedName();
-    }
 
     /**
      * Checks if is primitive.
@@ -470,11 +419,13 @@ public class FullyQualifiedJavaType implements
             if (spec.startsWith("extends ")) {
                 boundedWildcard = true;
                 extendsBoundedWildcard = true;
-                spec = spec.substring(8);  // "extends ".length()
+                // "extends ".length()
+                spec = spec.substring(8);
             } else if (spec.startsWith("super ")) {
                 boundedWildcard = true;
                 extendsBoundedWildcard = false;
-                spec = spec.substring(6);  // "super ".length()
+                // "super ".length()
+                spec = spec.substring(6);
             } else {
                 boundedWildcard = false;
             }
@@ -640,4 +591,48 @@ public class FullyQualifiedJavaType implements
     public List<FullyQualifiedJavaType> getTypeArguments() {
         return typeArguments;
     }
+
+
+
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof FullyQualifiedJavaType)) {
+            return false;
+        }
+
+        FullyQualifiedJavaType other = (FullyQualifiedJavaType) obj;
+
+        return getFullyQualifiedName().equals(other.getFullyQualifiedName());
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return getFullyQualifiedName().hashCode();
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return getFullyQualifiedName();
+    }
+
 }

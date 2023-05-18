@@ -135,7 +135,7 @@
 
   <context id="ConditionalJava5" targetRuntime="MyBatis3" defaultModelType="conditional">
     <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
-    <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+    <plugin type="test.generator.plugins.SerializablePlugin" />
 
     <jdbcConnection driverClass="org.hsqldb.jdbcDriver"
         connectionURL="jdbc:hsqldb:mem:aname"
@@ -416,7 +416,7 @@
 
   <context id="ConditionalJava5_Annotated" targetRuntime="MyBatis3" defaultModelType="conditional">
     <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
-    <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+    <plugin type="test.generator.plugins.SerializablePlugin" />
 
     <jdbcConnection driverClass="org.hsqldb.jdbcDriver"
         connectionURL="jdbc:hsqldb:mem:aname"
@@ -634,7 +634,7 @@
 
   <context id="ConditionalJava5_Mixed" targetRuntime="MyBatis3" defaultModelType="conditional">
     <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
-    <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+    <plugin type="test.generator.plugins.SerializablePlugin" />
 
     <jdbcConnection driverClass="org.hsqldb.jdbcDriver"
         connectionURL="jdbc:hsqldb:mem:aname"

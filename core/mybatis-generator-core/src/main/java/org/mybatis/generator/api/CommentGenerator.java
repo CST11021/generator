@@ -15,15 +15,10 @@
  */
 package org.mybatis.generator.api;
 
-import java.util.Properties;
-
-import org.mybatis.generator.api.dom.java.CompilationUnit;
-import org.mybatis.generator.api.dom.java.Field;
-import org.mybatis.generator.api.dom.java.InnerClass;
-import org.mybatis.generator.api.dom.java.InnerEnum;
-import org.mybatis.generator.api.dom.java.Method;
-import org.mybatis.generator.api.dom.java.TopLevelClass;
+import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.api.dom.xml.XmlElement;
+
+import java.util.Properties;
 
 /**
  * Implementations of this interface are used to generate comments for the
@@ -59,9 +54,7 @@ public interface CommentGenerator {
      * @param introspectedColumn
      *            the introspected column
      */
-    void addFieldComment(Field field,
-            IntrospectedTable introspectedTable,
-            IntrospectedColumn introspectedColumn);
+    void addFieldComment(Field field, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn);
 
     /**
      * Adds the field comment.
@@ -88,8 +81,7 @@ public interface CommentGenerator {
      * @param introspectedTable
      *            the introspected table
      */
-    void addModelClassComment(TopLevelClass topLevelClass,
-            IntrospectedTable introspectedTable);
+    void addModelClassComment(TopLevelClass topLevelClass, IntrospectedTable introspectedTable);
 
     /**
      * Adds the inner class comment.
@@ -99,8 +91,7 @@ public interface CommentGenerator {
      * @param introspectedTable
      *            the introspected table
      */
-    void addClassComment(InnerClass innerClass,
-            IntrospectedTable introspectedTable);
+    void addClassComment(InnerClass innerClass, IntrospectedTable introspectedTable);
 
     /**
      * Adds the inner class comment.
@@ -112,8 +103,7 @@ public interface CommentGenerator {
      * @param markAsDoNotDelete
      *            the mark as do not delete
      */
-    void addClassComment(InnerClass innerClass,
-            IntrospectedTable introspectedTable, boolean markAsDoNotDelete);
+    void addClassComment(InnerClass innerClass, IntrospectedTable introspectedTable, boolean markAsDoNotDelete);
 
     /**
      * Adds the enum comment.
@@ -123,8 +113,7 @@ public interface CommentGenerator {
      * @param introspectedTable
      *            the introspected table
      */
-    void addEnumComment(InnerEnum innerEnum,
-            IntrospectedTable introspectedTable);
+    void addEnumComment(InnerEnum innerEnum, IntrospectedTable introspectedTable);
 
     /**
      * Adds the getter comment.
@@ -136,9 +125,7 @@ public interface CommentGenerator {
      * @param introspectedColumn
      *            the introspected column
      */
-    void addGetterComment(Method method,
-            IntrospectedTable introspectedTable,
-            IntrospectedColumn introspectedColumn);
+    void addGetterComment(Method method, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn);
 
     /**
      * Adds the setter comment.
@@ -150,20 +137,17 @@ public interface CommentGenerator {
      * @param introspectedColumn
      *            the introspected column
      */
-    void addSetterComment(Method method,
-            IntrospectedTable introspectedTable,
-            IntrospectedColumn introspectedColumn);
+    void addSetterComment(Method method, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn);
 
     /**
-     * Adds the general method comment.
+     * 如果需要给方法添加注释，则调用该方法
      *
      * @param method
      *            the method
      * @param introspectedTable
      *            the introspected table
      */
-    void addGeneralMethodComment(Method method,
-            IntrospectedTable introspectedTable);
+    void addGeneralMethodComment(Method method, IntrospectedTable introspectedTable);
 
     /**
      * This method is called to add a file level comment to a generated java file. This method could be used to add a

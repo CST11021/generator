@@ -15,21 +15,15 @@
  */
 package org.mybatis.generator.codegen.mybatis3.xmlmapper;
 
-import static org.mybatis.generator.internal.util.messages.Messages.getString;
-
 import org.mybatis.generator.api.FullyQualifiedTable;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.AbstractXmlGenerator;
 import org.mybatis.generator.codegen.XmlConstants;
-import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElementGenerator;
-import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.DeleteByPrimaryKeyElementGenerator;
-import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.InsertElementGenerator;
-import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.ResultMapWithoutBLOBsElementGenerator;
-import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.SimpleSelectAllElementGenerator;
-import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.SimpleSelectByPrimaryKeyElementGenerator;
-import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.UpdateByPrimaryKeyWithoutBLOBsElementGenerator;
+import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.*;
+
+import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 /**
  * 
@@ -42,13 +36,26 @@ public class SimpleXMLMapperGenerator extends AbstractXmlGenerator {
         super();
     }
 
+    @Override
+    public Document getDocument() {
+        Document document = new Document(
+                XmlConstants.MYBATIS3_MAPPER_PUBLIC_ID,
+                XmlConstants.MYBATIS3_MAPPER_SYSTEM_ID);
+        document.setRootElement(getSqlMapElement());
+
+        if (!context.getPlugins().sqlMapDocumentGenerated(document, introspectedTable)) {
+            document = null;
+        }
+
+        return document;
+    }
+
     protected XmlElement getSqlMapElement() {
         FullyQualifiedTable table = introspectedTable.getFullyQualifiedTable();
         progressCallback.startTask(getString("Progress.12", table.toString()));
         XmlElement answer = new XmlElement("mapper");
         String namespace = introspectedTable.getMyBatis3SqlMapNamespace();
-        answer.addAttribute(new Attribute("namespace",
-                namespace));
+        answer.addAttribute(new Attribute("namespace", namespace));
 
         context.getCommentGenerator().addRootComment(answer);
 
@@ -64,8 +71,7 @@ public class SimpleXMLMapperGenerator extends AbstractXmlGenerator {
 
     protected void addResultMapElement(XmlElement parentElement) {
         if (introspectedTable.getRules().generateBaseResultMap()) {
-            AbstractXmlElementGenerator elementGenerator = new ResultMapWithoutBLOBsElementGenerator(
-                    true);
+            AbstractXmlElementGenerator elementGenerator = new ResultMapWithoutBLOBsElementGenerator(true);
             initializeAndExecuteGenerator(elementGenerator, parentElement);
         }
     }
@@ -114,18 +120,5 @@ public class SimpleXMLMapperGenerator extends AbstractXmlGenerator {
         elementGenerator.addElements(parentElement);
     }
 
-    @Override
-    public Document getDocument() {
-        Document document = new Document(
-                XmlConstants.MYBATIS3_MAPPER_PUBLIC_ID,
-                XmlConstants.MYBATIS3_MAPPER_SYSTEM_ID);
-        document.setRootElement(getSqlMapElement());
 
-        if (!context.getPlugins().sqlMapDocumentGenerated(document,
-                introspectedTable)) {
-            document = null;
-        }
-
-        return document;
-    }
 }

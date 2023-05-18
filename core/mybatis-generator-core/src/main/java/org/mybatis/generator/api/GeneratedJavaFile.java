@@ -70,26 +70,17 @@ public class GeneratedJavaFile extends GeneratedFile {
             JavaFormatter javaFormatter) {
         this(compilationUnit, targetProject, null, javaFormatter);
     }
-    
-    /* (non-Javadoc)
-     * @see org.mybatis.generator.api.GeneratedFile#getFormattedContent()
-     */
+
     @Override
     public String getFormattedContent() {
         return javaFormatter.getFormattedContent(compilationUnit);
     }
 
-    /* (non-Javadoc)
-     * @see org.mybatis.generator.api.GeneratedFile#getFileName()
-     */
     @Override
     public String getFileName() {
         return compilationUnit.getType().getShortNameWithoutTypeArguments() + ".java";
     }
 
-    /* (non-Javadoc)
-     * @see org.mybatis.generator.api.GeneratedFile#getTargetPackage()
-     */
     public String getTargetPackage() {
         return compilationUnit.getType().getPackageName();
     }

@@ -28,8 +28,7 @@ import org.mybatis.generator.config.GeneratedKey;
  * @author Jeff Butler
  * 
  */
-public class InsertSelectiveElementGenerator extends
-        AbstractXmlElementGenerator {
+public class InsertSelectiveElementGenerator extends AbstractXmlElementGenerator {
 
     public InsertSelectiveElementGenerator() {
         super();
@@ -39,8 +38,7 @@ public class InsertSelectiveElementGenerator extends
     public void addElements(XmlElement parentElement) {
         XmlElement answer = new XmlElement("insert");
 
-        answer.addAttribute(new Attribute(
-                "id", introspectedTable.getInsertSelectiveStatementId()));
+        answer.addAttribute(new Attribute("id", introspectedTable.getInsertSelectiveStatementId()));
 
         FullyQualifiedJavaType parameterType = introspectedTable.getRules()
                 .calculateAllFieldsClass();

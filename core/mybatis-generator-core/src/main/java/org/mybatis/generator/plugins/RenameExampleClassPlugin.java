@@ -52,13 +52,11 @@ import org.mybatis.generator.api.IntrospectedTable;
  * 
  */
 public class RenameExampleClassPlugin extends PluginAdapter {
+
     private String searchString;
     private String replaceString;
     private Pattern pattern;
 
-    /**
-     * 
-     */
     public RenameExampleClassPlugin() {
     }
 
@@ -67,21 +65,16 @@ public class RenameExampleClassPlugin extends PluginAdapter {
         searchString = properties.getProperty("searchString");
         replaceString = properties.getProperty("replaceString");
 
-        boolean valid = stringHasValue(searchString)
-                && stringHasValue(replaceString);
+        boolean valid = stringHasValue(searchString) && stringHasValue(replaceString);
 
         if (valid) {
             pattern = Pattern.compile(searchString);
         } else {
             if (!stringHasValue(searchString)) {
-                warnings.add(getString("ValidationError.18",
-                        "RenameExampleClassPlugin",
-                        "searchString"));
+                warnings.add(getString("ValidationError.18", "RenameExampleClassPlugin", "searchString"));
             }
             if (!stringHasValue(replaceString)) {
-                warnings.add(getString("ValidationError.18",
-                        "RenameExampleClassPlugin",
-                        "replaceString"));
+                warnings.add(getString("ValidationError.18", "RenameExampleClassPlugin", "replaceString"));
             }
         }
 

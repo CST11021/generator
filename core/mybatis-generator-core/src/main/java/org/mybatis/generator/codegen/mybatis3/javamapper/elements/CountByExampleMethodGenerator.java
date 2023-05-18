@@ -15,31 +15,30 @@
  */
 package org.mybatis.generator.codegen.mybatis3.javamapper.elements;
 
+import org.mybatis.generator.api.dom.java.*;
+
 import java.util.Set;
 import java.util.TreeSet;
-
-import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
-import org.mybatis.generator.api.dom.java.Interface;
-import org.mybatis.generator.api.dom.java.JavaVisibility;
-import org.mybatis.generator.api.dom.java.Method;
-import org.mybatis.generator.api.dom.java.Parameter;
 
 /**
  * 
  * @author Jeff Butler
  * 
  */
-public class CountByExampleMethodGenerator extends
-        AbstractJavaMapperMethodGenerator {
+public class CountByExampleMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
     public CountByExampleMethodGenerator() {
         super();
     }
 
+    /**
+     * long countByExample(ZlbBaidaFormExample example);
+     *
+     * @param interfaze
+     */
     @Override
     public void addInterfaceElements(Interface interfaze) {
-        FullyQualifiedJavaType fqjt = new FullyQualifiedJavaType(
-                introspectedTable.getExampleType());
+        FullyQualifiedJavaType fqjt = new FullyQualifiedJavaType(introspectedTable.getExampleType());
 
         Set<FullyQualifiedJavaType> importedTypes = new TreeSet<FullyQualifiedJavaType>();
         importedTypes.add(fqjt);
@@ -49,13 +48,11 @@ public class CountByExampleMethodGenerator extends
         method.setReturnType(new FullyQualifiedJavaType("long"));
         method.setName(introspectedTable.getCountByExampleStatementId());
         method.addParameter(new Parameter(fqjt, "example"));
-        context.getCommentGenerator().addGeneralMethodComment(method,
-                introspectedTable);
+        context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
 
         addMapperAnnotations(interfaze, method);
         
-        if (context.getPlugins().clientCountByExampleMethodGenerated(method,
-                interfaze, introspectedTable)) {
+        if (context.getPlugins().clientCountByExampleMethodGenerated(method, interfaze, introspectedTable)) {
             interfaze.addImportedTypes(importedTypes);
             interfaze.addMethod(method);
         }

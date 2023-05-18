@@ -118,7 +118,7 @@
 
   <ibatorContext id="ConditionalJava5" targetRuntime="Ibatis2Java5" defaultModelType="conditional">
     <ibatorPlugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
-    <ibatorPlugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+    <ibatorPlugin type="test.generator.plugins.SerializablePlugin" />
 
     <jdbcConnection driverClass="org.hsqldb.jdbcDriver"
         connectionURL="jdbc:hsqldb:mem:aname"

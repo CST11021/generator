@@ -15,18 +15,10 @@
  */
 package org.mybatis.generator.api.dom.java;
 
-import static org.mybatis.generator.api.dom.OutputUtilities.calculateImports;
-import static org.mybatis.generator.api.dom.OutputUtilities.javaIndent;
-import static org.mybatis.generator.api.dom.OutputUtilities.newLine;
-import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import static org.mybatis.generator.api.dom.OutputUtilities.*;
+import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 
 /**
  * The Class Interface.
@@ -96,8 +88,10 @@ public class Interface extends JavaElement implements CompilationUnit {
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.mybatis.generator.api.dom.java.CompilationUnit#getFormattedContent()
+    /**
+     * 获取接口类文件的代码
+     *
+     * @return
      */
     public String getFormattedContent() {
         StringBuilder sb = new StringBuilder();

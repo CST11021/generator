@@ -24,7 +24,7 @@ import org.mybatis.generator.api.dom.OutputUtilities;
  */
 public class TextElement extends Element {
     
-    /** The content. */
+    /** 标签内容 */
     private String content;
 
     /**
@@ -38,9 +38,6 @@ public class TextElement extends Element {
         this.content = content;
     }
 
-    /* (non-Javadoc)
-     * @see org.mybatis.generator.api.dom.xml.Element#getFormattedContent(int)
-     */
     @Override
     public String getFormattedContent(int indentLevel) {
         StringBuilder sb = new StringBuilder();

@@ -15,14 +15,14 @@
  */
 package org.mybatis.generator.api;
 
+import org.mybatis.generator.config.Context;
+
 import static org.mybatis.generator.internal.util.EqualsUtil.areEqual;
 import static org.mybatis.generator.internal.util.HashCodeUtil.SEED;
 import static org.mybatis.generator.internal.util.HashCodeUtil.hash;
 import static org.mybatis.generator.internal.util.JavaBeansUtil.getCamelCaseString;
 import static org.mybatis.generator.internal.util.StringUtility.composeFullyQualifiedTableName;
 import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-
-import org.mybatis.generator.config.Context;
 
 /**
  * The Class FullyQualifiedTable.
@@ -251,7 +251,7 @@ public class FullyQualifiedTable {
     }
 
     /**
-     * Gets the domain object name.
+     * 返回model对象的类名
      *
      * @return the domain object name
      */
@@ -265,9 +265,6 @@ public class FullyQualifiedTable {
         }
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -306,9 +303,7 @@ public class FullyQualifiedTable {
      */
     @Override
     public String toString() {
-        return composeFullyQualifiedTableName(
-                introspectedCatalog, introspectedSchema, introspectedTableName,
-                '.');
+        return composeFullyQualifiedTableName(introspectedCatalog, introspectedSchema, introspectedTableName, '.');
     }
 
     /**

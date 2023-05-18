@@ -15,10 +15,10 @@
  */
 package org.mybatis.generator.api.dom.java;
 
+import org.mybatis.generator.api.dom.OutputUtilities;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.mybatis.generator.api.dom.OutputUtilities;
 
 /**
  * The Class JavaElement.
@@ -29,18 +29,16 @@ public abstract class JavaElement {
     
     /** The java doc lines. */
     private List<String> javaDocLines;
-
     /** The visibility. */
     private JavaVisibility visibility = JavaVisibility.DEFAULT;
-
     /** The is static. */
     private boolean isStatic;
-
     /** The is final. */
     private boolean isFinal;
-
     /** The annotations. */
     private List<String> annotations;
+
+
 
     /**
      * Instantiates a new java element.
@@ -50,7 +48,6 @@ public abstract class JavaElement {
         javaDocLines = new ArrayList<String>();
         annotations = new ArrayList<String>();
     }
-    
     /**
      * Copy Constructor.
      *
@@ -65,6 +62,11 @@ public abstract class JavaElement {
         this.javaDocLines.addAll(original.javaDocLines);
         this.visibility = original.visibility;
     }
+
+
+
+    // getter and setter ...
+
 
     /**
      * Gets the java doc lines.

@@ -46,16 +46,17 @@ import static org.mybatis.generator.internal.util.messages.Messages.getString;
  */
 public class DatabaseIntrospector {
 
+    /** The context. */
+    private Context context;
     /** The database meta data. */
     private DatabaseMetaData databaseMetaData;
     /** The java type resolver. */
     private JavaTypeResolver javaTypeResolver;
-    /** The warnings. */
-    private List<String> warnings;
-    /** The context. */
-    private Context context;
+
     /** The logger. */
     private Log logger;
+    /** The warnings. */
+    private List<String> warnings;
 
     /**
      * Instantiates a new database introspector.
@@ -102,32 +103,25 @@ public class DatabaseIntrospector {
         applyColumnOverrides(tc, columns);
         calculateIdentityColumns(tc, columns);
 
+        // 核心代码
         List<IntrospectedTable> introspectedTables = calculateIntrospectedTables(tc, columns);
-
-        // now introspectedTables has all the columns from all the
-        // tables in the configuration. Do some validation...
 
         Iterator<IntrospectedTable> iter = introspectedTables.iterator();
         while (iter.hasNext()) {
             IntrospectedTable introspectedTable = iter.next();
 
             if (!introspectedTable.hasAnyColumns()) {
-                // add warning that the table has no columns, remove from the
-                // list
+                // add warning that the table has no columns, remove from the list
                 String warning = getString("Warning.1", introspectedTable.getFullyQualifiedTable().toString());
                 warnings.add(warning);
                 iter.remove();
-            } else if (!introspectedTable.hasPrimaryKeyColumns()
-                    && !introspectedTable.hasBaseColumns()) {
-                // add warning that the table has only BLOB columns, remove from
-                // the list
+            } else if (!introspectedTable.hasPrimaryKeyColumns() && !introspectedTable.hasBaseColumns()) {
+                // add warning that the table has only BLOB columns, remove from the list
                 String warning = getString("Warning.18", introspectedTable.getFullyQualifiedTable().toString());
                 warnings.add(warning);
                 iter.remove();
             } else {
-                // now make sure that all columns called out in the
-                // configuration
-                // actually exist
+                // now make sure that all columns called out in the configuration actually exist
                 reportIntrospectionWarnings(introspectedTable, tc, introspectedTable.getFullyQualifiedTable());
             }
         }
@@ -387,8 +381,7 @@ public class DatabaseIntrospector {
             return;
         }
         
-        for (Map.Entry<ActualTableName, List<IntrospectedColumn>> entry : columns
-                .entrySet()) {
+        for (Map.Entry<ActualTableName, List<IntrospectedColumn>> entry : columns.entrySet()) {
             for (IntrospectedColumn introspectedColumn : entry.getValue()) {
                 if (isMatchedColumn(introspectedColumn, gk)) {
                     if (gk.isIdentity() || gk.isJdbcStandard()) {
@@ -401,6 +394,7 @@ public class DatabaseIntrospector {
                 }
             }
         }
+
     }
     
     /**

@@ -15,6 +15,7 @@
  */
 package org.mybatis.generator.internal;
 
+import com.whz.mybatis.generator.WhzIntrospectedTableMyBatis3Impl;
 import org.mybatis.generator.api.*;
 import org.mybatis.generator.api.dom.DefaultJavaFormatter;
 import org.mybatis.generator.api.dom.DefaultXmlFormatter;
@@ -152,8 +153,7 @@ public class ObjectFactory {
      * @throws ClassNotFoundException
      *             the class not found exception
      */
-    public static Class<?> internalClassForName(String type)
-            throws ClassNotFoundException {
+    public static Class<?> internalClassForName(String type) throws ClassNotFoundException {
         Class<?> clazz = null;
 
         try {
@@ -212,8 +212,7 @@ public class ObjectFactory {
 
             answer = clazz.newInstance();
         } catch (Exception e) {
-            throw new RuntimeException(getString(
-                    "RuntimeError.6", type), e);
+            throw new RuntimeException(getString("RuntimeError.6", type), e);
 
         }
 
@@ -407,6 +406,9 @@ public class ObjectFactory {
             type = IntrospectedTableMyBatis3Impl.class.getName();
         } else if ("MyBatis3Simple".equalsIgnoreCase(type)) {
             type = IntrospectedTableMyBatis3SimpleImpl.class.getName();
+        } else if ("MyBatis3Whz".equalsIgnoreCase(type)) {
+            // TODO whz
+            type = WhzIntrospectedTableMyBatis3Impl.class.getName();
         }
 
         IntrospectedTable answer = (IntrospectedTable) createInternalObject(type);

@@ -52,48 +52,38 @@ public abstract class IntrospectedTable {
      */
     protected enum InternalAttribute {
         
-        /** The attr dao implementation type. */
+        /** dao层接口的实现类的全限定类名 */
         ATTR_DAO_IMPLEMENTATION_TYPE,
-        
-        /** The attr dao interface type. */
+        /** dao层接口类的全限定类名 */
         ATTR_DAO_INTERFACE_TYPE,
-        
-        /** The attr primary key type. */
+        /** primary key类的全限定类名 */
         ATTR_PRIMARY_KEY_TYPE,
-        
-        /** The attr base record type. */
+        /** java Base Model类的全限定类名 */
         ATTR_BASE_RECORD_TYPE,
-        
-        /** The attr record with blobs type. */
+        /** 带有blob字段的Model类的全限定类名 */
         ATTR_RECORD_WITH_BLOBS_TYPE,
-        
-        /** The attr example type. */
+        /** XxxExample model类的全限定类名 */
         ATTR_EXAMPLE_TYPE,
+
         
         /** The ATT r_ ibati s2_ sq l_ ma p_ package. */
         ATTR_IBATIS2_SQL_MAP_PACKAGE,
-        
         /** The ATT r_ ibati s2_ sq l_ ma p_ fil e_ name. */
         ATTR_IBATIS2_SQL_MAP_FILE_NAME,
-        
         /** The ATT r_ ibati s2_ sq l_ ma p_ namespace. */
         ATTR_IBATIS2_SQL_MAP_NAMESPACE,
         
         /** The ATT r_ mybati s3_ xm l_ mappe r_ package. */
         ATTR_MYBATIS3_XML_MAPPER_PACKAGE,
-        
         /** The ATT r_ mybati s3_ xm l_ mappe r_ fil e_ name. */
         ATTR_MYBATIS3_XML_MAPPER_FILE_NAME,
-        
         /** 表示Mapper接口的全限定类名 */
         ATTR_MYBATIS3_JAVA_MAPPER_TYPE,
-        
         /** used as XML Mapper namespace if no client is generated. */
         ATTR_MYBATIS3_FALLBACK_SQL_MAP_NAMESPACE,
         
         /** The attr fully qualified table name at runtime. */
         ATTR_FULLY_QUALIFIED_TABLE_NAME_AT_RUNTIME,
-        
         /** The attr aliased fully qualified table name at runtime. */
         ATTR_ALIASED_FULLY_QUALIFIED_TABLE_NAME_AT_RUNTIME,
 
@@ -161,13 +151,11 @@ public abstract class IntrospectedTable {
     /** The rules. */
     protected Rules rules;
     
-    /** The primary key columns. */
+    /** 主键字段 */
     protected List<IntrospectedColumn> primaryKeyColumns;
-    
-    /** The base columns. */
+    /** 基础字段 */
     protected List<IntrospectedColumn> baseColumns;
-    
-    /** The blob columns. */
+    /** blob字段 */
     protected List<IntrospectedColumn> blobColumns;
     
     /** The target runtime. */
@@ -1338,13 +1326,12 @@ public abstract class IntrospectedTable {
     }
 
     /**
-     * Calculate java model package.
+     * 获取 java model 对象的包名
      *
      * @return the string
      */
     protected String calculateJavaModelPackage() {
-        JavaModelGeneratorConfiguration config = context
-                .getJavaModelGeneratorConfiguration();
+        JavaModelGeneratorConfiguration config = context.getJavaModelGeneratorConfiguration();
 
         StringBuilder sb = new StringBuilder();
         sb.append(config.getTargetPackage());
@@ -1608,8 +1595,7 @@ public abstract class IntrospectedTable {
      *            the new primary key type
      */
     public void setPrimaryKeyType(String primaryKeyType) {
-        internalAttributes.put(InternalAttribute.ATTR_PRIMARY_KEY_TYPE,
-                primaryKeyType);
+        internalAttributes.put(InternalAttribute.ATTR_PRIMARY_KEY_TYPE, primaryKeyType);
     }
 
     /**

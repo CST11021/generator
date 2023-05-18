@@ -15,13 +15,9 @@
  */
 package org.mybatis.generator.api.dom.java;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.mybatis.generator.api.dom.OutputUtilities;
+
+import java.util.*;
 
 /**
  * This class encapsulates the idea of an inner class - it has methods that make
@@ -33,30 +29,27 @@ public class InnerClass extends JavaElement {
     
     /** The fields. */
     private List<Field> fields;
-
     /** The inner classes. */
     private List<InnerClass> innerClasses;
-
     /** The inner enums. */
     private List<InnerEnum> innerEnums;
-
     /** The super class. */
     private FullyQualifiedJavaType superClass;
-
     /** The type. */
     private FullyQualifiedJavaType type;
-
     /** The super interface types. */
     private Set<FullyQualifiedJavaType> superInterfaceTypes;
-
     /** The methods. */
     private List<Method> methods;
-
     /** The is abstract. */
     private boolean isAbstract;
     
     /** The initialization blocks. */
     private List<InitializationBlock> initializationBlocks;
+
+
+
+
 
     /**
      * Instantiates a new inner class.
@@ -74,7 +67,6 @@ public class InnerClass extends JavaElement {
         methods = new ArrayList<Method>();
         initializationBlocks = new ArrayList<InitializationBlock>();
     }
-
     /**
      * Instantiates a new inner class.
      *
@@ -84,6 +76,12 @@ public class InnerClass extends JavaElement {
     public InnerClass(String typeName) {
         this(new FullyQualifiedJavaType(typeName));
     }
+
+
+
+
+    // getter and setter ...
+
 
     /**
      * Gets the fields.

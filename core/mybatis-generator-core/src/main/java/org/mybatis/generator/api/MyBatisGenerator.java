@@ -161,7 +161,7 @@ public class MyBatisGenerator {
 
 
 
-        // 确定每个table使用的代码生成实现模式
+        // 初始化IntrospectedTable实例: 确定每个table使用的代码生成实现模式
         for (Context context : contextsToRun) {
             context.introspectTables(callback, warnings, fullyQualifiedTableNames);
         }

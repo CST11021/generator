@@ -4,6 +4,10 @@ import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElementGenerator;
+import org.mybatis.generator.internal.util.StringUtility;
+
+import static com.whz.mybatis.generator.config.WhzConstant.NEW_LINE;
+import static com.whz.mybatis.generator.config.WhzConstant.TAB;
 
 /**
  * @Author 盖伦
@@ -34,16 +38,26 @@ public class WhzListElementGenerator extends AbstractXmlElementGenerator {
         answer.addAttribute(new Attribute("parameterType",  introspectedTable.getBaseRecordType()));
         answer.addAttribute(new Attribute("resultMap",  "BaseResultMap"));
 
-        answer.addElement(new TextElement("select\n" +
-                "        <include refid=\"baseColumn\"/>\n" +
-                "        from <include refid=\"tableName\"/>\n" +
-                "        <where>\n" +
-                "            <include refid=\"qc\"/>\n" +
-                "        </where>\n" +
-                "        <if test=\"orderBy != null\">\n" +
-                "            order by ${orderBy}\n" +
-                "        </if>\n" +
-                "        <include refid=\"page-limit\"/>"));
+        StringBuffer sb = new StringBuffer();
+        sb.append("select <include refid=\"baseColumn\"/>" +
+                NEW_LINE + TAB + "from <include refid=\"tableName\"/>" +
+                NEW_LINE + TAB + "<where>" +
+                NEW_LINE + TAB + TAB + "<include refid=\"qc\"/>" +
+                NEW_LINE + TAB + "</where>");
+
+        String orderByFieldName = introspectedTable.getTableConfiguration().getOrderByFieldName();
+        if (StringUtility.stringHasValue(orderByFieldName)) {
+            sb.append(NEW_LINE + TAB + "<if test=\"" + orderByFieldName + " != null\">" +
+                    NEW_LINE + TAB + TAB + "order by ${" + orderByFieldName + "}" +
+                    NEW_LINE + TAB + "</if>");
+        }
+
+        String offsetFieldName = introspectedTable.getTableConfiguration().getOffsetFieldName();
+        String limitFieldName = introspectedTable.getTableConfiguration().getLimitFieldName();
+        if (StringUtility.stringHasValue(offsetFieldName) && StringUtility.stringHasValue(limitFieldName)) {
+            sb.append(NEW_LINE + TAB + "<include refid=\"page-limit\"/>");
+        }
+        answer.addElement(new TextElement(sb.toString()));
 
         parentElement.addElement(answer);
         context.getCommentGenerator().addComment(answer);

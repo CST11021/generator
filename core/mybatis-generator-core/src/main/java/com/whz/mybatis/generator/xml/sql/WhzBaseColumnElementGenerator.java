@@ -1,4 +1,4 @@
-package com.whz.mybatis.generator.xml;
+package com.whz.mybatis.generator.xml.sql;
 
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.xml.Attribute;
@@ -34,7 +34,7 @@ public class WhzBaseColumnElementGenerator extends AbstractXmlElementGenerator {
         answer.addElement(new TextElement("<![CDATA["));
 
         StringBuilder sb = new StringBuilder();
-        Iterator<IntrospectedColumn> iter = introspectedTable.getAllColumns().iterator();
+        Iterator<IntrospectedColumn> iter = introspectedTable.getTableAllColumns().iterator();
         while (iter.hasNext()) {
             sb.append(iter.next().getActualColumnName());
             if (iter.hasNext()) {

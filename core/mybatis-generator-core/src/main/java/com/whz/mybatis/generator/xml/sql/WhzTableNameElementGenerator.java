@@ -1,4 +1,4 @@
-package com.whz.mybatis.generator.xml;
+package com.whz.mybatis.generator.xml.sql;
 
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.TextElement;

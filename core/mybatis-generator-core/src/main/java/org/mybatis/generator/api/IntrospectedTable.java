@@ -15,6 +15,7 @@
  */
 package org.mybatis.generator.api;
 
+import com.whz.mybatis.generator.config.JavaQueryModelGeneratorConfiguration;
 import org.mybatis.generator.config.*;
 import org.mybatis.generator.internal.rules.ConditionalModelRules;
 import org.mybatis.generator.internal.rules.FlatModelRules;
@@ -40,7 +41,6 @@ public abstract class IntrospectedTable {
      * The Enum TargetRuntime.
      */
     public enum TargetRuntime {
-        
         /** The IBATI s2. */
         IBATIS2, 
         /** The MYBATI s3. */
@@ -60,6 +60,7 @@ public abstract class IntrospectedTable {
         ATTR_PRIMARY_KEY_TYPE,
         /** java Base Model类的全限定类名 */
         ATTR_BASE_RECORD_TYPE,
+        ATTR_QUERY_RECORD_TYPE,
         /** 带有blob字段的Model类的全限定类名 */
         ATTR_RECORD_WITH_BLOBS_TYPE,
         /** XxxExample model类的全限定类名 */
@@ -139,17 +140,22 @@ public abstract class IntrospectedTable {
         ATTR_MYBATIS3_SQL_PROVIDER_TYPE
     }
 
+    // 配置信息
+
+    /** The context. */
+    protected Context context;
     /** The table configuration. */
     protected TableConfiguration tableConfiguration;
-    
     /** The fully qualified table. */
     protected FullyQualifiedTable fullyQualifiedTable;
     
-    /** The context. */
-    protected Context context;
+
     
-    /** The rules. */
+    /** 代码的生成规则 */
     protected Rules rules;
+
+    /** The target runtime. */
+    protected TargetRuntime targetRuntime;
     
     /** 主键字段 */
     protected List<IntrospectedColumn> primaryKeyColumns;
@@ -157,28 +163,28 @@ public abstract class IntrospectedTable {
     protected List<IntrospectedColumn> baseColumns;
     /** blob字段 */
     protected List<IntrospectedColumn> blobColumns;
-    
-    /** The target runtime. */
-    protected TargetRuntime targetRuntime;
+    protected List<IntrospectedColumn> queryColumns;
+    protected List<IntrospectedColumn> allColumns;
 
     /**
      * Attributes may be used by plugins to capture table related state between
      * the different plugin calls.
      */
     protected Map<String, Object> attributes;
-
     /** Internal attributes are used to store commonly accessed items by all code generators. */
     protected Map<IntrospectedTable.InternalAttribute, String> internalAttributes;
-    
-    /**
-     * Table remarks retrieved from database metadata
-     */
+
+
+
+    // DB表的元数据信息
+
+    /** 表备注信息 */
     protected String remarks;
-    
-    /**
-     * Table type retrieved from database metadata
-     */
+    /** Table type retrieved from database metadata */
     protected String tableType;
+
+
+
 
     /**
      * Instantiates a new introspected table.
@@ -192,8 +198,21 @@ public abstract class IntrospectedTable {
         primaryKeyColumns = new ArrayList<IntrospectedColumn>();
         baseColumns = new ArrayList<IntrospectedColumn>();
         blobColumns = new ArrayList<IntrospectedColumn>();
+        queryColumns = new ArrayList<IntrospectedColumn>();
+        allColumns = new ArrayList<IntrospectedColumn>();
         attributes = new HashMap<String, Object>();
         internalAttributes = new HashMap<IntrospectedTable.InternalAttribute, String>();
+    }
+
+
+    public boolean isQueryColumn(IntrospectedColumn column) {
+        for (IntrospectedColumn col : queryColumns) {
+            if (col.getActualColumnName().equals(column.getActualColumnName())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -391,6 +410,11 @@ public abstract class IntrospectedTable {
         return answer;
     }
 
+
+    public List<IntrospectedColumn> getTableAllColumns() {
+        return allColumns;
+    }
+
     /**
      * Returns all columns except BLOBs (for use by the select by example without BLOBs method).
      *
@@ -490,6 +514,10 @@ public abstract class IntrospectedTable {
      */
     public String getBaseRecordType() {
         return internalAttributes.get(InternalAttribute.ATTR_BASE_RECORD_TYPE);
+    }
+
+    public String getQueryRecordType() {
+        return internalAttributes.get(InternalAttribute.ATTR_QUERY_RECORD_TYPE);
     }
 
     /**
@@ -635,6 +663,7 @@ public abstract class IntrospectedTable {
      *            the introspected column
      */
     public void addColumn(IntrospectedColumn introspectedColumn) {
+        allColumns.add(introspectedColumn);
         if (introspectedColumn.isBLOBColumn()) {
             blobColumns.add(introspectedColumn);
         } else {
@@ -642,6 +671,14 @@ public abstract class IntrospectedTable {
         }
 
         introspectedColumn.setIntrospectedTable(this);
+    }
+
+    public void addQueryColumn(IntrospectedColumn introspectedColumn) {
+        queryColumns.add(introspectedColumn);
+    }
+
+    public List<IntrospectedColumn> getQueryColumns() {
+        return queryColumns;
     }
 
     /**
@@ -720,6 +757,8 @@ public abstract class IntrospectedTable {
         calculateJavaClientAttributes();
         // 设置Model实体的全限定类名
         calculateModelAttributes();
+        // 设置QueryModel实体的全限定类名
+        calculateQueryModelAttributes();
         // 设置xml要生成的代码的statementId
         calculateXmlAttributes();
 
@@ -1019,8 +1058,7 @@ public abstract class IntrospectedTable {
      * @return the blob column list id
      */
     public String getBlobColumnListId() {
-        return internalAttributes
-                .get(InternalAttribute.ATTR_BLOB_COLUMN_LIST_ID);
+        return internalAttributes.get(InternalAttribute.ATTR_BLOB_COLUMN_LIST_ID);
     }
 
     /**
@@ -1029,8 +1067,7 @@ public abstract class IntrospectedTable {
      * @return the base column list id
      */
     public String getBaseColumnListId() {
-        return internalAttributes
-                .get(InternalAttribute.ATTR_BASE_COLUMN_LIST_ID);
+        return internalAttributes.get(InternalAttribute.ATTR_BASE_COLUMN_LIST_ID);
     }
 
     /**
@@ -1341,6 +1378,21 @@ public abstract class IntrospectedTable {
     }
 
     /**
+     * 获取 java model 对象的包名
+     *
+     * @return the string
+     */
+    protected String calculateJavaQueryModelPackage() {
+        JavaQueryModelGeneratorConfiguration config = context.getJavaQueryModelGeneratorConfiguration();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(config.getTargetPackage());
+        sb.append(fullyQualifiedTable.getSubPackageForModel(isSubPackagesEnabled(config)));
+
+        return sb.toString();
+    }
+
+    /**
      * Calculate model attributes.
      */
     protected void calculateModelAttributes() {
@@ -1372,6 +1424,17 @@ public abstract class IntrospectedTable {
         sb.append(fullyQualifiedTable.getDomainObjectName());
         sb.append("Example");
         setExampleType(sb.toString());
+    }
+
+    /**
+     * Calculate model attributes.
+     */
+    protected void calculateQueryModelAttributes() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(calculateJavaQueryModelPackage());
+        sb.append('.');
+        sb.append(fullyQualifiedTable.getQueryObjectName());
+        setQueryRecordType(sb.toString());
     }
 
     /**
@@ -1605,8 +1668,17 @@ public abstract class IntrospectedTable {
      *            the new base record type
      */
     public void setBaseRecordType(String baseRecordType) {
-        internalAttributes.put(InternalAttribute.ATTR_BASE_RECORD_TYPE,
-                baseRecordType);
+        internalAttributes.put(InternalAttribute.ATTR_BASE_RECORD_TYPE, baseRecordType);
+    }
+
+    /**
+     * Sets the base record type.
+     *
+     * @param baseRecordType
+     *            the new base record type
+     */
+    public void setQueryRecordType(String baseRecordType) {
+        internalAttributes.put(InternalAttribute.ATTR_QUERY_RECORD_TYPE, baseRecordType);
     }
 
     /**
@@ -1616,8 +1688,7 @@ public abstract class IntrospectedTable {
      *            the new record with blo bs type
      */
     public void setRecordWithBLOBsType(String recordWithBLOBsType) {
-        internalAttributes.put(InternalAttribute.ATTR_RECORD_WITH_BLOBS_TYPE,
-                recordWithBLOBsType);
+        internalAttributes.put(InternalAttribute.ATTR_RECORD_WITH_BLOBS_TYPE, recordWithBLOBsType);
     }
 
     /**

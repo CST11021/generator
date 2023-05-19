@@ -113,6 +113,14 @@ public class ConfigurationParser {
         return parseConfiguration(is);
     }
 
+    /**
+     * 核心方法
+     *
+     * @param inputSource
+     * @return
+     * @throws IOException
+     * @throws XMLParserException
+     */
     private Configuration parseConfiguration(InputSource inputSource) throws IOException, XMLParserException {
         parseErrors.clear();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -122,8 +130,7 @@ public class ConfigurationParser {
             DocumentBuilder builder = factory.newDocumentBuilder();
             builder.setEntityResolver(new ParserEntityResolver());
 
-            ParserErrorHandler handler = new ParserErrorHandler(warnings,
-                    parseErrors);
+            ParserErrorHandler handler = new ParserErrorHandler(warnings, parseErrors);
             builder.setErrorHandler(handler);
 
             Document document = null;
@@ -170,14 +177,12 @@ public class ConfigurationParser {
     }
 
     private Configuration parseIbatorConfiguration(Element rootNode) throws XMLParserException {
-        IbatorConfigurationParser parser = new IbatorConfigurationParser(
-        		extraProperties);
+        IbatorConfigurationParser parser = new IbatorConfigurationParser(extraProperties);
         return parser.parseIbatorConfiguration(rootNode);
     }
 
     private Configuration parseMyBatisGeneratorConfiguration(Element rootNode) throws XMLParserException {
-        MyBatisGeneratorConfigurationParser parser = new MyBatisGeneratorConfigurationParser(
-        		extraProperties);
+        MyBatisGeneratorConfigurationParser parser = new MyBatisGeneratorConfigurationParser(extraProperties);
         return parser.parseConfiguration(rootNode);
     }
 }

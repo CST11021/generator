@@ -27,15 +27,15 @@ import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
  */
 public interface Rules {
 
+    boolean generateCountByExample();
     /**
-     * Implements the rule for generating the insert SQL Map element and DAO
-     * method. If the insert statement is allowed, then generate the element and
-     * method.
-     * 
+     * Implements the rule for generating the select by example without BLOBs
+     * SQL Map element and DAO method. If the selectByExample statement is
+     * allowed, then generate the element and method.
+     *
      * @return true if the element and method should be generated
      */
-    boolean generateInsert();
-
+    boolean generateSelectByExampleWithoutBLOBs();
     /**
      * Implements the rule for generating the insert selective SQL Map element
      * and DAO method. If the insert statement is allowed, then generate the
@@ -44,6 +44,20 @@ public interface Rules {
      * @return true if the element and method should be generated
      */
     boolean generateInsertSelective();
+    boolean generateUpdateByExampleSelective();
+
+
+
+
+
+    /**
+     * Implements the rule for generating the insert SQL Map element and DAO
+     * method. If the insert statement is allowed, then generate the element and
+     * method.
+     *
+     * @return true if the element and method should be generated
+     */
+    boolean generateInsert();
 
     /**
      * Calculates the class that contains all fields. This class is used as the
@@ -175,15 +189,6 @@ public interface Rules {
     boolean generateSelectByPrimaryKey();
 
     /**
-     * Implements the rule for generating the select by example without BLOBs
-     * SQL Map element and DAO method. If the selectByExample statement is
-     * allowed, then generate the element and method.
-     * 
-     * @return true if the element and method should be generated
-     */
-    boolean generateSelectByExampleWithoutBLOBs();
-
-    /**
      * Implements the rule for generating the select by example with BLOBs SQL
      * Map element and DAO method. If the table has BLOB fields and the
      * selectByExample statement is allowed, then generate the element and
@@ -201,10 +206,6 @@ public interface Rules {
      * @return true if the example class should be generated
      */
     boolean generateExampleClass();
-
-    boolean generateCountByExample();
-
-    boolean generateUpdateByExampleSelective();
 
     boolean generateUpdateByExampleWithoutBLOBs();
 

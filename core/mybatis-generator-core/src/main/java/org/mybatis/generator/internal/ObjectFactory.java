@@ -228,8 +228,7 @@ public class ObjectFactory {
      *            the warnings
      * @return the java type resolver
      */
-    public static JavaTypeResolver createJavaTypeResolver(Context context,
-            List<String> warnings) {
+    public static JavaTypeResolver createJavaTypeResolver(Context context, List<String> warnings) {
         JavaTypeResolverConfiguration config = context
                 .getJavaTypeResolverConfiguration();
         String type;
@@ -264,8 +263,7 @@ public class ObjectFactory {
      *            the plugin configuration
      * @return the plugin
      */
-    public static Plugin createPlugin(Context context,
-            PluginConfiguration pluginConfiguration) {
+    public static Plugin createPlugin(Context context, PluginConfiguration pluginConfiguration) {
         Plugin plugin = (Plugin) createInternalObject(pluginConfiguration
                 .getConfigurationType());
         plugin.setContext(context);

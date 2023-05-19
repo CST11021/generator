@@ -5,6 +5,9 @@ import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElementGenerator;
 
+import static com.whz.mybatis.generator.config.WhzConstant.NEW_LINE;
+import static com.whz.mybatis.generator.config.WhzConstant.TAB;
+
 /**
  * @Author 盖伦
  * @Date 2023/5/16
@@ -27,10 +30,10 @@ public class WhzInsertElementGenerator extends AbstractXmlElementGenerator {
         answer.addAttribute(new Attribute("id", "insert"));
         answer.addAttribute(new Attribute("parameterType",  introspectedTable.getBaseRecordType()));
 
-        answer.addElement(new TextElement("INSERT INTO <include refid=\"tableName\"/>\n" +
-                "        <set>\n" +
-                "            <include refid=\"set\"/>\n" +
-                "        </set>"));
+        answer.addElement(new TextElement("insert into <include refid=\"tableName\"/>" +
+                NEW_LINE + TAB + "<set>" +
+                NEW_LINE + TAB + TAB + "<include refid=\"set\"/>" +
+                NEW_LINE + TAB + "</set>"));
 
         parentElement.addElement(answer);
         context.getCommentGenerator().addComment(answer);

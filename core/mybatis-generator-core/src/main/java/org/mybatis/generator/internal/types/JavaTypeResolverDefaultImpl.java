@@ -15,20 +15,16 @@
  */
 package org.mybatis.generator.internal.types;
 
-import java.math.BigDecimal;
-import java.sql.Types;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.JavaTypeResolver;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.config.PropertyRegistry;
 import org.mybatis.generator.internal.util.StringUtility;
+
+import java.math.BigDecimal;
+import java.sql.Types;
+import java.util.*;
 
 /**
  * 
@@ -122,18 +118,9 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
                 new FullyQualifiedJavaType(String.class.getName())));
     }
 
-    public void addConfigurationProperties(Properties properties) {
-        this.properties.putAll(properties);
-        forceBigDecimals = StringUtility
-                .isTrue(properties
-                        .getProperty(PropertyRegistry.TYPE_RESOLVER_FORCE_BIG_DECIMALS));
-    }
-
-    public FullyQualifiedJavaType calculateJavaType(
-            IntrospectedColumn introspectedColumn) {
+    public FullyQualifiedJavaType calculateJavaType(IntrospectedColumn introspectedColumn) {
         FullyQualifiedJavaType answer = null;
-        JdbcTypeInformation jdbcTypeInformation = typeMap
-                .get(introspectedColumn.getJdbcType());
+        JdbcTypeInformation jdbcTypeInformation = typeMap.get(introspectedColumn.getJdbcType());
 
         if (jdbcTypeInformation != null) {
             answer = jdbcTypeInformation.getFullyQualifiedJavaType();
@@ -142,7 +129,26 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
 
         return answer;
     }
-    
+
+    public String calculateJdbcTypeName(IntrospectedColumn introspectedColumn) {
+        String answer = null;
+        JdbcTypeInformation jdbcTypeInformation = typeMap
+                .get(introspectedColumn.getJdbcType());
+
+        if (jdbcTypeInformation != null) {
+            answer = jdbcTypeInformation.getJdbcTypeName();
+        }
+
+        return answer;
+    }
+
+    public void addConfigurationProperties(Properties properties) {
+        this.properties.putAll(properties);
+        forceBigDecimals = StringUtility
+                .isTrue(properties
+                        .getProperty(PropertyRegistry.TYPE_RESOLVER_FORCE_BIG_DECIMALS));
+    }
+
     protected FullyQualifiedJavaType overrideDefaultType(IntrospectedColumn column, FullyQualifiedJavaType defaultType) {
         FullyQualifiedJavaType answer = defaultType;
         
@@ -187,18 +193,6 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
         return answer;
     }
 
-    public String calculateJdbcTypeName(IntrospectedColumn introspectedColumn) {
-        String answer = null;
-        JdbcTypeInformation jdbcTypeInformation = typeMap
-                .get(introspectedColumn.getJdbcType());
-
-        if (jdbcTypeInformation != null) {
-            answer = jdbcTypeInformation.getJdbcTypeName();
-        }
-
-        return answer;
-    }
-
     public void setWarnings(List<String> warnings) {
         this.warnings = warnings;
     }
@@ -208,12 +202,12 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
     }
 
     public static class JdbcTypeInformation {
+
         private String jdbcTypeName;
 
         private FullyQualifiedJavaType fullyQualifiedJavaType;
 
-        public JdbcTypeInformation(String jdbcTypeName,
-                FullyQualifiedJavaType fullyQualifiedJavaType) {
+        public JdbcTypeInformation(String jdbcTypeName, FullyQualifiedJavaType fullyQualifiedJavaType) {
             this.jdbcTypeName = jdbcTypeName;
             this.fullyQualifiedJavaType = fullyQualifiedJavaType;
         }

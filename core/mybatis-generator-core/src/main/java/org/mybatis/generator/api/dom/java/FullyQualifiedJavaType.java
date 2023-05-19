@@ -23,7 +23,7 @@ import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 /**
- * The Class FullyQualifiedJavaType.
+ * java的全限定类名
  *
  * @author Jeff Butler
  */
@@ -244,6 +244,19 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
     }
 
     /**
+     * Gets the string instance.
+     *
+     * @return the string instance
+     */
+    public static final FullyQualifiedJavaType getStringInstance() {
+        if (stringInstance == null) {
+            stringInstance = new FullyQualifiedJavaType("java.lang.String");
+        }
+
+        return stringInstance;
+    }
+
+    /**
      * Gets the int instance.
      *
      * @return the int instance
@@ -307,19 +320,6 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
     }
 
     /**
-     * Gets the string instance.
-     *
-     * @return the string instance
-     */
-    public static final FullyQualifiedJavaType getStringInstance() {
-        if (stringInstance == null) {
-            stringInstance = new FullyQualifiedJavaType("java.lang.String");
-        }
-
-        return stringInstance;
-    }
-
-    /**
      * Gets the boolean primitive instance.
      *
      * @return the boolean primitive instance
@@ -378,30 +378,10 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
      */
     public static final FullyQualifiedJavaType getGeneratedCriteriaInstance() {
         if (generatedCriteriaInstance == null) {
-            generatedCriteriaInstance = new FullyQualifiedJavaType(
-                    "GeneratedCriteria");
+            generatedCriteriaInstance = new FullyQualifiedJavaType("GeneratedCriteria");
         }
 
         return generatedCriteriaInstance;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
-    public int compareTo(FullyQualifiedJavaType other) {
-        return getFullyQualifiedName().compareTo(other.getFullyQualifiedName());
-    }
-
-    /**
-     * Adds the type argument.
-     *
-     * @param type
-     *            the type
-     */
-    public void addTypeArgument(FullyQualifiedJavaType type) {
-        typeArguments.add(type);
     }
 
     /**
@@ -514,10 +494,9 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
     }
 
     /**
-     * Generic parse.
+     * 通配符解析
      *
-     * @param genericSpecification
-     *            the generic specification
+     * @param genericSpecification the generic specification
      */
     private void genericParse(String genericSpecification) {
         int lastIndex = genericSpecification.lastIndexOf('>');
@@ -564,14 +543,9 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
     }
 
     /**
-     * Returns the package name of a fully qualified type.
-     * 
-     * This method calculates the package as the part of the fully qualified name up to, but not including, the last
-     * element. Therefore, it does not support fully qualified inner classes. Not totally fool proof, but correct in
-     * most instances.
+     * 根据类的全限定类名返回所在的包信息
      *
-     * @param baseQualifiedName
-     *            the base qualified name
+     * @param baseQualifiedName 类的全限定类名
      * @return the package
      */
     private static String getPackage(String baseQualifiedName) {
@@ -588,6 +562,16 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
         return isArray;
     }
 
+    /**
+     * Adds the type argument.
+     *
+     * @param type
+     *            the type
+     */
+    public void addTypeArgument(FullyQualifiedJavaType type) {
+        typeArguments.add(type);
+    }
+
     public List<FullyQualifiedJavaType> getTypeArguments() {
         return typeArguments;
     }
@@ -595,11 +579,6 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
 
 
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -615,21 +594,16 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
         return getFullyQualifiedName().equals(other.getFullyQualifiedName());
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         return getFullyQualifiedName().hashCode();
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#toString()
-     */
+    @Override
+    public int compareTo(FullyQualifiedJavaType other) {
+        return getFullyQualifiedName().compareTo(other.getFullyQualifiedName());
+    }
+
     @Override
     public String toString() {
         return getFullyQualifiedName();

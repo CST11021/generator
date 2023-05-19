@@ -25,7 +25,7 @@ import static org.mybatis.generator.internal.util.StringUtility.composeFullyQual
 import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 
 /**
- * The Class FullyQualifiedTable.
+ * table的全限定名
  *
  * @author Jeff Butler
  */
@@ -51,6 +51,8 @@ public class FullyQualifiedTable {
 
     /** The domain object name. */
     private String domainObjectName;
+
+    private String queryObjectName;
     
     /** The domain object sub package. */
     private String domainObjectSubPackage;
@@ -107,7 +109,7 @@ public class FullyQualifiedTable {
      */
     public FullyQualifiedTable(String introspectedCatalog,
             String introspectedSchema, String introspectedTableName,
-            String domainObjectName, String alias,
+            String domainObjectName, String queryObjectName, String alias,
             boolean ignoreQualifiersAtRuntime, String runtimeCatalog,
             String runtimeSchema, String runtimeTableName,
             boolean delimitIdentifiers, Context context) {
@@ -119,6 +121,7 @@ public class FullyQualifiedTable {
         this.runtimeCatalog = runtimeCatalog;
         this.runtimeSchema = runtimeSchema;
         this.runtimeTableName = runtimeTableName;
+        this.queryObjectName = queryObjectName;
         
         if (stringHasValue(domainObjectName)) {
             int index = domainObjectName.lastIndexOf('.');
@@ -136,10 +139,8 @@ public class FullyQualifiedTable {
             this.alias = alias.trim();
         }
 
-        beginningDelimiter = delimitIdentifiers ? context
-                .getBeginningDelimiter() : "";
-        endingDelimiter = delimitIdentifiers ? context.getEndingDelimiter()
-                : "";
+        beginningDelimiter = delimitIdentifiers ? context.getBeginningDelimiter() : "";
+        endingDelimiter = delimitIdentifiers ? context.getEndingDelimiter() : "";
     }
 
     /**
@@ -265,45 +266,18 @@ public class FullyQualifiedTable {
         }
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
+    public String getQueryObjectName() {
+        if (stringHasValue(queryObjectName)) {
+            return queryObjectName;
+        } else if (stringHasValue(runtimeTableName)) {
+            return getCamelCaseString(runtimeTableName, true) + "QC";
+        } else {
+            return getCamelCaseString(introspectedTableName, true) + "QC";
         }
-
-        if (!(obj instanceof FullyQualifiedTable)) {
-            return false;
-        }
-
-        FullyQualifiedTable other = (FullyQualifiedTable) obj;
-
-        return areEqual(this.introspectedTableName,
-                other.introspectedTableName)
-                && areEqual(this.introspectedCatalog,
-                        other.introspectedCatalog)
-                && areEqual(this.introspectedSchema,
-                        other.introspectedSchema);
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        int result = SEED;
-        result = hash(result, introspectedTableName);
-        result = hash(result, introspectedCatalog);
-        result = hash(result, introspectedSchema);
-
-        return result;
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return composeFullyQualifiedTableName(introspectedCatalog, introspectedSchema, introspectedTableName, '.');
+    public void setQueryObjectName(String queryObjectName) {
+        this.queryObjectName = queryObjectName;
     }
 
     /**
@@ -389,5 +363,45 @@ public class FullyQualifiedTable {
         if (stringHasValue(endingDelimiter)) {
             sb.append(endingDelimiter);
         }
+    }
+
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof FullyQualifiedTable)) {
+            return false;
+        }
+
+        FullyQualifiedTable other = (FullyQualifiedTable) obj;
+
+        return areEqual(this.introspectedTableName,
+                other.introspectedTableName)
+                && areEqual(this.introspectedCatalog,
+                other.introspectedCatalog)
+                && areEqual(this.introspectedSchema,
+                other.introspectedSchema);
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        int result = SEED;
+        result = hash(result, introspectedTableName);
+        result = hash(result, introspectedCatalog);
+        result = hash(result, introspectedSchema);
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return composeFullyQualifiedTableName(introspectedCatalog, introspectedSchema, introspectedTableName, '.');
     }
 }

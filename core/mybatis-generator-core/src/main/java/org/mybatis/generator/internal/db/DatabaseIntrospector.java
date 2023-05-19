@@ -680,6 +680,7 @@ public class DatabaseIntrospector {
                     stringHasValue(tc.getSchema()) ? atn.getSchema() : null,
                     atn.getTableName(),
                     tc.getDomainObjectName(),
+                    tc.getQueryObjectName(),
                     tc.getAlias(),
                     isTrue(tc.getProperty(PropertyRegistry.TABLE_IGNORE_QUALIFIERS_AT_RUNTIME)),
                     tc.getProperty(PropertyRegistry.TABLE_RUNTIME_CATALOG),
@@ -692,6 +693,11 @@ public class DatabaseIntrospector {
 
             for (IntrospectedColumn introspectedColumn : entry.getValue()) {
                 introspectedTable.addColumn(introspectedColumn);
+
+                // 添加查询字段
+                if (tc.getQueryColumns().contains(introspectedColumn.getActualColumnName())) {
+                    introspectedTable.addQueryColumn(introspectedColumn);
+                }
             }
 
             calculatePrimaryKey(table, introspectedTable);

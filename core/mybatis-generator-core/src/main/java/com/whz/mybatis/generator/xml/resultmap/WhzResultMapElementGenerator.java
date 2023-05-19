@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.whz.mybatis.generator.xml;
+package com.whz.mybatis.generator.xml.resultmap;
 
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.xml.Attribute;
@@ -83,7 +83,7 @@ public class WhzResultMapElementGenerator extends AbstractXmlElementGenerator {
     private void addResultMapElements(XmlElement answer) {
 
         // 创建<result>标签
-        for (IntrospectedColumn introspectedColumn : introspectedTable.getAllColumns()) {
+        for (IntrospectedColumn introspectedColumn : introspectedTable.getTableAllColumns()) {
             if (isPKey(introspectedColumn)) {
                 XmlElement resultElement = new XmlElement("id");
                 resultElement.addAttribute(new Attribute("column", MyBatis3FormattingUtilities.getRenamedColumnNameForResultMap(introspectedColumn)));

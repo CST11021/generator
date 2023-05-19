@@ -10,6 +10,15 @@
     -->
     <context id="DB2Tables" targetRuntime="MyBatis3Whz">
 
+        <property name="offsetFieldName" value="offset1"/>
+        <property name="limitFieldName" value="limit2"/>
+        <property name="orderByFieldName" value="orderBy123"/>
+        <property name="deleteColumnName" value="is_delete"/>
+        <property name="deletedValue" value="1"/>
+        <property name="undeleteValue" value="0"/>
+        <property name="gmtCreateColumn" value="r_add_time"/>
+        <property name="gmtModifiedColumn" value="r_modified_time"/>
+
         <plugin type="org.mybatis.generator.plugins.WhzSerializablePlugin"/>
         <commentGenerator type="org.mybatis.generator.internal.WhzCommentGenerator">
         <!--<commentGenerator type="org.mybatis.generator.internal.DefaultCommentGenerator">-->
@@ -28,9 +37,16 @@
 
         <!-- 生成模型的包名和位置 -->
         <javaModelGenerator targetPackage="whz" targetProject="src/test/java">
-            <property name="enableSubPackages" value="true"/>
-            <property name="trimStrings" value="true"/>
+            <!--<property name="enableSubPackages" value="true"/>-->
+            <!--<property name="trimStrings" value="true"/>-->
+            <property name="rootClass" value="cn.gov.zcy.paas.dto.page.PagePO"/>
         </javaModelGenerator>
+
+        <javaQueryModelGenerator targetPackage="whz.abc" targetProject="src/test/java">
+            <!--<property name="enableSubPackages" value="true"/>-->
+            <!--<property name="trimStrings" value="true"/>-->
+            <property name="rootClass" value="cn.gov.zcy.paas.dto.page.PagePO"/>
+        </javaQueryModelGenerator>
 
         <!-- 生成映射文件的包名和位置 -->
         <sqlMapGenerator targetPackage="whz" targetProject="src/test/java">
@@ -42,7 +58,10 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="zlb_baida_form">
+        <table tableName="zlb_baida_form" >
+            <!--offsetFieldName="" limitFieldName="" deleteColumnName="is_delete" deletedValue="1" undeleteValue="0" gmtCreateColumn="r_add_time" gmtModifiedColumn="r_modified_time"-->
+            <property name="queryColumns" value="id,code"/>
+
             <!--  -->
             <property name="enableSelectByPrimaryKey" value="true"/>
             <property name="enableSelectByExample" value="true"/>

@@ -50,12 +50,12 @@ public class WhzGetByQc extends AbstractJavaMapperMethodGenerator {
      * @return
      */
     private Parameter buildParameter() {
-        return new Parameter(new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType() + "QC"), "qc");
+        return new Parameter(new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType()), "qc");
     }
 
     private Set<FullyQualifiedJavaType> buildImportedTypes() {
         Set<FullyQualifiedJavaType> importedTypes = new TreeSet();
-        importedTypes.add(new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType()));
+        importedTypes.add(new FullyQualifiedJavaType(this.introspectedTable.getQueryRecordType()));
 
         return importedTypes;
     }

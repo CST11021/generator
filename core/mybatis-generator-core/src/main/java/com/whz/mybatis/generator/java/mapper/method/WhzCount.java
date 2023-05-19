@@ -50,13 +50,13 @@ public class WhzCount extends AbstractJavaMapperMethodGenerator {
      * @return
      */
     private Parameter buildParameter() {
-        return new Parameter(new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType() + "QC"), "qc");
+        return new Parameter(new FullyQualifiedJavaType(this.introspectedTable.getQueryRecordType()), "qc");
     }
 
     private Set<FullyQualifiedJavaType> buildImportedTypes() {
         Set<FullyQualifiedJavaType> importedTypes = new TreeSet();
         importedTypes.add(FullyQualifiedJavaType.getNewListInstance());
-        importedTypes.add(new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType()));
+        importedTypes.add(new FullyQualifiedJavaType(this.introspectedTable.getQueryRecordType()));
 
         return importedTypes;
     }

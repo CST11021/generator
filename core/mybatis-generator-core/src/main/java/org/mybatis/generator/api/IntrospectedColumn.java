@@ -15,12 +15,12 @@
  */
 package org.mybatis.generator.api;
 
-import java.sql.Types;
-import java.util.Properties;
-
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.internal.util.StringUtility;
+
+import java.sql.Types;
+import java.util.Properties;
 
 /**
  * This class holds information about an introspected column. The class has
@@ -29,66 +29,54 @@ import org.mybatis.generator.internal.util.StringUtility;
  * @author Jeff Butler
  */
 public class IntrospectedColumn {
+
+    // db字段的元数据
+
     protected String actualColumnName;
-
-    protected int jdbcType;
-
-    protected String jdbcTypeName;
-
-    protected boolean nullable;
-
-    protected int length;
-
-    protected int scale;
-
-    protected boolean identity;
-    
-    protected boolean isSequenceColumn;
-
     protected String javaProperty;
-
+    protected int jdbcType;
+    protected String jdbcTypeName;
     protected FullyQualifiedJavaType fullyQualifiedJavaType;
-
-    protected String tableAlias;
-
+    protected boolean nullable;
+    protected int length;
+    protected int scale;
+    protected boolean identity;
+    protected boolean isSequenceColumn;
     protected String typeHandler;
-
-    protected Context context;
-
     protected boolean isColumnNameDelimited;
-
-    protected IntrospectedTable introspectedTable;
-
-    protected Properties properties;
-
-    // any database comment associated with this column. May be null
     protected String remarks;
-
     protected String defaultValue;
-    
     /**
      * true if the JDBC driver reports that this column is auto-increment
      */
     protected boolean isAutoIncrement;
-    
     /**
      * true if the JDBC driver reports that this column is generated
      */
     protected boolean isGeneratedColumn;
-    
     /**
      * True if there is a column override that defines this column as GENERATED ALWAYS
      */
     protected boolean isGeneratedAlways;
 
-    /**
-     * Constructs a Column definition. This object holds all the information
-     * about a column that is required to generate Java objects and SQL maps;
-     */
+
+    // 其他信息
+
+    protected Context context;
+    protected Properties properties;
+    protected IntrospectedTable introspectedTable;
+    protected String tableAlias;
+
+
+
+
     public IntrospectedColumn() {
         super();
         properties = new Properties();
     }
+
+
+    // getter and setter ...
 
     public int getJdbcType() {
         return jdbcType;
@@ -120,30 +108,6 @@ public class IntrospectedColumn {
 
     public void setScale(int scale) {
         this.scale = scale;
-    }
-
-    /*
-     * This method is primarily used for debugging, so we don't externalize the
-     * strings
-     */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("Actual Column Name: ");
-        sb.append(actualColumnName);
-        sb.append(", JDBC Type: ");
-        sb.append(jdbcType);
-        sb.append(", Nullable: ");
-        sb.append(nullable);
-        sb.append(", Length: ");
-        sb.append(length);
-        sb.append(", Scale: ");
-        sb.append(scale);
-        sb.append(", Identity: ");
-        sb.append(identity);
-
-        return sb.toString();
     }
 
     public void setActualColumnName(String actualColumnName) {
@@ -256,8 +220,7 @@ public class IntrospectedColumn {
         return fullyQualifiedJavaType;
     }
 
-    public void setFullyQualifiedJavaType(
-            FullyQualifiedJavaType fullyQualifiedJavaType) {
+    public void setFullyQualifiedJavaType(FullyQualifiedJavaType fullyQualifiedJavaType) {
         this.fullyQualifiedJavaType = fullyQualifiedJavaType;
     }
 
@@ -339,5 +302,25 @@ public class IntrospectedColumn {
 
     public void setGeneratedAlways(boolean isGeneratedAlways) {
         this.isGeneratedAlways = isGeneratedAlways;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Actual Column Name: ");
+        sb.append(actualColumnName);
+        sb.append(", JDBC Type: ");
+        sb.append(jdbcType);
+        sb.append(", Nullable: ");
+        sb.append(nullable);
+        sb.append(", Length: ");
+        sb.append(length);
+        sb.append(", Scale: ");
+        sb.append(scale);
+        sb.append(", Identity: ");
+        sb.append(identity);
+
+        return sb.toString();
     }
 }

@@ -1,4 +1,4 @@
-package com.whz.mybatis.generator.xml;
+package com.whz.mybatis.generator.xml.sql;
 
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.xml.Attribute;
@@ -6,7 +6,6 @@ import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElementGenerator;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -38,28 +37,25 @@ public class WhzQcElementGenerator extends AbstractXmlElementGenerator {
     //     </sql>
     List<String> includeColumnNameList;
     List<String> excludeColumnNameList;
-    String deleteColumnName = "";
+
     String undeleteValue = "";
     String deletedValue = "";
 
     @Override
     public void addElements(XmlElement parentElement) {
+        String deleteColumnName = introspectedTable.getTableConfiguration().getDeleteColumnName();
+        String undeleteValue = introspectedTable.getTableConfiguration().getUndeleteValue();
+
         XmlElement answer = new XmlElement("sql");
         answer.addAttribute(new Attribute("id", "qc"));
 
-        Iterator<IntrospectedColumn> iter = introspectedTable.getAllColumns().iterator();
-        while (iter.hasNext()) {
-            IntrospectedColumn column = iter.next();
+        for (IntrospectedColumn column : introspectedTable.getTableAllColumns()) {
 
             if (column.getActualColumnName().equals(deleteColumnName)) {
-                answer.addElement(new TextElement("deleteColumnName = " + undeleteValue));
+                answer.addElement(0, new TextElement(column.getActualColumnName() + " = " + undeleteValue));
             }
 
-            if (excludeColumnNameList != null && excludeColumnNameList.contains(column.getActualColumnName())) {
-                continue;
-            }
-
-            if (includeColumnNameList == null || includeColumnNameList.contains(column.getActualColumnName())) {
+            if (introspectedTable.isQueryColumn(column)) {
                 XmlElement ifE = new XmlElement("if");
                 ifE.addAttribute(new Attribute("test", column.getJavaProperty() + " != null"));
                 ifE.addElement(new TextElement("and " + column.getActualColumnName() + " = #{" + column.getJavaProperty() + "}"));

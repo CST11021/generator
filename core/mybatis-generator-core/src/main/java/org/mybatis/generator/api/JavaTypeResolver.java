@@ -15,11 +15,11 @@
  */
 package org.mybatis.generator.api;
 
-import java.util.List;
-import java.util.Properties;
-
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.config.Context;
+
+import java.util.List;
+import java.util.Properties;
 
 /**
  * This interface describes methods that are required in any Java type resolver.
@@ -29,6 +29,7 @@ import org.mybatis.generator.config.Context;
  * @author Jeff Butler
  */
 public interface JavaTypeResolver {
+
     /**
      * Adds properties for this instance from any properties configured in the
      * JavaTypeResolverConfiguration.
@@ -61,8 +62,7 @@ public interface JavaTypeResolver {
     void setWarnings(List<String> warnings);
 
     /**
-     * Calculates and returns the Java type that should be associated with this
-     * column based on the jdbc type, length, and scale of the column.
+     * 根据 IntrospectedColumn 确定JavaType
      * 
      * @param introspectedColumn
      *            the column whose Java type needs to be calculated
@@ -70,12 +70,10 @@ public interface JavaTypeResolver {
      *         is returned, we will set the type to Object and issue a
      *         warning unless the column is ignored or otherwise overridden
      */
-    FullyQualifiedJavaType calculateJavaType(
-            IntrospectedColumn introspectedColumn);
+    FullyQualifiedJavaType calculateJavaType(IntrospectedColumn introspectedColumn);
 
     /**
-     * Calculates and returns the JDBC type name that should be associated with
-     * this column based on the jdbc type, length, and scale of the column.
+     * 根据 IntrospectedColumn 确定jdbcType
      * 
      * @param introspectedColumn
      *            the column whose Java type needs to be calculated
@@ -84,4 +82,5 @@ public interface JavaTypeResolver {
      *         warning unless the column is ignored or otherwise overridden
      */
     String calculateJdbcTypeName(IntrospectedColumn introspectedColumn);
+
 }

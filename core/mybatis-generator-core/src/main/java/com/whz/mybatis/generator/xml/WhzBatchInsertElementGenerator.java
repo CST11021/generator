@@ -5,19 +5,13 @@ import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElementGenerator;
 
-import java.util.List;
+import static com.whz.mybatis.generator.config.WhzConstant.*;
 
 /**
  * @Author 盖伦
  * @Date 2023/5/16
  */
 public class WhzBatchInsertElementGenerator extends AbstractXmlElementGenerator {
-
-    List<String> includeColumnNameList;
-    List<String> excludeColumnNameList;
-    String deleteColumnName = "";
-    String undeleteValue = "";
-    String deletedValue = "";
 
     /**
      *     insert into
@@ -35,12 +29,12 @@ public class WhzBatchInsertElementGenerator extends AbstractXmlElementGenerator 
         answer.addAttribute(new Attribute("id", "batchInsert"));
         answer.addAttribute(new Attribute("parameterType", introspectedTable.getBaseRecordType()));
 
-        answer.addElement(new TextElement("    insert into \n" +
-                "        <include refid=\"tableName\"/>(<include refid=\"baseColumn\"/>)\n" +
-                "    values\n" +
-                "        <foreach collection=\"list\" index=\"index\" item=\"item\" separator=\",\">\n" +
-                "          (<include refid=\"batchSetValue\"/>)\n" +
-                "        </foreach>"));
+        answer.addElement(new TextElement("insert into " +
+                NEW_LINE + TAB + "<include refid=\"tableName\"/>(<include refid=\"baseColumn\"/>)" +
+                NEW_LINE + TAB + "values" +
+                NEW_LINE + TAB + "<foreach collection=\"list\" index=\"index\" item=\"item\" separator=\",\">" +
+                NEW_LINE + TAB + TAB + "(<include refid=\"" + BATCH_INSERT_VALUE + "\"/>)" +
+                NEW_LINE + TAB + "</foreach>"));
 
         parentElement.addElement(answer);
         context.getCommentGenerator().addComment(answer);

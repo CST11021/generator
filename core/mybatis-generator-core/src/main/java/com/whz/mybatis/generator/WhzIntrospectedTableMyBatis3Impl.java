@@ -45,6 +45,11 @@ public class WhzIntrospectedTableMyBatis3Impl extends IntrospectedTable {
         // java model 的生成
         calculateJavaModelGenerators(warnings, progressCallback);
 
+        // java query model的生成
+        AbstractJavaGenerator g2 = new WhzModelQcGenerator();
+        initializeAbstractGenerator(g2, warnings, progressCallback);
+        javaModelGenerators.add(g2);
+
         // Dao层接口的生成
         AbstractJavaClientGenerator javaClientGenerator = calculateClientGenerators(warnings, progressCallback);
 
@@ -63,10 +68,6 @@ public class WhzIntrospectedTableMyBatis3Impl extends IntrospectedTable {
         AbstractJavaGenerator g1 = new WhzModelGenerator();
         initializeAbstractGenerator(g1, warnings, progressCallback);
         javaModelGenerators.add(g1);
-
-        AbstractJavaGenerator g2 = new WhzModelQcGenerator();
-        initializeAbstractGenerator(g2, warnings, progressCallback);
-        javaModelGenerators.add(g2);
 
     }
 

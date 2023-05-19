@@ -6,9 +6,11 @@ import org.mybatis.generator.api.Plugin;
 import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.codegen.AbstractJavaGenerator;
 import org.mybatis.generator.codegen.RootClassInfo;
+import org.mybatis.generator.config.PropertyRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import static org.mybatis.generator.internal.util.JavaBeansUtil.*;
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
@@ -28,7 +30,7 @@ public class WhzModelQcGenerator extends AbstractJavaGenerator {
         progressCallback.startTask(getString("Progress.8", introspectedTable.getFullyQualifiedTable().toString()));
 
         // 创建一个TopLevelClass
-        FullyQualifiedJavaType type = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType() + "QC");
+        FullyQualifiedJavaType type = new FullyQualifiedJavaType(introspectedTable.getQueryRecordType());
         TopLevelClass topLevelClass = new TopLevelClass(type);
         topLevelClass.setVisibility(JavaVisibility.PUBLIC);
 
@@ -62,7 +64,13 @@ public class WhzModelQcGenerator extends AbstractJavaGenerator {
 
         String rootClass = getRootClass();
         Plugin plugins = context.getPlugins();
-        for (IntrospectedColumn introspectedColumn : introspectedTable.getAllColumns()) {
+
+        List<IntrospectedColumn> queryColumns = introspectedTable.getQueryColumns();
+        if (queryColumns == null || queryColumns.size() == 0) {
+            queryColumns = introspectedTable.getTableAllColumns();
+        }
+
+        for (IntrospectedColumn introspectedColumn : queryColumns) {
             if (RootClassInfo.getInstance(rootClass, warnings).containsProperty(introspectedColumn)) {
                 continue;
             }
@@ -104,15 +112,9 @@ public class WhzModelQcGenerator extends AbstractJavaGenerator {
      * @return
      */
     private FullyQualifiedJavaType getSuperClass() {
-        FullyQualifiedJavaType superClass;
-        String rootClass = getRootClass();
-        if (rootClass != null) {
-            superClass = new FullyQualifiedJavaType(rootClass);
-        } else {
-            superClass = null;
-        }
-
-        return superClass;
+        Properties properties = context.getJavaQueryModelGeneratorConfiguration().getProperties();
+        String superClass = properties.getProperty(PropertyRegistry.ANY_ROOT_CLASS);
+        return new FullyQualifiedJavaType(superClass);
     }
 
     /**

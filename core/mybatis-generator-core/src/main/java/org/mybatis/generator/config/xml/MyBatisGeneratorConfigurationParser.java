@@ -28,40 +28,23 @@
  */
 package org.mybatis.generator.config.xml;
 
-import static org.mybatis.generator.internal.util.StringUtility.isTrue;
-import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-import static org.mybatis.generator.internal.util.messages.Messages.getString;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Properties;
-
-import org.mybatis.generator.config.ColumnOverride;
-import org.mybatis.generator.config.ColumnRenamingRule;
-import org.mybatis.generator.config.CommentGeneratorConfiguration;
-import org.mybatis.generator.config.Configuration;
-import org.mybatis.generator.config.ConnectionFactoryConfiguration;
-import org.mybatis.generator.config.Context;
-import org.mybatis.generator.config.GeneratedKey;
-import org.mybatis.generator.config.IgnoredColumn;
-import org.mybatis.generator.config.IgnoredColumnException;
-import org.mybatis.generator.config.IgnoredColumnPattern;
-import org.mybatis.generator.config.JDBCConnectionConfiguration;
-import org.mybatis.generator.config.JavaClientGeneratorConfiguration;
-import org.mybatis.generator.config.JavaModelGeneratorConfiguration;
-import org.mybatis.generator.config.JavaTypeResolverConfiguration;
-import org.mybatis.generator.config.ModelType;
-import org.mybatis.generator.config.PluginConfiguration;
-import org.mybatis.generator.config.PropertyHolder;
-import org.mybatis.generator.config.SqlMapGeneratorConfiguration;
-import org.mybatis.generator.config.TableConfiguration;
+import com.whz.mybatis.generator.config.JavaQueryModelGeneratorConfiguration;
+import org.mybatis.generator.config.*;
 import org.mybatis.generator.exception.XMLParserException;
 import org.mybatis.generator.internal.ObjectFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Properties;
+
+import static org.mybatis.generator.internal.util.StringUtility.isTrue;
+import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
+import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 /**
  * This class parses configuration files into the new Configuration API
@@ -82,8 +65,7 @@ public class MyBatisGeneratorConfigurationParser {
         configurationProperties = new Properties();
     }
 
-    public Configuration parseConfiguration(Element rootNode)
-            throws XMLParserException {
+    public Configuration parseConfiguration(Element rootNode) throws XMLParserException {
 
         Configuration configuration = new Configuration();
 
@@ -107,8 +89,7 @@ public class MyBatisGeneratorConfigurationParser {
         return configuration;
     }
 
-    protected void parseProperties(Configuration configuration, Node node)
-            throws XMLParserException {
+    protected void parseProperties(Configuration configuration, Node node) throws XMLParserException {
         Properties attributes = parseAttributes(node);
         String resource = attributes.getProperty("resource");
         String url = attributes.getProperty("url");
@@ -195,6 +176,8 @@ public class MyBatisGeneratorConfigurationParser {
                 parseConnectionFactory(context, childNode);
             } else if ("javaModelGenerator".equals(childNode.getNodeName())) {
                 parseJavaModelGenerator(context, childNode);
+            } else if ("javaQueryModelGenerator".equals(childNode.getNodeName())) {
+                parseJavaQueryModelGenerator(context, childNode);
             } else if ("javaTypeResolver".equals(childNode.getNodeName())) {
                 parseJavaTypeResolver(context, childNode);
             } else if ("sqlMapGenerator".equals(childNode.getNodeName())) {
@@ -238,34 +221,68 @@ public class MyBatisGeneratorConfigurationParser {
         context.addTableConfiguration(tc);
 
         Properties attributes = parseAttributes(node);
+
+        String queryObjectName = attributes.getProperty("queryObjectName");
+
+        String deleteColumnName = attributes.getProperty("deleteColumnName");
+        if (!stringHasValue(deleteColumnName)) {
+            deleteColumnName = context.getProperty("deleteColumnName");
+        }
+
+        String deletedValue = attributes.getProperty("deletedValue");
+        if (!stringHasValue(deletedValue)) {
+            deletedValue = context.getProperty("deletedValue");
+        }
+
+        String undeleteValue = attributes.getProperty("undeleteValue");
+        if (!stringHasValue(undeleteValue)) {
+            undeleteValue = context.getProperty("undeleteValue");
+        }
+
+        String gmtCreateColumn = attributes.getProperty("gmtCreateColumn");
+        if (!stringHasValue(gmtCreateColumn)) {
+            gmtCreateColumn = context.getProperty("gmtCreateColumn");
+        }
+
+        String gmtModifiedColumn = attributes.getProperty("gmtModifiedColumn");
+        if (!stringHasValue(gmtModifiedColumn)) {
+            gmtModifiedColumn = context.getProperty("gmtModifiedColumn");
+        }
+
+        String orderByFieldName = attributes.getProperty("orderByFieldName");
+        if (!stringHasValue(orderByFieldName)) {
+            orderByFieldName = context.getProperty("orderByFieldName");
+        }
+
+        String offsetFieldName = attributes.getProperty("offsetFieldName");
+        if (!stringHasValue(offsetFieldName)) {
+            offsetFieldName = context.getProperty("offsetFieldName");
+        }
+
+        String limitFieldName = attributes.getProperty("limitFieldName");
+        if (!stringHasValue(limitFieldName)) {
+            limitFieldName = context.getProperty("limitFieldName");
+        }
+
+
         String catalog = attributes.getProperty("catalog");
         String schema = attributes.getProperty("schema");
         String tableName = attributes.getProperty("tableName");
         String domainObjectName = attributes.getProperty("domainObjectName");
         String alias = attributes.getProperty("alias");
         String enableInsert = attributes.getProperty("enableInsert");
-        String enableSelectByPrimaryKey = attributes
-                .getProperty("enableSelectByPrimaryKey");
-        String enableSelectByExample = attributes
-                .getProperty("enableSelectByExample");
-        String enableUpdateByPrimaryKey = attributes
-                .getProperty("enableUpdateByPrimaryKey");
-        String enableDeleteByPrimaryKey = attributes
-                .getProperty("enableDeleteByPrimaryKey");
-        String enableDeleteByExample = attributes
-                .getProperty("enableDeleteByExample");
-        String enableCountByExample = attributes
-                .getProperty("enableCountByExample");
-        String enableUpdateByExample = attributes
-                .getProperty("enableUpdateByExample");
-        String selectByPrimaryKeyQueryId = attributes
-                .getProperty("selectByPrimaryKeyQueryId");
-        String selectByExampleQueryId = attributes
-                .getProperty("selectByExampleQueryId");
+        String enableSelectByPrimaryKey = attributes.getProperty("enableSelectByPrimaryKey");
+        String enableSelectByExample = attributes.getProperty("enableSelectByExample");
+        String enableUpdateByPrimaryKey = attributes.getProperty("enableUpdateByPrimaryKey");
+        String enableDeleteByPrimaryKey = attributes.getProperty("enableDeleteByPrimaryKey");
+        String enableDeleteByExample = attributes.getProperty("enableDeleteByExample");
+        String enableCountByExample = attributes.getProperty("enableCountByExample");
+        String enableUpdateByExample = attributes.getProperty("enableUpdateByExample");
+        String selectByPrimaryKeyQueryId = attributes.getProperty("selectByPrimaryKeyQueryId");
+        String selectByExampleQueryId = attributes.getProperty("selectByExampleQueryId");
         String modelType = attributes.getProperty("modelType");
         String escapeWildcards = attributes.getProperty("escapeWildcards");
-        String delimitIdentifiers = attributes
-                .getProperty("delimitIdentifiers");
+        String delimitIdentifiers = attributes.getProperty("delimitIdentifiers");
         String delimitAllColumns = attributes.getProperty("delimitAllColumns");
         
         String mapperName = attributes.getProperty("mapperName");
@@ -285,6 +302,36 @@ public class MyBatisGeneratorConfigurationParser {
 
         if (stringHasValue(domainObjectName)) {
             tc.setDomainObjectName(domainObjectName);
+        }
+
+        if (stringHasValue(queryObjectName)) {
+            tc.setQueryObjectName(queryObjectName);
+        }
+
+        if (stringHasValue(deleteColumnName)) {
+            tc.setDeleteColumnName(deleteColumnName);
+        }
+        if (stringHasValue(deletedValue)) {
+            tc.setDeletedValue(deletedValue);
+        }
+        if (stringHasValue(undeleteValue)) {
+            tc.setUndeleteValue(undeleteValue);
+        }
+        if (stringHasValue(gmtCreateColumn)) {
+            tc.setGmtCreateColumn(gmtCreateColumn);
+        }
+        if (stringHasValue(gmtModifiedColumn)) {
+            tc.setGmtModifiedColumn(gmtModifiedColumn);
+        }
+
+        if (stringHasValue(offsetFieldName)) {
+            tc.setOffsetFieldName(offsetFieldName);
+        }
+        if (stringHasValue(limitFieldName)) {
+            tc.setLimitFieldName(limitFieldName);
+        }
+        if (stringHasValue(orderByFieldName)) {
+            tc.setOrderByFieldName(orderByFieldName);
         }
 
         if (stringHasValue(alias)) {
@@ -574,8 +621,33 @@ public class MyBatisGeneratorConfigurationParser {
     protected void parseJavaModelGenerator(Context context, Node node) {
         JavaModelGeneratorConfiguration javaModelGeneratorConfiguration = new JavaModelGeneratorConfiguration();
 
-        context
-                .setJavaModelGeneratorConfiguration(javaModelGeneratorConfiguration);
+        context.setJavaModelGeneratorConfiguration(javaModelGeneratorConfiguration);
+
+        Properties attributes = parseAttributes(node);
+        String targetPackage = attributes.getProperty("targetPackage");
+        String targetProject = attributes.getProperty("targetProject");
+
+        javaModelGeneratorConfiguration.setTargetPackage(targetPackage);
+        javaModelGeneratorConfiguration.setTargetProject(targetProject);
+
+        NodeList nodeList = node.getChildNodes();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node childNode = nodeList.item(i);
+
+            if (childNode.getNodeType() != Node.ELEMENT_NODE) {
+                continue;
+            }
+
+            if ("property".equals(childNode.getNodeName())) {
+                parseProperty(javaModelGeneratorConfiguration, childNode);
+            }
+        }
+    }
+
+    protected void parseJavaQueryModelGenerator(Context context, Node node) {
+        JavaQueryModelGeneratorConfiguration javaModelGeneratorConfiguration = new JavaQueryModelGeneratorConfiguration();
+
+        context.setJavaQueryModelGeneratorConfiguration(javaModelGeneratorConfiguration);
 
         Properties attributes = parseAttributes(node);
         String targetPackage = attributes.getProperty("targetPackage");

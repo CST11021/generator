@@ -15,21 +15,17 @@
  */
 package org.mybatis.generator.config;
 
-import static org.mybatis.generator.internal.util.EqualsUtil.areEqual;
-import static org.mybatis.generator.internal.util.HashCodeUtil.hash;
-import static org.mybatis.generator.internal.util.HashCodeUtil.SEED;
-import static org.mybatis.generator.internal.util.messages.Messages.getString;
-import static org.mybatis.generator.internal.util.StringUtility.composeFullyQualifiedTableName;
-import static org.mybatis.generator.internal.util.StringUtility.isTrue;
-import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.XmlElement;
+import org.mybatis.generator.internal.util.StringUtility;
+
+import java.util.*;
+
+import static org.mybatis.generator.internal.util.EqualsUtil.areEqual;
+import static org.mybatis.generator.internal.util.HashCodeUtil.SEED;
+import static org.mybatis.generator.internal.util.HashCodeUtil.hash;
+import static org.mybatis.generator.internal.util.StringUtility.*;
+import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 /**
  * The Class TableConfiguration.
@@ -40,25 +36,18 @@ public class TableConfiguration extends PropertyHolder {
     
     /** The insert statement enabled. */
     private boolean insertStatementEnabled;
-
     /** The select by primary key statement enabled. */
     private boolean selectByPrimaryKeyStatementEnabled;
-
     /** The select by example statement enabled. */
     private boolean selectByExampleStatementEnabled;
-
     /** The update by primary key statement enabled. */
     private boolean updateByPrimaryKeyStatementEnabled;
-
     /** The delete by primary key statement enabled. */
     private boolean deleteByPrimaryKeyStatementEnabled;
-
     /** The delete by example statement enabled. */
     private boolean deleteByExampleStatementEnabled;
-
     /** The count by example statement enabled. */
     private boolean countByExampleStatementEnabled;
-
     /** The update by example statement enabled. */
     private boolean updateByExampleStatementEnabled;
 
@@ -88,6 +77,18 @@ public class TableConfiguration extends PropertyHolder {
     
     /** The domain object name. */
     private String domainObjectName;
+
+    private String queryObjectName;
+    private String deleteColumnName;
+    private String deletedValue;
+    private String undeleteValue;
+    private String gmtCreateColumn;
+    private String gmtModifiedColumn;
+    private String offsetFieldName;
+    private String limitFieldName;
+    private String orderByFieldName;
+
+
     
     /** The alias. */
     private String alias;
@@ -492,6 +493,86 @@ public class TableConfiguration extends PropertyHolder {
         this.domainObjectName = domainObjectName;
     }
 
+    public String getQueryObjectName() {
+        return queryObjectName;
+    }
+
+    public void setQueryObjectName(String queryObjectName) {
+        this.queryObjectName = queryObjectName;
+    }
+
+    public String getGmtCreateColumn() {
+        return gmtCreateColumn;
+    }
+
+    public void setGmtCreateColumn(String gmtCreateColumn) {
+        this.gmtCreateColumn = gmtCreateColumn;
+    }
+
+    public String getGmtModifiedColumn() {
+        return gmtModifiedColumn;
+    }
+
+    public void setGmtModifiedColumn(String gmtModifiedColumn) {
+        this.gmtModifiedColumn = gmtModifiedColumn;
+    }
+
+    public String getOffsetFieldName() {
+        return offsetFieldName;
+    }
+
+    public void setOffsetFieldName(String offsetFieldName) {
+        this.offsetFieldName = offsetFieldName;
+    }
+
+    public String getLimitFieldName() {
+        return limitFieldName;
+    }
+
+    public String getOrderByFieldName() {
+        return orderByFieldName;
+    }
+
+    public void setOrderByFieldName(String orderByFieldName) {
+        this.orderByFieldName = orderByFieldName;
+    }
+
+    public void setLimitFieldName(String limitFieldName) {
+        this.limitFieldName = limitFieldName;
+    }
+
+    public String getDeleteColumnName() {
+        return deleteColumnName;
+    }
+
+    public void setDeleteColumnName(String deleteColumnName) {
+        this.deleteColumnName = deleteColumnName;
+    }
+
+    public String getDeletedValue() {
+        return deletedValue;
+    }
+
+    public void setDeletedValue(String deletedValue) {
+        this.deletedValue = deletedValue;
+    }
+
+    public String getUndeleteValue() {
+        return undeleteValue;
+    }
+
+    public void setUndeleteValue(String undeleteValue) {
+        this.undeleteValue = undeleteValue;
+    }
+
+    public List<String> getQueryColumns() {
+        String columns = getProperty("queryColumns");
+        if (StringUtility.stringHasValue(columns)) {
+            return Arrays.asList(columns.split(","));
+        }
+        return new ArrayList<String>();
+    }
+
     /**
      * Gets the schema.
      *
@@ -794,8 +875,7 @@ public class TableConfiguration extends PropertyHolder {
      * @param updateByExampleStatementEnabled
      *            the new update by example statement enabled
      */
-    public void setUpdateByExampleStatementEnabled(
-            boolean updateByExampleStatementEnabled) {
+    public void setUpdateByExampleStatementEnabled(boolean updateByExampleStatementEnabled) {
         this.updateByExampleStatementEnabled = updateByExampleStatementEnabled;
     }
 
@@ -809,12 +889,10 @@ public class TableConfiguration extends PropertyHolder {
      */
     public void validate(List<String> errors, int listPosition) {
         if (!stringHasValue(tableName)) {
-            errors.add(getString(
-                    "ValidationError.6", Integer.toString(listPosition)));
+            errors.add(getString("ValidationError.6", Integer.toString(listPosition)));
         }
 
-        String fqTableName = composeFullyQualifiedTableName(
-                catalog, schema, tableName, '.');
+        String fqTableName = composeFullyQualifiedTableName(catalog, schema, tableName, '.');
 
         if (generatedKey != null) {
             generatedKey.validate(errors, fqTableName);
@@ -885,8 +963,7 @@ public class TableConfiguration extends PropertyHolder {
      * @param isAllColumnDelimitingEnabled
      *            the new all column delimiting enabled
      */
-    public void setAllColumnDelimitingEnabled(
-            boolean isAllColumnDelimitingEnabled) {
+    public void setAllColumnDelimitingEnabled(boolean isAllColumnDelimitingEnabled) {
         this.isAllColumnDelimitingEnabled = isAllColumnDelimitingEnabled;
     }
 

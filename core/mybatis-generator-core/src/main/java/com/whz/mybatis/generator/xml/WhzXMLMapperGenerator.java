@@ -1,5 +1,7 @@
 package com.whz.mybatis.generator.xml;
 
+import com.whz.mybatis.generator.xml.resultmap.WhzResultMapElementGenerator;
+import com.whz.mybatis.generator.xml.sql.*;
 import org.mybatis.generator.api.FullyQualifiedTable;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.Document;
@@ -60,7 +62,7 @@ public class WhzXMLMapperGenerator extends AbstractXmlGenerator {
         initializeAndExecuteGenerator(new WhzBatchSetElementGenerator(), answer);
 
         // batchSetValue
-        initializeAndExecuteGenerator(new WhzBatchSetValueElementGenerator(), answer);
+        initializeAndExecuteGenerator(new WhzBatchInsertValueElementGenerator(), answer);
 
 
         // tableName

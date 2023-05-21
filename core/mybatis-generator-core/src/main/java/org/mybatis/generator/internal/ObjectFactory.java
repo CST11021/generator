@@ -77,8 +77,7 @@ public class ObjectFactory {
      * @param classLoader
      *            the class loader
      */
-    public static synchronized void addResourceClassLoader(
-            ClassLoader classLoader) {
+    public static synchronized void addResourceClassLoader(ClassLoader classLoader) {
         ObjectFactory.resourceClassLoaders.add(classLoader);
     }
 
@@ -90,8 +89,7 @@ public class ObjectFactory {
      * @param classLoader
      *            the class loader
      */
-    public static synchronized void addExternalClassLoader(
-            ClassLoader classLoader) {
+    public static synchronized void addExternalClassLoader(ClassLoader classLoader) {
         ObjectFactory.externalClassLoaders.add(classLoader);
     }
     
@@ -106,8 +104,7 @@ public class ObjectFactory {
      * @throws ClassNotFoundException
      *             the class not found exception
      */
-    public static Class<?> externalClassForName(String type)
-            throws ClassNotFoundException {
+    public static Class<?> externalClassForName(String type) throws ClassNotFoundException {
 
         Class<?> clazz;
 
@@ -373,9 +370,7 @@ public class ObjectFactory {
      *            the context
      * @return the introspected table
      */
-    public static IntrospectedTable createIntrospectedTable(
-            TableConfiguration tableConfiguration, FullyQualifiedTable table,
-            Context context) {
+    public static IntrospectedTable createIntrospectedTable(TableConfiguration tableConfiguration, FullyQualifiedTable table, Context context) {
 
         IntrospectedTable answer = createIntrospectedTableForValidation(context);
         answer.setFullyQualifiedTable(table);

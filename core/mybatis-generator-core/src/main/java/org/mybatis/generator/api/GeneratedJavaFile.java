@@ -45,16 +45,12 @@ public class GeneratedJavaFile extends GeneratedFile {
      * @param javaFormatter
      *            the java formatter
      */
-    public GeneratedJavaFile(CompilationUnit compilationUnit,
-            String targetProject,
-            String fileEncoding,
-            JavaFormatter javaFormatter) {
+    public GeneratedJavaFile(CompilationUnit compilationUnit, String targetProject, String fileEncoding, JavaFormatter javaFormatter) {
         super(targetProject);
         this.compilationUnit = compilationUnit;
         this.fileEncoding = fileEncoding;
         this.javaFormatter = javaFormatter;
     }
-
     /**
      * Instantiates a new generated java file.
      *
@@ -65,9 +61,7 @@ public class GeneratedJavaFile extends GeneratedFile {
      * @param javaFormatter
      *            the java formatter
      */
-    public GeneratedJavaFile(CompilationUnit compilationUnit,
-            String targetProject,
-            JavaFormatter javaFormatter) {
+    public GeneratedJavaFile(CompilationUnit compilationUnit, String targetProject, JavaFormatter javaFormatter) {
         this(compilationUnit, targetProject, null, javaFormatter);
     }
 

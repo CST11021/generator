@@ -29,21 +29,18 @@ public class Interface extends JavaElement implements CompilationUnit {
     
     /** The imported types. */
     private Set<FullyQualifiedJavaType> importedTypes;
-    
     /** The static imports. */
     private Set<String> staticImports;
-
     /** The type. */
     private FullyQualifiedJavaType type;
-
     /** The super interface types. */
     private Set<FullyQualifiedJavaType> superInterfaceTypes;
-
     /** The methods. */
     private List<Method> methods;
-
     /** The file comment lines. */
     private List<String> fileCommentLines;
+
+
 
     /**
      * Instantiates a new interface.
@@ -60,7 +57,6 @@ public class Interface extends JavaElement implements CompilationUnit {
         fileCommentLines = new ArrayList<String>();
         staticImports = new TreeSet<String>();
     }
-
     /**
      * Instantiates a new interface.
      *
@@ -184,6 +180,8 @@ public class Interface extends JavaElement implements CompilationUnit {
         return sb.toString();
     }
 
+
+
     /**
      * Adds the super interface.
      *
@@ -202,7 +200,6 @@ public class Interface extends JavaElement implements CompilationUnit {
     public List<Method> getMethods() {
         return methods;
     }
-
     /**
      * Adds the method.
      *

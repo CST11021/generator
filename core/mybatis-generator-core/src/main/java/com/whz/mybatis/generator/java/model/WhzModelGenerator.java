@@ -6,6 +6,7 @@ import org.mybatis.generator.api.Plugin;
 import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.codegen.AbstractJavaGenerator;
 import org.mybatis.generator.codegen.RootClassInfo;
+import org.mybatis.generator.internal.util.StringUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,12 @@ public class WhzModelGenerator extends AbstractJavaGenerator {
             }
         }
 
+        // lombok注解
+        if (useLombok()) {
+            topLevelClass.addAnnotation("@Data");
+            topLevelClass.addImportedType("lombok.Data");
+        }
+
         String rootClass = getRootClass();
         Plugin plugins = context.getPlugins();
         for (IntrospectedColumn introspectedColumn : introspectedTable.getAllColumns()) {
@@ -76,19 +83,20 @@ public class WhzModelGenerator extends AbstractJavaGenerator {
                 topLevelClass.addImportedType(field.getType());
             }
 
-            // 添加getter方法
-            Method method = getJavaBeansGetter(introspectedColumn, context, introspectedTable);
-            if (plugins.modelGetterMethodGenerated(method, topLevelClass, introspectedColumn, introspectedTable, Plugin.ModelClassType.BASE_RECORD)) {
-                topLevelClass.addMethod(method);
-            }
+            if (!useLombok()) {
+                // 添加getter方法
+                Method getterMethod = getJavaBeansGetter(introspectedColumn, context, introspectedTable);
+                if (plugins.modelGetterMethodGenerated(getterMethod, topLevelClass, introspectedColumn, introspectedTable, Plugin.ModelClassType.BASE_RECORD)) {
+                    topLevelClass.addMethod(getterMethod);
+                }
 
-            // 添加setter方法
-            if (!introspectedTable.isImmutable()) {
-                method = getJavaBeansSetter(introspectedColumn, context, introspectedTable);
-                if (plugins.modelSetterMethodGenerated(method, topLevelClass, introspectedColumn, introspectedTable, Plugin.ModelClassType.BASE_RECORD)) {
-                    topLevelClass.addMethod(method);
+                // 添加setter方法
+                Method setterMethod = getJavaBeansSetter(introspectedColumn, context, introspectedTable);
+                if (plugins.modelSetterMethodGenerated(setterMethod, topLevelClass, introspectedColumn, introspectedTable, Plugin.ModelClassType.BASE_RECORD)) {
+                    topLevelClass.addMethod(setterMethod);
                 }
             }
+
         }
 
         List<CompilationUnit> answer = new ArrayList<CompilationUnit>();
@@ -96,6 +104,11 @@ public class WhzModelGenerator extends AbstractJavaGenerator {
             answer.add(topLevelClass);
         }
         return answer;
+    }
+
+    private boolean useLombok() {
+        String useLombok = introspectedTable.getContext().getProperty("userLombok");
+        return StringUtility.stringHasValue(useLombok) && "true".equals(useLombok);
     }
 
     /**

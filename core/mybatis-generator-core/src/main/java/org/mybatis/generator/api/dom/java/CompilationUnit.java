@@ -33,54 +33,9 @@ public interface CompilationUnit {
      */
     String getFormattedContent();
 
-    /**
-     * Gets the imported types.
-     *
-     * @return the imported types
-     */
-    Set<FullyQualifiedJavaType> getImportedTypes();
-    
-    /**
-     * Gets the static imports.
-     *
-     * @return the static imports
-     */
-    Set<String> getStaticImports();
 
-    /**
-     * Gets the super class.
-     *
-     * @return the super class
-     */
-    FullyQualifiedJavaType getSuperClass();
 
-    /**
-     * Checks if is java interface.
-     *
-     * @return true, if is java interface
-     */
-    boolean isJavaInterface();
-
-    /**
-     * Checks if is java enumeration.
-     *
-     * @return true, if is java enumeration
-     */
-    boolean isJavaEnumeration();
-
-    /**
-     * Gets the super interface types.
-     *
-     * @return the super interface types
-     */
-    Set<FullyQualifiedJavaType> getSuperInterfaceTypes();
-
-    /**
-     * Gets the type.
-     *
-     * @return the type
-     */
-    FullyQualifiedJavaType getType();
+    // import
 
     /**
      * Adds the imported type.
@@ -89,7 +44,6 @@ public interface CompilationUnit {
      *            the imported type
      */
     void addImportedType(FullyQualifiedJavaType importedType);
-
     /**
      * Adds the imported types.
      *
@@ -97,7 +51,6 @@ public interface CompilationUnit {
      *            the imported types
      */
     void addImportedTypes(Set<FullyQualifiedJavaType> importedTypes);
-    
     /**
      * Adds the static import.
      *
@@ -105,7 +58,6 @@ public interface CompilationUnit {
      *            the static import
      */
     void addStaticImport(String staticImport);
-    
     /**
      * Adds the static imports.
      *
@@ -114,16 +66,62 @@ public interface CompilationUnit {
      */
     void addStaticImports(Set<String> staticImports);
 
+
+
     /**
-     * Comments will be written at the top of the file as is, we do not append any start or end comment characters.
-     * 
+     * Gets the imported types.
+     *
+     * @return the imported types
+     */
+    Set<FullyQualifiedJavaType> getImportedTypes();
+    /**
+     * Gets the static imports.
+     *
+     * @return the static imports
+     */
+    Set<String> getStaticImports();
+    /**
+     * Gets the super class.
+     *
+     * @return the super class
+     */
+    FullyQualifiedJavaType getSuperClass();
+    /**
+     * Checks if is java interface.
+     *
+     * @return true, if is java interface
+     */
+    boolean isJavaInterface();
+    /**
+     * Checks if is java enumeration.
+     *
+     * @return true, if is java enumeration
+     */
+    boolean isJavaEnumeration();
+    /**
+     * Gets the super interface types.
+     *
+     * @return the super interface types
+     */
+    Set<FullyQualifiedJavaType> getSuperInterfaceTypes();
+    /**
+     * Gets the type.
+     *
+     * @return the type
+     */
+    FullyQualifiedJavaType getType();
+
+
+
+
+    /**
+     * 注释将按原样写在文件的顶部，我们不附加任何开始或结束注释字符。
+     *
      * Note that in the Eclipse plugin, file comments will not be merged.
      *
-     * @param commentLine
-     *            the comment line
+     * @param commentLine the comment line
      */
     void addFileCommentLine(String commentLine);
-
     /**
      * Gets the file comment lines.
      *

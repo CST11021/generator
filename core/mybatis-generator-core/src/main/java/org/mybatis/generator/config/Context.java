@@ -42,64 +42,52 @@ public class Context extends PropertyHolder {
 
     /** The id. */
     private String id;
+    /** The default model type. */
+    private ModelType defaultModelType;
+    /** The beginning delimiter. */
+    private String beginningDelimiter = "\"";
+    /** The ending delimiter. */
+    private String endingDelimiter = "\"";
+    /** The target runtime. */
+    private String targetRuntime;
+    /** The introspected column impl. */
+    private String introspectedColumnImpl;
+    /** The auto delimit keywords. */
+    private Boolean autoDelimitKeywords;
+
+
 
     /** The jdbc connection configuration. */
     private JDBCConnectionConfiguration jdbcConnectionConfiguration;
     private ConnectionFactoryConfiguration connectionFactoryConfiguration;
-
-    /** The sql map generator configuration. */
-    private SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration;
-
     /** The java type resolver configuration. */
     private JavaTypeResolverConfiguration javaTypeResolverConfiguration;
-
     /** The java model generator configuration. */
     private JavaModelGeneratorConfiguration javaModelGeneratorConfiguration;
-
     private JavaQueryModelGeneratorConfiguration javaQueryModelGeneratorConfiguration;
-
     /** The java client generator configuration. */
     private JavaClientGeneratorConfiguration javaClientGeneratorConfiguration;
-
-    /** The table configurations. */
-    private ArrayList<TableConfiguration> tableConfigurations;
-
-    /** The default model type. */
-    private ModelType defaultModelType;
-
-    /** The beginning delimiter. */
-    private String beginningDelimiter = "\"";
-
-    /** The ending delimiter. */
-    private String endingDelimiter = "\"";
-
+    /** The sql map generator configuration. */
+    private SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration;
     /** The comment generator configuration. */
     private CommentGeneratorConfiguration commentGeneratorConfiguration;
-
-    /** The comment generator. */
-    private CommentGenerator commentGenerator;
-
-    /** The plugin aggregator. */
-    private PluginAggregator pluginAggregator;
-
+    /** The table configurations. */
+    private ArrayList<TableConfiguration> tableConfigurations;
     /** The plugin configurations. */
     private List<PluginConfiguration> pluginConfigurations;
 
-    /** The target runtime. */
-    private String targetRuntime;
 
-    /** The introspected column impl. */
-    private String introspectedColumnImpl;
 
-    /** The auto delimit keywords. */
-    private Boolean autoDelimitKeywords;
 
+
+    /** The comment generator. */
+    private CommentGenerator commentGenerator;
+    /** The plugin aggregator. */
+    private PluginAggregator pluginAggregator;
     /** The java formatter. */
     private JavaFormatter javaFormatter;
-
     /** The xml formatter. */
     private XmlFormatter xmlFormatter;
-
     /** 表示所有要进行代码生成的表 */
     private List<IntrospectedTable> introspectedTables;
 

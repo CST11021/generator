@@ -205,6 +205,61 @@ public abstract class IntrospectedTable {
     }
 
 
+
+    /**
+     * This method can be used to initialize the generators before they will be called.
+     *
+     * This method is called after all the setX methods, but before getNumberOfSubtasks(), getGeneratedJavaFiles, and
+     * getGeneratedXmlFiles.
+     *
+     * @param warnings
+     *            the warnings
+     * @param progressCallback
+     *            the progress callback
+     */
+    public abstract void calculateGenerators(List<String> warnings, ProgressCallback progressCallback);
+    /**
+     * This method should return a list of generated Java files related to this
+     * table. This list could include various types of model classes, as well as
+     * DAO classes.
+     *
+     * @return the list of generated Java files for this table
+     */
+    public abstract List<GeneratedJavaFile> getGeneratedJavaFiles();
+    /**
+     * This method should return a list of generated XML files related to this
+     * table. Most implementations will only return one file - the generated
+     * SqlMap file.
+     *
+     * @return the list of generated XML files for this table
+     */
+    public abstract List<GeneratedXmlFile> getGeneratedXmlFiles();
+    /**
+     * Denotes whether generated code is targeted for Java version 5.0 or
+     * higher.
+     *
+     * @return true if the generated code makes use of Java5 features
+     */
+    public abstract boolean isJava5Targeted();
+    /**
+     * This method should return the number of progress messages that will be
+     * send during the generation phase.
+     *
+     * @return the number of progress messages
+     */
+    public abstract int getGenerationSteps();
+    /**
+     * Should return true if an XML generator is required for this table. This method will be called during validation
+     * of the configuration, so it should not rely on database introspection. This method simply tells the validator if
+     * an XML configuration is normally required for this implementation.
+     *
+     * @return true, if successful
+     */
+    public abstract boolean requiresXMLGenerator();
+
+
+
+
     public boolean isQueryColumn(IntrospectedColumn column) {
         for (IntrospectedColumn col : queryColumns) {
             if (col.getActualColumnName().equals(column.getActualColumnName())) {
@@ -1563,52 +1618,7 @@ public abstract class IntrospectedTable {
                 .get(InternalAttribute.ATTR_ALIASED_FULLY_QUALIFIED_TABLE_NAME_AT_RUNTIME);
     }
 
-    /**
-     * This method can be used to initialize the generators before they will be called.
-     * 
-     * This method is called after all the setX methods, but before getNumberOfSubtasks(), getGeneratedJavaFiles, and
-     * getGeneratedXmlFiles.
-     *
-     * @param warnings
-     *            the warnings
-     * @param progressCallback
-     *            the progress callback
-     */
-    public abstract void calculateGenerators(List<String> warnings, ProgressCallback progressCallback);
 
-    /**
-     * This method should return a list of generated Java files related to this
-     * table. This list could include various types of model classes, as well as
-     * DAO classes.
-     * 
-     * @return the list of generated Java files for this table
-     */
-    public abstract List<GeneratedJavaFile> getGeneratedJavaFiles();
-
-    /**
-     * This method should return a list of generated XML files related to this
-     * table. Most implementations will only return one file - the generated
-     * SqlMap file.
-     * 
-     * @return the list of generated XML files for this table
-     */
-    public abstract List<GeneratedXmlFile> getGeneratedXmlFiles();
-
-    /**
-     * Denotes whether generated code is targeted for Java version 5.0 or
-     * higher.
-     * 
-     * @return true if the generated code makes use of Java5 features
-     */
-    public abstract boolean isJava5Targeted();
-
-    /**
-     * This method should return the number of progress messages that will be
-     * send during the generation phase.
-     * 
-     * @return the number of progress messages
-     */
-    public abstract int getGenerationSteps();
 
     /**
      * This method exists to give plugins the opportunity to replace the calculated rules if necessary.
@@ -1906,15 +1916,6 @@ public abstract class IntrospectedTable {
     }
 
     /**
-     * Should return true if an XML generator is required for this table. This method will be called during validation
-     * of the configuration, so it should not rely on database introspection. This method simply tells the validator if
-     * an XML configuration is normally required for this implementation.
-     *
-     * @return true, if successful
-     */
-    public abstract boolean requiresXMLGenerator();
-
-    /**
      * Gets the context.
      *
      * @return the context
@@ -1922,19 +1923,15 @@ public abstract class IntrospectedTable {
     public Context getContext() {
         return context;
     }
-
 	public String getRemarks() {
 		return remarks;
 	}
-
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
-
 	public String getTableType() {
 		return tableType;
 	}
-
 	public void setTableType(String tableType) {
 		this.tableType = tableType;
 	}

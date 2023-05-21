@@ -15,21 +15,17 @@
  */
 package org.mybatis.generator.internal.util;
 
-import static org.mybatis.generator.internal.util.StringUtility.isTrue;
+import org.mybatis.generator.api.IntrospectedColumn;
+import org.mybatis.generator.api.IntrospectedTable;
+import org.mybatis.generator.api.dom.java.*;
+import org.mybatis.generator.config.Context;
+import org.mybatis.generator.config.PropertyRegistry;
+import org.mybatis.generator.config.TableConfiguration;
 
 import java.util.Locale;
 import java.util.Properties;
 
-import org.mybatis.generator.api.IntrospectedColumn;
-import org.mybatis.generator.api.IntrospectedTable;
-import org.mybatis.generator.api.dom.java.Field;
-import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
-import org.mybatis.generator.api.dom.java.JavaVisibility;
-import org.mybatis.generator.api.dom.java.Method;
-import org.mybatis.generator.api.dom.java.Parameter;
-import org.mybatis.generator.config.Context;
-import org.mybatis.generator.config.PropertyRegistry;
-import org.mybatis.generator.config.TableConfiguration;
+import static org.mybatis.generator.internal.util.StringUtility.isTrue;
 
 /**
  * The Class JavaBeansUtil.
@@ -58,8 +54,7 @@ public class JavaBeansUtil {
      *            the fully qualified java type
      * @return the getter method name
      */
-    public static String getGetterMethodName(String property,
-            FullyQualifiedJavaType fullyQualifiedJavaType) {
+    public static String getGetterMethodName(String property, FullyQualifiedJavaType fullyQualifiedJavaType) {
         StringBuilder sb = new StringBuilder();
 
         sb.append(property);
@@ -69,8 +64,7 @@ public class JavaBeansUtil {
             }
         }
 
-        if (fullyQualifiedJavaType.equals(FullyQualifiedJavaType
-                .getBooleanPrimitiveInstance())) {
+        if (fullyQualifiedJavaType.equals(FullyQualifiedJavaType.getBooleanPrimitiveInstance())) {
             sb.insert(0, "is");
         } else {
             sb.insert(0, "get");
@@ -114,8 +108,7 @@ public class JavaBeansUtil {
      *            the first character uppercase
      * @return the camel case string
      */
-    public static String getCamelCaseString(String inputString,
-            boolean firstCharacterUppercase) {
+    public static String getCamelCaseString(String inputString, boolean firstCharacterUppercase) {
         StringBuilder sb = new StringBuilder();
 
         boolean nextUpperCase = false;
@@ -198,9 +191,7 @@ public class JavaBeansUtil {
      *            the introspected table
      * @return the java beans getter
      */
-    public static Method getJavaBeansGetter(IntrospectedColumn introspectedColumn,
-            Context context,
-            IntrospectedTable introspectedTable) {
+    public static Method getJavaBeansGetter(IntrospectedColumn introspectedColumn, Context context, IntrospectedTable introspectedTable) {
         FullyQualifiedJavaType fqjt = introspectedColumn
                 .getFullyQualifiedJavaType();
         String property = introspectedColumn.getJavaProperty();
@@ -232,9 +223,7 @@ public class JavaBeansUtil {
      *            the introspected table
      * @return the java beans field
      */
-    public static Field getJavaBeansField(IntrospectedColumn introspectedColumn,
-            Context context,
-            IntrospectedTable introspectedTable) {
+    public static Field getJavaBeansField(IntrospectedColumn introspectedColumn, Context context, IntrospectedTable introspectedTable) {
         FullyQualifiedJavaType fqjt = introspectedColumn
                 .getFullyQualifiedJavaType();
         String property = introspectedColumn.getJavaProperty();
@@ -260,9 +249,7 @@ public class JavaBeansUtil {
      *            the introspected table
      * @return the java beans setter
      */
-    public static Method getJavaBeansSetter(IntrospectedColumn introspectedColumn,
-            Context context,
-            IntrospectedTable introspectedTable) {
+    public static Method getJavaBeansSetter(IntrospectedColumn introspectedColumn, Context context, IntrospectedTable introspectedTable) {
         FullyQualifiedJavaType fqjt = introspectedColumn
                 .getFullyQualifiedJavaType();
         String property = introspectedColumn.getJavaProperty();

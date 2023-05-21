@@ -65,26 +65,6 @@ public class MyBatisGenerator {
     /** The shell callback. */
     private ShellCallback shellCallback;
 
-
-    /**
-     * Constructs a MyBatisGenerator object.
-     * 
-     * @param configuration
-     *            The configuration for this invocation
-     * @param shellCallback
-     *            an instance of a ShellCallback interface. You may specify
-     *            <code>null</code> in which case the DefaultShellCallback will
-     *            be used.
-     * @param warnings
-     *            Any warnings generated during execution will be added to this
-     *            list. Warnings do not affect the running of the tool, but they
-     *            may affect the results. A typical warning is an unsupported
-     *            data type. In that case, the column will be ignored and
-     *            generation will continue. You may specify <code>null</code> if
-     *            you do not want warnings returned.
-     * @throws InvalidConfigurationException
-     *             if the specified configuration is invalid
-     */
     public MyBatisGenerator(Configuration configuration, ShellCallback shellCallback, List<String> warnings) throws InvalidConfigurationException {
         super();
         if (configuration == null) {
@@ -111,6 +91,15 @@ public class MyBatisGenerator {
         this.configuration.validate();
     }
 
+    public void generate(ProgressCallback callback) throws SQLException, IOException, InterruptedException {
+        generate(callback, null, null, true);
+    }
+    public void generate(ProgressCallback callback, Set<String> contextIds) throws SQLException, IOException, InterruptedException {
+        generate(callback, contextIds, null, true);
+    }
+    public void generate(ProgressCallback callback, Set<String> contextIds, Set<String> fullyQualifiedTableNames) throws SQLException, IOException, InterruptedException {
+        generate(callback, contextIds, fullyQualifiedTableNames, true);
+    }
     /**
      * 核心实现函数
      *
@@ -128,12 +117,13 @@ public class MyBatisGenerator {
             callback = new NullProgressCallback();
         }
 
+        // 1 重置上下文
         generatedJavaFiles.clear();
         generatedXmlFiles.clear();
         ObjectFactory.reset();
         RootClassInfo.reset();
 
-        // calculate the contexts to run
+        // 2 确定本次执行的上下文
         List<Context> contextsToRun;
         if (contextIds == null || contextIds.size() == 0) {
             contextsToRun = configuration.getContexts();
@@ -146,13 +136,13 @@ public class MyBatisGenerator {
             }
         }
 
-        // setup custom classloader if required
+        // 3 确定类加载器
         if (configuration.getClassPathEntries().size() > 0) {
             ClassLoader classLoader = getCustomClassloader(configuration.getClassPathEntries());
             ObjectFactory.addExternalClassLoader(classLoader);
         }
 
-        // now run the introspections...
+        // 4 @扩展点：callback.introspectionStarted
         int totalSteps = 0;
         for (Context context : contextsToRun) {
             totalSteps += context.getIntrospectionSteps();
@@ -166,13 +156,13 @@ public class MyBatisGenerator {
             context.introspectTables(callback, warnings, fullyQualifiedTableNames);
         }
 
-        // now run the generates
+
+        // @扩展点：callback.generationStarted
         totalSteps = 0;
         for (Context context : contextsToRun) {
             totalSteps += context.getGenerationSteps();
         }
         callback.generationStarted(totalSteps);
-
 
 
 
@@ -183,7 +173,7 @@ public class MyBatisGenerator {
 
         // 将生成的代码保存到文件
         if (writeFiles) {
-            // @扩展点
+            // @扩展点：callback.saveStarted
             callback.saveStarted(generatedXmlFiles.size() + generatedJavaFiles.size());
 
             // 生成xml文件
@@ -198,7 +188,7 @@ public class MyBatisGenerator {
                 writeGeneratedJavaFile(gjf, callback);
             }
 
-            // @扩展点
+            // @扩展点：shellCallback.refreshProject
             for (String project : projects) {
                 shellCallback.refreshProject(project);
             }
@@ -206,19 +196,6 @@ public class MyBatisGenerator {
 
         callback.done();
     }
-
-    public void generate(ProgressCallback callback) throws SQLException, IOException, InterruptedException {
-        generate(callback, null, null, true);
-    }
-
-    public void generate(ProgressCallback callback, Set<String> contextIds) throws SQLException, IOException, InterruptedException {
-        generate(callback, contextIds, null, true);
-    }
-
-    public void generate(ProgressCallback callback, Set<String> contextIds, Set<String> fullyQualifiedTableNames) throws SQLException, IOException, InterruptedException {
-        generate(callback, contextIds, fullyQualifiedTableNames, true);
-    }
-
 
     private void writeGeneratedJavaFile(GeneratedJavaFile gjf, ProgressCallback callback) throws InterruptedException, IOException {
         File targetFile;
@@ -252,7 +229,6 @@ public class MyBatisGenerator {
             warnings.add(e.getMessage());
         }
     }
-
     private void writeGeneratedXmlFile(GeneratedXmlFile gxf, ProgressCallback callback) throws InterruptedException, IOException {
         // 目标文件
         File targetFile;
@@ -283,7 +259,6 @@ public class MyBatisGenerator {
             warnings.add(e.getMessage());
         }
     }
-    
     /**
      * 将代码写入文件
      *
@@ -340,7 +315,6 @@ public class MyBatisGenerator {
 
         return answer;
     }
-
     /**
      * Returns the list of generated Java files after a call to one of the generate methods.
      * This is useful if you prefer to process the generated files yourself and do not want
@@ -351,7 +325,6 @@ public class MyBatisGenerator {
     public List<GeneratedJavaFile> getGeneratedJavaFiles() {
         return generatedJavaFiles;
     }
-
     /**
      * Returns the list of generated XML files after a call to one of the generate methods.
      * This is useful if you prefer to process the generated files yourself and do not want

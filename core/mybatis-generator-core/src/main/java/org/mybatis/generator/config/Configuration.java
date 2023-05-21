@@ -15,17 +15,17 @@
  */
 package org.mybatis.generator.config;
 
-import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-import static org.mybatis.generator.internal.util.messages.Messages.getString;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.XmlConstants;
 import org.mybatis.generator.exception.InvalidConfigurationException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
+import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 /**
  * The Class Configuration.
@@ -36,37 +36,17 @@ public class Configuration {
 
     /** The contexts. */
     private List<Context> contexts;
-    
     /** The class path entries. */
     private List<String> classPathEntries;
 
-    /**
-     * Instantiates a new configuration.
-     */
+
     public Configuration() {
         super();
         contexts = new ArrayList<Context>();
         classPathEntries = new ArrayList<String>();
     }
 
-    /**
-     * Adds the classpath entry.
-     *
-     * @param entry
-     *            the entry
-     */
-    public void addClasspathEntry(String entry) {
-        classPathEntries.add(entry);
-    }
 
-    /**
-     * Gets the class path entries.
-     *
-     * @return Returns the classPathEntries.
-     */
-    public List<String> getClassPathEntries() {
-        return classPathEntries;
-    }
 
     /**
      * This method does a simple validate, it makes sure that all required fields have been filled in and that all
@@ -101,15 +81,6 @@ public class Configuration {
     }
 
     /**
-     * Gets the contexts.
-     *
-     * @return the contexts
-     */
-    public List<Context> getContexts() {
-        return contexts;
-    }
-
-    /**
      * Adds the context.
      *
      * @param context
@@ -118,7 +89,6 @@ public class Configuration {
     public void addContext(Context context) {
         contexts.add(context);
     }
-
     /**
      * Gets the context.
      *
@@ -134,6 +104,31 @@ public class Configuration {
         }
 
         return null;
+    }
+    /**
+     * Gets the contexts.
+     *
+     * @return the contexts
+     */
+    public List<Context> getContexts() {
+        return contexts;
+    }
+    /**
+     * Adds the classpath entry.
+     *
+     * @param entry
+     *            the entry
+     */
+    public void addClasspathEntry(String entry) {
+        classPathEntries.add(entry);
+    }
+    /**
+     * Gets the class path entries.
+     *
+     * @return Returns the classPathEntries.
+     */
+    public List<String> getClassPathEntries() {
+        return classPathEntries;
     }
 
     /**

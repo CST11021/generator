@@ -60,23 +60,16 @@ public abstract class IntrospectedTable {
         ATTR_PRIMARY_KEY_TYPE,
         /** java Base Model类的全限定类名 */
         ATTR_BASE_RECORD_TYPE,
+        /** 查询类的全限定类名 */
         ATTR_QUERY_RECORD_TYPE,
         /** 带有blob字段的Model类的全限定类名 */
         ATTR_RECORD_WITH_BLOBS_TYPE,
         /** XxxExample model类的全限定类名 */
         ATTR_EXAMPLE_TYPE,
-
         
-        /** The ATT r_ ibati s2_ sq l_ ma p_ package. */
-        ATTR_IBATIS2_SQL_MAP_PACKAGE,
-        /** The ATT r_ ibati s2_ sq l_ ma p_ fil e_ name. */
-        ATTR_IBATIS2_SQL_MAP_FILE_NAME,
-        /** The ATT r_ ibati s2_ sq l_ ma p_ namespace. */
-        ATTR_IBATIS2_SQL_MAP_NAMESPACE,
-        
-        /** The ATT r_ mybati s3_ xm l_ mappe r_ package. */
+        /** xml mapper的所有包路径 */
         ATTR_MYBATIS3_XML_MAPPER_PACKAGE,
-        /** The ATT r_ mybati s3_ xm l_ mappe r_ fil e_ name. */
+        /** xml mapper的文件名 */
         ATTR_MYBATIS3_XML_MAPPER_FILE_NAME,
         /** 表示Mapper接口的全限定类名 */
         ATTR_MYBATIS3_JAVA_MAPPER_TYPE,
@@ -88,6 +81,13 @@ public abstract class IntrospectedTable {
         /** The attr aliased fully qualified table name at runtime. */
         ATTR_ALIASED_FULLY_QUALIFIED_TABLE_NAME_AT_RUNTIME,
 
+
+        /** The ATT r_ ibati s2_ sq l_ ma p_ package. */
+        ATTR_IBATIS2_SQL_MAP_PACKAGE,
+        /** The ATT r_ ibati s2_ sq l_ ma p_ fil e_ name. */
+        ATTR_IBATIS2_SQL_MAP_FILE_NAME,
+        /** The ATT r_ ibati s2_ sq l_ ma p_ namespace. */
+        ATTR_IBATIS2_SQL_MAP_NAMESPACE,
 
         // xml中的statementId
 
@@ -1808,7 +1808,10 @@ public abstract class IntrospectedTable {
                 mybatis3XmlMapperPackage);
     }
 
+    // ATTR_QUERY_RECORD_TYPE
+
     /**
+     *
      * Gets the my batis3 xml mapper file name.
      *
      * @return the my batis3 xml mapper file name

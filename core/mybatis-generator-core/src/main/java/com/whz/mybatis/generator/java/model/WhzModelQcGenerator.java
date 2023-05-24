@@ -121,6 +121,9 @@ public class WhzModelQcGenerator extends AbstractJavaGenerator {
     private FullyQualifiedJavaType getSuperClass() {
         Properties properties = context.getJavaQueryModelGeneratorConfiguration().getProperties();
         String superClass = properties.getProperty(PropertyRegistry.ANY_ROOT_CLASS);
+        if (!StringUtility.stringHasValue(superClass)) {
+            return null;
+        }
         return new FullyQualifiedJavaType(superClass);
     }
 
@@ -174,7 +177,7 @@ public class WhzModelQcGenerator extends AbstractJavaGenerator {
     }
 
     private boolean useLombok() {
-        String useLombok = introspectedTable.getContext().getProperty("userLombok");
+        String useLombok = introspectedTable.getContext().getProperty("useLombok");
         return StringUtility.stringHasValue(useLombok) && "true".equals(useLombok);
     }
 }

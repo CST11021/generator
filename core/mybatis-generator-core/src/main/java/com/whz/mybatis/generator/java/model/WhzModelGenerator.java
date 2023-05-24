@@ -10,6 +10,7 @@ import org.mybatis.generator.internal.util.StringUtility;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static org.mybatis.generator.internal.util.JavaBeansUtil.*;
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
@@ -67,6 +68,19 @@ public class WhzModelGenerator extends AbstractJavaGenerator {
             topLevelClass.addImportedType("lombok.Data");
         }
 
+        if (generalSerializable()) {
+            Field field = new Field();
+            field.setFinal(true);
+            field.setInitializationString(String.valueOf((new Random()).nextLong()) + "L");
+            field.setName("serialVersionUID");
+            field.setStatic(true);
+            field.setType(new FullyQualifiedJavaType("long"));
+            field.setVisibility(JavaVisibility.PRIVATE);
+            this.context.getCommentGenerator().addFieldComment(field, introspectedTable);
+
+            topLevelClass.addField(field);
+        }
+
         String rootClass = getRootClass();
         Plugin plugins = context.getPlugins();
         for (IntrospectedColumn introspectedColumn : introspectedTable.getAllColumns()) {
@@ -106,8 +120,13 @@ public class WhzModelGenerator extends AbstractJavaGenerator {
         return answer;
     }
 
+    private boolean generalSerializable() {
+        String generalSerializable = introspectedTable.getContext().getProperty("generalSerializable");
+        return StringUtility.stringHasValue(generalSerializable) && "true".equals(generalSerializable);
+    }
+
     private boolean useLombok() {
-        String useLombok = introspectedTable.getContext().getProperty("userLombok");
+        String useLombok = introspectedTable.getContext().getProperty("useLombok");
         return StringUtility.stringHasValue(useLombok) && "true".equals(useLombok);
     }
 

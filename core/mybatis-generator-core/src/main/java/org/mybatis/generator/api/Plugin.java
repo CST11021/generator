@@ -96,18 +96,7 @@ public interface Plugin {
     void setProperties(Properties properties);
 
     /**
-     * This method is called just before the getGeneratedXXXFiles methods are called on the introspected table. Plugins
-     * can implement this method to override any of the default attributes, or change the results of database
-     * introspection, before any code generation activities occur. Attributes are listed as static Strings with the
-     * prefix ATTR_ in IntrospectedTable.
-     * <p>
-     * A good example of overriding an attribute would be the case where a user wanted to change the name of one of the
-     * generated classes, change the target package, or change the name of the generated SQL map file.
-     * <p>
-     * <b>Warning:</b> Anything that is listed as an attribute should not be changed by one of the other plugin methods.
-     * For example, if you want to change the name of a generated example class, you should not simply change the Type
-     * in the <code>modelExampleClassGenerated()</code> method. If you do, the change will not be reflected in other
-     * generated artifacts.
+     * 初始化插件
      *
      * @param introspectedTable
      *            the introspected table
@@ -115,11 +104,7 @@ public interface Plugin {
     void initialized(IntrospectedTable introspectedTable);
 
     /**
-     * This method is called after all the setXXX methods are called, but before
-     * any other method is called. This allows the plugin to determine whether
-     * it can run or not. For example, if the plugin requires certain properties
-     * to be set, and the properties are not set, then the plugin is invalid and
-     * will not run.
+     * 是否使用该插件
      *
      * @param warnings
      *            add strings to this list to specify warnings. For example, if

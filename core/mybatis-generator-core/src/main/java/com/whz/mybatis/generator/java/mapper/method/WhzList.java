@@ -57,7 +57,7 @@ public class WhzList extends AbstractJavaMapperMethodGenerator {
      * @return
      */
     private Parameter buildParameter() {
-        return new Parameter(new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType()), "qc");
+        return new Parameter(new FullyQualifiedJavaType(this.introspectedTable.getQueryRecordType()), "qc");
     }
 
     private Set<FullyQualifiedJavaType> buildImportedTypes() {

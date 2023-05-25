@@ -35,7 +35,7 @@ public class WhzListElementGenerator extends AbstractXmlElementGenerator {
     public void addElements(XmlElement parentElement) {
         XmlElement answer = new XmlElement("select");
         answer.addAttribute(new Attribute("id", "list"));
-        answer.addAttribute(new Attribute("parameterType",  introspectedTable.getBaseRecordType()));
+        answer.addAttribute(new Attribute("parameterType",  introspectedTable.getQueryRecordType()));
         answer.addAttribute(new Attribute("resultMap",  "BaseResultMap"));
 
         StringBuffer sb = new StringBuffer();

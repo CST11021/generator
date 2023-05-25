@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-       Copyright 2006-2016 the original author or authors.
+       Copyright 2006-2023 the original author or authors.
 
        Licensed under the Apache License, Version 2.0 (the "License");
        you may not use this file except in compliance with the License.
@@ -25,75 +25,10 @@
     <version>1.3.5</version>
   </parent>
 
+  <version>1.3.5-mbp-SNAPSHOT</version>
   <artifactId>mybatis-generator-core</artifactId>
   <packaging>jar</packaging>
   <name>MyBatis Generator Core</name>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <configuration>
-          <skip>false</skip>
-        </configuration>
-      </plugin>
-      <!-- create the Source JAR and JavaDoc a bit earlier so it is ready for the assembly -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>jar-no-fork</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifest>
-              <mainClass>org.mybatis.generator.api.ShellRunner</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptors>
-            <descriptor>${project.basedir}/src/main/assembly/src.xml</descriptor>
-          </descriptors>
-        </configuration>
-        <executions>
-          <execution>
-            <id>bundle</id>
-            <goals>
-              <goal>single</goal>
-            </goals>
-            <phase>package</phase>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
   
   <dependencies>
     <dependency>
@@ -131,17 +66,132 @@
     </dependency>
   </dependencies>
 
-  <distributionManagement>
-    <site>
-      <id>gh-pages</id>
-      <name>Mybatis Generator GitHub Pages</name>
-      <url>git:ssh://git@github.com/mybatis/generator.git?gh-pages#</url>
-    </site>
-  </distributionManagement>
+  <build>
+    <plugins>
 
-  <description>MyBatis Generator - a code generator for MyBatis and iBatis.</description>
-  <scm>
-    <url>https://github.com/mybatis/generator</url>
-    <tag>mybatis-generator-1.3.5</tag>
-  </scm>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>org.mybatis.generator.api.ShellRunner</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <!-- build profiles -->
+  <profiles>
+    <profile>
+      <id>prod</id>
+      <properties>
+        <repo-id>prod</repo-id>
+        <release-repo-name>releases</release-repo-name>
+        <release-repo-url>http://mvn.cai-inc.com/content/repositories/releases/</release-repo-url>
+        <snapshot-repo-name>snapshots</snapshot-repo-name>
+        <snapshot-repo-url>http://mvn.cai-inc.com/content/repositories/snapshots/</snapshot-repo-url>
+        <maven.test.skip>true</maven.test.skip>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>2.4</version>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>dev</id>
+      <activation>
+        <!-- 设置此节点配置作为默认配置 -->
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <repo-id>dev</repo-id>
+        <release-repo-name>releases</release-repo-name>
+        <release-repo-url>http://dev-mvn.cai-inc.com/content/repositories/releases/</release-repo-url>
+        <snapshot-repo-name>snapshots</snapshot-repo-name>
+        <snapshot-repo-url>http://dev-mvn.cai-inc.com/content/repositories/snapshots/</snapshot-repo-url>
+        <maven.test.skip>true</maven.test.skip>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>2.4</version>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <!-- plugin仓库 -->
+  <pluginRepositories>
+    <pluginRepository>
+      <id>aliyun-plugin</id>
+      <url>https://maven.aliyun.com/repository/public</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+    <pluginRepository>
+      <id>spring</id>
+      <url>https://repo.spring.io/release/</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>releases</id>
+      <url>${release-repo-url}</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>snapshots</id>
+      <url>${snapshot-repo-url}</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <!-- 从远程仓库download -->
+  <repositories>
+    <repository>
+      <id>releases</id>
+      <url>${release-repo-url}</url>
+    </repository>
+    <repository>
+      <id>snapshots</id>
+      <url>${snapshot-repo-url}</url>
+    </repository>
+  </repositories>
+
+  <!-- deploy包到远程仓库 -->
+  <distributionManagement>
+    <repository>
+      <id>releases</id>
+      <name>Nexus Release Repository</name>
+      <url>${release-repo-url}</url>
+    </repository>
+    <snapshotRepository>
+      <id>snapshots</id>
+      <name>Nexus Snapshot Repository</name>
+      <url>${snapshot-repo-url}</url>
+    </snapshotRepository>
+  </distributionManagement>
 </project>

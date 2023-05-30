@@ -25,7 +25,7 @@ public class WhzBatchSetElementGenerator extends AbstractXmlElementGenerator {
 
             XmlElement ifE = new XmlElement("if");
             ifE.addAttribute(new Attribute("test", "item." + column.getJavaProperty() + " != null"));
-            ifE.addElement(new TextElement("and " + column.getActualColumnName() + " = #{item." + column.getJavaProperty() + "}"));
+            ifE.addElement(new TextElement(column.getActualColumnName() + " = #{item." + column.getJavaProperty() + "}, "));
             answer.addElement(ifE);
         }
 

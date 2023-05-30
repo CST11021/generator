@@ -25,7 +25,7 @@ public class WhzSetElementGenerator extends AbstractXmlElementGenerator {
 
             XmlElement ifE = new XmlElement("if");
             ifE.addAttribute(new Attribute("test", "" + column.getJavaProperty() + " != null"));
-            ifE.addElement(new TextElement("and " + column.getActualColumnName() + " = #{" + column.getJavaProperty() + "}"));
+            ifE.addElement(new TextElement(column.getActualColumnName() + " = #{" + column.getJavaProperty() + "}, "));
             answer.addElement(ifE);
         }
 

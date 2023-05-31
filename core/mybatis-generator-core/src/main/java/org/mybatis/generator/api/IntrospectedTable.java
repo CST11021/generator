@@ -261,6 +261,10 @@ public abstract class IntrospectedTable {
 
 
     public boolean isQueryColumn(IntrospectedColumn column) {
+        if (queryColumns == null) {
+            return true;
+        }
+
         for (IntrospectedColumn col : queryColumns) {
             if (col.getActualColumnName().equals(column.getActualColumnName())) {
                 return true;

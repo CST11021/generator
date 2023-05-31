@@ -1,11 +1,10 @@
 package com.whz.mybatis.generator.plugin;
 
+import org.apache.tools.ant.util.StringUtils;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 
@@ -16,9 +15,8 @@ import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 public class WhzRenameModelRecordPlugin extends PluginAdapter {
 
     private String postfixName;
-    private String searchString;
-    private String replaceString;
-    private Pattern pattern;
+    private String[] searchString;
+    private String[] replaceString;
 
     public WhzRenameModelRecordPlugin() {
     }
@@ -34,14 +32,17 @@ public class WhzRenameModelRecordPlugin extends PluginAdapter {
      */
     public boolean validate(List<String> warnings) {
         postfixName = properties.getProperty("postfixName");
-        searchString = properties.getProperty("searchString");
-        replaceString = properties.getProperty("replaceString");
-
-        boolean valid = stringHasValue(searchString) && stringHasValue(replaceString);
-        if (valid) {
-            pattern = Pattern.compile(searchString);
+        String searchStringConfig = properties.getProperty("searchString");
+        if (searchStringConfig != null) {
+            searchString = searchStringConfig.split(",");
         }
 
+        String replaceStringConfig = properties.getProperty("replaceString");
+        if (replaceStringConfig != null) {
+            replaceString = replaceStringConfig.split(",");
+        }
+
+        boolean valid = searchString != null && replaceString != null;
         return valid || stringHasValue(postfixName);
     }
 
@@ -49,13 +50,11 @@ public class WhzRenameModelRecordPlugin extends PluginAdapter {
     public void initialized(IntrospectedTable introspectedTable) {
         String oldType = introspectedTable.getBaseRecordType();
 
-        if (pattern != null) {
-            Matcher matcher = pattern.matcher(oldType);
-            oldType = matcher.replaceAll(replaceString);
+        for (int i = 0; i < searchString.length; i++) {
+            oldType.replace(searchString[i], replaceString[i]);
         }
 
-
-        if (stringHasValue(postfixName)) {
+        if (postfixName != null) {
             oldType += postfixName;
         }
         introspectedTable.setBaseRecordType(oldType);

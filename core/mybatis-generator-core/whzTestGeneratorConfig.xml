@@ -35,18 +35,16 @@
         <!--<plugin type="org.mybatis.generator.plugins.WhzSerializablePlugin"/>-->
         <plugin type="com.whz.mybatis.generator.plugin.WhzRenameModelRecordPlugin">
             <property name="postfixName" value="DO"/>
+            <property name="replaceString" value="ZlbBaida>"/>
         </plugin>
         <plugin type="com.whz.mybatis.generator.plugin.WhzRenameQueryRecordPlugin">
-            <property name="searchString" value="QC" />
-            <property name="replaceString" value="QO" />
+            <property name="replaceString" value="ZlbBaida>,QC>QO"/>
         </plugin>
         <plugin type="com.whz.mybatis.generator.plugin.WhzRenameJavaMapperPlugin">
-            <property name="searchString" value="Mapper"/>
-            <property name="replaceString" value="Dao" />
+            <property name="replaceString" value="ZlbBaida>,Mapper>Dao"/>
         </plugin>
         <plugin type="com.whz.mybatis.generator.plugin.WhzRenameSqlMapperPlugin">
-            <property name="searchString" value="Mapper"/>
-            <property name="replaceString" value="Dao"/>
+            <property name="replaceString" value="ZlbBaida>,Mapper>Dao"/>
         </plugin>
 
         <commentGenerator type="org.mybatis.generator.internal.WhzCommentGenerator">
@@ -81,7 +79,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="zlb_baida_form_template"/>
+        <!--<table tableName="zlb_baida_form_template"/>-->
         <table tableName="zlb_baida_form">
             <!--
             offsetFieldName=""

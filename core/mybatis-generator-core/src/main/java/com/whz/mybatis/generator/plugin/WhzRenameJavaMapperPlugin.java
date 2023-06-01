@@ -2,13 +2,6 @@ package com.whz.mybatis.generator.plugin;
 
 
 import org.mybatis.generator.api.IntrospectedTable;
-import org.mybatis.generator.api.PluginAdapter;
-
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 
 /**
  * This plugin demonstrates overriding the initialized() method to rename the
@@ -36,36 +29,15 @@ import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
  * @author Jeff Butler
  * 
  */
-public class WhzRenameJavaMapperPlugin extends PluginAdapter {
-    private String searchString;
-    private String replaceString;
-    private Pattern pattern;
+public class WhzRenameJavaMapperPlugin extends WhzBaseRenamePlugin {
 
 
     public WhzRenameJavaMapperPlugin() {
 	}
 
-	public boolean validate(List<String> warnings) {
-
-        searchString = properties.getProperty("searchString"); 
-        replaceString = properties.getProperty("replaceString");
-
-        boolean valid = stringHasValue(searchString) && stringHasValue(replaceString);
-        if (valid) {
-            pattern = Pattern.compile(searchString);
-        }
-
-        return valid;
-    }
-
     @Override
     public void initialized(IntrospectedTable introspectedTable) {
-        String oldType = introspectedTable.getMyBatis3JavaMapperType();
-        Matcher matcher = pattern.matcher(oldType);
-        oldType = matcher.replaceAll(replaceString);
-
-        introspectedTable.setMyBatis3JavaMapperType(oldType);
-
+        introspectedTable.setMyBatis3JavaMapperType(getNameAfterReplace(introspectedTable.getMyBatis3JavaMapperType()));
     }
 }
 

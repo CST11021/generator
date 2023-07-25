@@ -19,9 +19,9 @@ public class WhzBatchSetElementGenerator extends AbstractXmlElementGenerator {
         answer.addAttribute(new Attribute("id", "batchSet"));
 
         for (IntrospectedColumn column : introspectedTable.getTableAllColumns()) {
-            // if (column.isAutoIncrement()) {
-            //     continue;
-            // }
+            if (column.isAutoIncrement()) {
+                continue;
+            }
 
             XmlElement ifE = new XmlElement("if");
             ifE.addAttribute(new Attribute("test", "item." + column.getJavaProperty() + " != null"));

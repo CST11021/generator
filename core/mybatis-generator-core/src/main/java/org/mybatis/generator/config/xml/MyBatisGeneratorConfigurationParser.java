@@ -254,6 +254,16 @@ public class MyBatisGeneratorConfigurationParser {
             orderByFieldName = context.getProperty("orderByFieldName");
         }
 
+        String enableGeneralOrderBy = attributes.getProperty("enableGeneralOrderBy");
+        if (!stringHasValue(enableGeneralOrderBy)) {
+            enableGeneralOrderBy = context.getProperty("enableGeneralOrderBy");
+        }
+
+        String enableGeneralOffsetLimit = attributes.getProperty("enableGeneralOffsetLimit");
+        if (!stringHasValue(enableGeneralOffsetLimit)) {
+            enableGeneralOffsetLimit = context.getProperty("enableGeneralOffsetLimit");
+        }
+
         String offsetFieldName = attributes.getProperty("offsetFieldName");
         if (!stringHasValue(offsetFieldName)) {
             offsetFieldName = context.getProperty("offsetFieldName");
@@ -332,6 +342,12 @@ public class MyBatisGeneratorConfigurationParser {
         }
         if (stringHasValue(orderByFieldName)) {
             tc.setOrderByFieldName(orderByFieldName);
+        }
+        if (stringHasValue(enableGeneralOrderBy)) {
+            tc.setEnableGeneralOrderBy(isTrue(enableGeneralOrderBy));
+        }
+        if (stringHasValue(enableGeneralOffsetLimit)) {
+            tc.setEnableGeneralOffsetLimit(isTrue(enableGeneralOffsetLimit));
         }
 
         if (stringHasValue(alias)) {

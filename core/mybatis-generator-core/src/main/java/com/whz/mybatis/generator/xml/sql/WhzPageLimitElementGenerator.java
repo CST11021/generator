@@ -14,6 +14,11 @@ public class WhzPageLimitElementGenerator extends AbstractXmlElementGenerator {
 
     @Override
     public void addElements(XmlElement parentElement) {
+        // 如果不启用，则不生成
+        if (!introspectedTable.getTableConfiguration().isEnableGeneralOffsetLimit()) {
+            return;
+        }
+
         String offsetFieldName = introspectedTable.getTableConfiguration().getOffsetFieldName();
         String limitFieldName = introspectedTable.getTableConfiguration().getLimitFieldName();
         if (!StringUtility.stringHasValue(offsetFieldName) || !StringUtility.stringHasValue(limitFieldName)) {

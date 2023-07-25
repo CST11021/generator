@@ -1,49 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
 
-       Copyright 2006-2023 the original author or authors.
-
-       Licensed under the Apache License, Version 2.0 (the "License");
-       you may not use this file except in compliance with the License.
-       You may obtain a copy of the License at
-
-          http://www.apache.org/licenses/LICENSE-2.0
-
-       Unless required by applicable law or agreed to in writing, software
-       distributed under the License is distributed on an "AS IS" BASIS,
-       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-       See the License for the specific language governing permissions and
-       limitations under the License.
-
--->
 <!DOCTYPE generatorConfiguration
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
     <context id="whz定制" targetRuntime="MyBatis3Whz">
+        <!-- 指定offset字段 -->
         <property name="offsetFieldName" value="offset"/>
+        <!-- 指定limit字段 -->
         <property name="limitFieldName" value="limit"/>
+        <!-- 是否生成offset和limit分页查SQL -->
+        <property name="enableGeneralOffsetLimit" value="false"/>
+        <!-- 指定排序字段 -->
         <property name="orderByFieldName" value="orderBy"/>
+        <!-- 是否生成排序SQL -->
+        <property name="enableGeneralOrderBy" value="false"/>
+        <!-- 标记逻辑删除标识的字段 -->
         <property name="deleteColumnName" value="is_delete"/>
+        <!-- 标记逻辑删除标识的值 -->
         <property name="deletedValue" value="1"/>
+        <!-- 标记逻辑删除标识的值 -->
         <property name="undeleteValue" value="0"/>
+        <!-- 指定创建时间字段：mybatis插入SQL，指定该字段更新为now() -->
         <property name="gmtCreateColumn" value="r_add_time"/>
+        <!-- 指定最后修改时间字段：mybatis更新SQL，指定该字段更新为now() -->
         <property name="gmtModifiedColumn" value="r_modified_time"/>
+        <!-- DO和QC使用Lombok注解 -->
         <property name="useLombok" value="true"/>
+        <!-- DO是否生成serialVersionUID -->
         <property name="generalSerializable" value="true"/>
 
         <!--<plugin type="org.mybatis.generator.plugins.WhzSerializablePlugin"/>-->
         <plugin type="com.whz.mybatis.generator.plugin.WhzRenameModelRecordPlugin">
+            <!-- 添加DO后缀 -->
             <property name="postfixName" value="DO"/>
+            <!-- 将ZlbBaida替换为空串 -->
             <property name="replaceString" value="ZlbBaida>"/>
         </plugin>
         <plugin type="com.whz.mybatis.generator.plugin.WhzRenameQueryRecordPlugin">
+            <!-- 查询对象：将ZlbBaida替换为空串, QC替换为QO -->
             <property name="replaceString" value="ZlbBaida>,QC>QO"/>
         </plugin>
         <plugin type="com.whz.mybatis.generator.plugin.WhzRenameJavaMapperPlugin">
+            <!-- mapper接口：将ZlbBaida替换为空串, Mapper替换为Dao -->
             <property name="replaceString" value="ZlbBaida>,Mapper>Dao"/>
         </plugin>
         <plugin type="com.whz.mybatis.generator.plugin.WhzRenameSqlMapperPlugin">
+            <!-- xml文件：将ZlbBaida替换为空串, Mapper替换为Dao -->
             <property name="replaceString" value="ZlbBaida>,Mapper>Dao"/>
         </plugin>
 
@@ -62,10 +65,12 @@
 
         <!-- 生成模型的包名和位置 -->
         <javaModelGenerator targetPackage="whz" targetProject="src/test/java">
-            <!--<property name="rootClass" value="cn.gov.zcy.paas.dto.page.PagePO"/>-->
+            <!-- 指定JavaModel继承的父类 -->
+            <property name="rootClass" value="cn.gov.zcy.paas.dto.page.PagePO"/>
         </javaModelGenerator>
 
         <javaQueryModelGenerator targetPackage="whz.abc" targetProject="src/test/java">
+            <!-- 指定QueryModel继承的父类 -->
             <property name="rootClass" value="cn.gov.zcy.paas.dto.page.PagePO"/>
         </javaQueryModelGenerator>
 
@@ -81,13 +86,28 @@
 
         <!--<table tableName="zlb_baida_form_template"/>-->
         <table tableName="zlb_baida_form">
-            <!--
-            offsetFieldName=""
-            limitFieldName=""
-            deleteColumnName="is_delete" deletedValue="1" undeleteValue="0"
-            gmtCreateColumn="r_add_time" gmtModifiedColumn="r_modified_time"
-            -->
-            <property name="queryColumns" value="id,code"/>
+            <!-- 指定offset字段 -->
+            <property name="offsetFieldName" value="offset"/>
+            <!-- 指定limit字段 -->
+            <property name="limitFieldName" value="limit"/>
+            <!-- 是否生成offset和limit分页查SQL -->
+            <property name="enableGeneralOffsetLimit" value="false"/>
+            <!-- 指定排序字段 -->
+            <property name="orderByFieldName" value="orderBy"/>
+            <!-- 是否生成排序SQL -->
+            <property name="enableGeneralOrderBy" value="false"/>
+            <!-- 标记逻辑删除标识的字段 -->
+            <property name="deleteColumnName" value="is_delete"/>
+            <!-- 标记逻辑删除标识的值 -->
+            <property name="deletedValue" value="1"/>
+            <!-- 标记逻辑删除标识的值 -->
+            <property name="undeleteValue" value="0"/>
+            <!-- 指定创建时间字段：mybatis插入SQL，指定该字段更新为now() -->
+            <property name="gmtCreateColumn" value="r_add_time"/>
+            <!-- 指定最后修改时间字段：mybatis更新SQL，指定该字段更新为now() -->
+            <property name="gmtModifiedColumn" value="r_modified_time"/>
+            <!-- 指定要查询的字段 -->
+            <property name="queryColumns" value="id,code,is_delete"/>
         </table>
 
     </context>

@@ -64,7 +64,6 @@ public class WhzXMLMapperGenerator extends AbstractXmlGenerator {
         // batchSetValue
         initializeAndExecuteGenerator(new WhzBatchInsertValueElementGenerator(), answer);
 
-
         // tableName
         initializeAndExecuteGenerator(new WhzTableNameElementGenerator(), answer);
 

@@ -45,17 +45,23 @@ public class WhzListElementGenerator extends AbstractXmlElementGenerator {
                 NEW_LINE + TAB + TAB + "<include refid=\"qc\"/>" +
                 NEW_LINE + TAB + "</where>");
 
-        String orderByFieldName = introspectedTable.getTableConfiguration().getOrderByFieldName();
-        if (StringUtility.stringHasValue(orderByFieldName)) {
-            sb.append(NEW_LINE + TAB + "<if test=\"" + orderByFieldName + " != null\">" +
-                    NEW_LINE + TAB + TAB + "order by ${" + orderByFieldName + "}" +
-                    NEW_LINE + TAB + "</if>");
+        // 启用排序
+        if (introspectedTable.getTableConfiguration().isEnableGeneralOrderBy()) {
+            String orderByFieldName = introspectedTable.getTableConfiguration().getOrderByFieldName();
+            if (StringUtility.stringHasValue(orderByFieldName)) {
+                sb.append(NEW_LINE + TAB + "<if test=\"" + orderByFieldName + " != null\">" +
+                        NEW_LINE + TAB + TAB + "order by ${" + orderByFieldName + "}" +
+                        NEW_LINE + TAB + "</if>");
+            }
         }
 
-        String offsetFieldName = introspectedTable.getTableConfiguration().getOffsetFieldName();
-        String limitFieldName = introspectedTable.getTableConfiguration().getLimitFieldName();
-        if (StringUtility.stringHasValue(offsetFieldName) && StringUtility.stringHasValue(limitFieldName)) {
-            sb.append(NEW_LINE + TAB + "<include refid=\"page-limit\"/>");
+        // 启用分页
+        if (introspectedTable.getTableConfiguration().isEnableGeneralOffsetLimit()) {
+            String offsetFieldName = introspectedTable.getTableConfiguration().getOffsetFieldName();
+            String limitFieldName = introspectedTable.getTableConfiguration().getLimitFieldName();
+            if (StringUtility.stringHasValue(offsetFieldName) && StringUtility.stringHasValue(limitFieldName)) {
+                sb.append(NEW_LINE + TAB + "<include refid=\"page-limit\"/>");
+            }
         }
         answer.addElement(new TextElement(sb.toString()));
 

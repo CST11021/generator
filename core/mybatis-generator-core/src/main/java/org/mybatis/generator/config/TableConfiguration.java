@@ -87,6 +87,8 @@ public class TableConfiguration extends PropertyHolder {
     private String offsetFieldName;
     private String limitFieldName;
     private String orderByFieldName;
+    private boolean enableGeneralOrderBy;
+    private boolean enableGeneralOffsetLimit;
 
 
     
@@ -535,6 +537,22 @@ public class TableConfiguration extends PropertyHolder {
 
     public void setOrderByFieldName(String orderByFieldName) {
         this.orderByFieldName = orderByFieldName;
+    }
+
+    public boolean isEnableGeneralOrderBy() {
+        return enableGeneralOrderBy;
+    }
+
+    public void setEnableGeneralOrderBy(boolean enableGeneralOrderBy) {
+        this.enableGeneralOrderBy = enableGeneralOrderBy;
+    }
+
+    public boolean isEnableGeneralOffsetLimit() {
+        return enableGeneralOffsetLimit;
+    }
+
+    public void setEnableGeneralOffsetLimit(boolean enableGeneralOffsetLimit) {
+        this.enableGeneralOffsetLimit = enableGeneralOffsetLimit;
     }
 
     public void setLimitFieldName(String limitFieldName) {

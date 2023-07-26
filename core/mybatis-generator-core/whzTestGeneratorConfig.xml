@@ -32,22 +32,30 @@
 
         <!--<plugin type="org.mybatis.generator.plugins.WhzSerializablePlugin"/>-->
         <plugin type="com.whz.mybatis.generator.plugin.WhzRenameModelRecordPlugin">
-            <!-- 添加DO后缀 -->
-            <property name="postfixName" value="DO"/>
             <!-- 将ZlbBaida替换为空串 -->
             <property name="replaceString" value="ZlbBaida>"/>
+            <!-- 添加前缀 -->
+            <property name="prefixName" value="Zlb"/>
+            <!-- 添加DO后缀 -->
+            <property name="postfixName" value="DO"/>
         </plugin>
         <plugin type="com.whz.mybatis.generator.plugin.WhzRenameQueryRecordPlugin">
             <!-- 查询对象：将ZlbBaida替换为空串, QC替换为QO -->
             <property name="replaceString" value="ZlbBaida>,QC>QO"/>
+            <!-- 添加前缀 -->
+            <property name="prefixName" value="Zlb"/>
         </plugin>
         <plugin type="com.whz.mybatis.generator.plugin.WhzRenameJavaMapperPlugin">
             <!-- mapper接口：将ZlbBaida替换为空串, Mapper替换为Dao -->
             <property name="replaceString" value="ZlbBaida>,Mapper>Dao"/>
+            <!-- 添加前缀 -->
+            <property name="prefixName" value="Zlb"/>
         </plugin>
         <plugin type="com.whz.mybatis.generator.plugin.WhzRenameSqlMapperPlugin">
             <!-- xml文件：将ZlbBaida替换为空串, Mapper替换为Dao -->
             <property name="replaceString" value="ZlbBaida>,Mapper>Dao"/>
+            <!-- 添加前缀 -->
+            <property name="prefixName" value="Zlb"/>
         </plugin>
 
         <commentGenerator type="org.mybatis.generator.internal.WhzCommentGenerator">

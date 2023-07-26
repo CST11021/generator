@@ -50,18 +50,20 @@ public class WhzBaseRenamePlugin extends PluginAdapter {
      */
     protected String getNameAfterReplace(String oldType) {
 
-        for (String config : replaceString) {
-            String[] rep = config.split(">");
-            if (rep == null) {
-                continue;
-            }
+        if (replaceString != null) {
+            for (String config : replaceString) {
+                String[] rep = config.split(">");
+                if (rep == null) {
+                    continue;
+                }
 
-            if (rep.length == 2) {
-                oldType = oldType.replace(rep[0], rep[1]);
-            } else {
-                oldType = oldType.replace(rep[0], "");
-            }
+                if (rep.length == 2) {
+                    oldType = oldType.replace(rep[0], rep[1]);
+                } else {
+                    oldType = oldType.replace(rep[0], "");
+                }
 
+            }
         }
 
         if (prefixName != null) {

@@ -1,4 +1,4 @@
-package org.mybatis.generator.internal;
+package com.whz.mybatis.generator.internal;
 
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
@@ -7,6 +7,7 @@ import org.mybatis.generator.api.dom.java.InnerClass;
 import org.mybatis.generator.api.dom.java.JavaElement;
 import org.mybatis.generator.api.dom.java.Method;
 import org.mybatis.generator.api.dom.xml.XmlElement;
+import org.mybatis.generator.internal.DefaultCommentGenerator;
 
 public class WhzCommentGenerator extends DefaultCommentGenerator {
 

@@ -58,7 +58,7 @@
             <property name="prefixName" value="Zlb"/>
         </plugin>
 
-        <commentGenerator type="org.mybatis.generator.internal.WhzCommentGenerator">
+        <commentGenerator type="com.whz.mybatis.generator.internal.WhzCommentGenerator">
             <property name="suppressDate" value="false"/>
             <property name="suppressAllComments" value="false"/>
         </commentGenerator>

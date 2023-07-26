@@ -1,6 +1,6 @@
 package com.whz.mybatis.generator.plugin;
 
-import org.mybatis.generator.api.IntrospectedTable;
+import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.api.PluginAdapter;
 
 import java.util.Arrays;
@@ -14,6 +14,7 @@ import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
  */
 public class WhzBaseRenamePlugin extends PluginAdapter {
 
+    private String prefixName;
     private String postfixName;
     private List<String> replaceString;
 
@@ -27,6 +28,7 @@ public class WhzBaseRenamePlugin extends PluginAdapter {
      * @return
      */
     public boolean validate(List<String> warnings) {
+        prefixName = properties.getProperty("prefixName");
         postfixName = properties.getProperty("postfixName");
 
         String replaceStringConfig = properties.getProperty("replaceString");
@@ -37,9 +39,15 @@ public class WhzBaseRenamePlugin extends PluginAdapter {
             }
         }
 
-        return replaceString != null || stringHasValue(postfixName);
+        return replaceString != null || stringHasValue(postfixName) || stringHasValue(prefixName);
     }
 
+    /**
+     * 代码文件名重命名
+     *
+     * @param oldType   全限定类名，例如：com.whz.generator.Example
+     * @return
+     */
     protected String getNameAfterReplace(String oldType) {
 
         for (String config : replaceString) {
@@ -54,6 +62,17 @@ public class WhzBaseRenamePlugin extends PluginAdapter {
                 oldType = oldType.replace(rep[0], "");
             }
 
+        }
+
+        if (prefixName != null) {
+            if (StringUtils.endsWith(oldType, ".xml")) {
+                oldType = prefixName + oldType;
+            } else {
+                // com.whz.generator.Example -> Example
+                String fileName = StringUtils.substringAfterLast(oldType, ".");
+                // com.whz.generator.Example -> com.whz.generator.ZlbExample
+                oldType = StringUtils.substringBeforeLast(oldType, fileName) + "Zlb" + fileName;
+            }
         }
 
         if (postfixName != null) {

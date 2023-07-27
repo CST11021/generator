@@ -516,14 +516,21 @@ public class MyBatisGeneratorConfigurationParser {
         tc.setGeneratedKey(gk);
     }
 
+    /**
+     * 解析<ignoreColumn>标签
+     *         <table tableName="budget_used_record">
+     *             <ignoreColumn column="" />
+     *         </table>
+     *
+     * @param tc
+     * @param node
+     */
     private void parseIgnoreColumn(TableConfiguration tc, Node node) {
         Properties attributes = parseAttributes(node);
         String column = attributes.getProperty("column");
-        String delimitedColumnName = attributes
-                .getProperty("delimitedColumnName");
+        String delimitedColumnName = attributes.getProperty("delimitedColumnName");
 
         IgnoredColumn ic = new IgnoredColumn(column);
-
         if (stringHasValue(delimitedColumnName)) {
             ic.setColumnNameDelimited(isTrue(delimitedColumnName));
         }

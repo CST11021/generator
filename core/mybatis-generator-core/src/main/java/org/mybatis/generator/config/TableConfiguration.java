@@ -69,25 +69,33 @@ public class TableConfiguration extends PropertyHolder {
     /** The catalog. */
     private String catalog;
     
-    /** The schema. */
+    /** db的schema */
     private String schema;
-    
-    /** The table name. */
+    /** 表名 */
     private String tableName;
-    
-    /** The domain object name. */
+    /** 表模型类的类名 */
     private String domainObjectName;
-
+    /** 查询字段的类名 */
     private String queryObjectName;
+    /** 删除字段名 */
     private String deleteColumnName;
+    /** 编辑删除的字段值 */
     private String deletedValue;
+    /** 标记未删除的字段值 */
     private String undeleteValue;
+    /** 创建时间字段名 */
     private String gmtCreateColumn;
+    /** 最后修改时间-表字段名 */
     private String gmtModifiedColumn;
+    /** 排序字段名-类字段名 */
     private String offsetFieldName;
+    /** limit字段名-查询类字段名 */
     private String limitFieldName;
+    /** order by字段名-查询类字段名 */
     private String orderByFieldName;
+    /** 是否生成order by语句-查询类字段名 */
     private boolean enableGeneralOrderBy;
+    /** 是否生成offset、limit语句-查询类字段名 */
     private boolean enableGeneralOffsetLimit;
 
 
@@ -229,8 +237,7 @@ public class TableConfiguration extends PropertyHolder {
      * @return true, if is column ignored
      */
     public boolean isColumnIgnored(String columnName) {
-        for (Map.Entry<IgnoredColumn, Boolean> entry : ignoredColumns
-                .entrySet()) {
+        for (Map.Entry<IgnoredColumn, Boolean> entry : ignoredColumns.entrySet()) {
             if (entry.getKey().matches(columnName)) {
                 entry.setValue(Boolean.TRUE);
                 return true;

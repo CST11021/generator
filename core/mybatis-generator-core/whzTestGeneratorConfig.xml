@@ -69,6 +69,14 @@
                         password="OsDFdjhByD4">
         </jdbcConnection>
 
+        <!--
+            参考连接：https://zxbcw.cn/post/200401/
+            现象描述：数据库表字段类型为：tinyint 长度为1，即 类型为：tinyint(1)，查询时，该字段对应的的java类型为boolean
+            问题描述：如何将该字段的java类型设置为Integer?
+            解决方案：
+                1.在jdbcUrl添加参数：tinyInt1isBit=false（默认为true）；
+                2.避免使用长度为1的tinyint类型字段存储数字格式的数据；
+         -->
         <javaTypeResolver type="com.whz.mybatis.generator.config.WhzJavaTypeResolverImpl"/>
 
         <!-- 生成模型的包名和位置 -->

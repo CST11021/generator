@@ -501,19 +501,13 @@ public class DatabaseIntrospector {
             localSchema = tc.getSchema();
             localTableName = tc.getTableName();
         } else if (databaseMetaData.storesLowerCaseIdentifiers()) {
-            localCatalog = tc.getCatalog() == null ? null : tc.getCatalog()
-                    .toLowerCase();
-            localSchema = tc.getSchema() == null ? null : tc.getSchema()
-                    .toLowerCase();
-            localTableName = tc.getTableName() == null ? null : tc
-                    .getTableName().toLowerCase();
+            localCatalog = tc.getCatalog() == null ? null : tc.getCatalog().toLowerCase();
+            localSchema = tc.getSchema() == null ? null : tc.getSchema().toLowerCase();
+            localTableName = tc.getTableName() == null ? null : tc.getTableName().toLowerCase();
         } else if (databaseMetaData.storesUpperCaseIdentifiers()) {
-            localCatalog = tc.getCatalog() == null ? null : tc.getCatalog()
-                    .toUpperCase();
-            localSchema = tc.getSchema() == null ? null : tc.getSchema()
-                    .toUpperCase();
-            localTableName = tc.getTableName() == null ? null : tc
-                    .getTableName().toUpperCase();
+            localCatalog = tc.getCatalog() == null ? null : tc.getCatalog().toUpperCase();
+            localSchema = tc.getSchema() == null ? null : tc.getSchema().toUpperCase();
+            localTableName = tc.getTableName() == null ? null : tc.getTableName().toUpperCase();
         } else {
             localCatalog = tc.getCatalog();
             localSchema = tc.getSchema();
@@ -529,8 +523,7 @@ public class DatabaseIntrospector {
                 st = new StringTokenizer(localSchema, "_%", true);
                 while (st.hasMoreTokens()) {
                     String token = st.nextToken();
-                    if (token.equals("_")
-                            || token.equals("%")) {
+                    if (token.equals("_") || token.equals("%")) {
                         sb.append(escapeString);
                     }
                     sb.append(token);
@@ -542,8 +535,7 @@ public class DatabaseIntrospector {
             st = new StringTokenizer(localTableName, "_%", true);
             while (st.hasMoreTokens()) {
                 String token = st.nextToken();
-                if (token.equals("_")
-                        || token.equals("%")) {
+                if (token.equals("_") || token.equals("%")) {
                     sb.append(escapeString);
                 }
                 sb.append(token);
@@ -554,13 +546,11 @@ public class DatabaseIntrospector {
         Map<ActualTableName, List<IntrospectedColumn>> answer = new HashMap<ActualTableName, List<IntrospectedColumn>>();
 
         if (logger.isDebugEnabled()) {
-            String fullTableName = composeFullyQualifiedTableName(localCatalog, localSchema,
-                            localTableName, '.');
+            String fullTableName = composeFullyQualifiedTableName(localCatalog, localSchema, localTableName, '.');
             logger.debug(getString("Tracing.1", fullTableName));
         }
 
-        ResultSet rs = databaseMetaData.getColumns(localCatalog, localSchema,
-                localTableName, "%");
+        ResultSet rs = databaseMetaData.getColumns(localCatalog, localSchema, localTableName, "%");
         
         boolean supportsIsAutoIncrement = false;
         boolean supportsIsGeneratedColumn = false;
@@ -576,15 +566,20 @@ public class DatabaseIntrospector {
         }
 
         while (rs.next()) {
-            IntrospectedColumn introspectedColumn = ObjectFactory
-                    .createIntrospectedColumn(context);
+            IntrospectedColumn introspectedColumn = ObjectFactory.createIntrospectedColumn(context);
 
             introspectedColumn.setTableAlias(tc.getAlias());
+            // rs.getInt("DATA_TYPE")返回是一个int类型，具体参见：java.sql.Types
+            // 参考连接: https://zxbcw.cn/post/200401/
+            // 现象描述：数据库表字段类型为：tinyint 长度为1，即 类型为：tinyint(1)，查询时，该字段对应的的java类型为boolean
+            // 问题描述：如何将该字段的java类型设置为Integer?
+            // 解决方案：
+            //      1. 在jdbcUrl添加参数：tinyInt1isBit=false（默认为true）；
+            //      2.避免使用长度为1的tinyint类型字段存储数字格式的数据；
             introspectedColumn.setJdbcType(rs.getInt("DATA_TYPE"));
             introspectedColumn.setLength(rs.getInt("COLUMN_SIZE"));
             introspectedColumn.setActualColumnName(rs.getString("COLUMN_NAME"));
-            introspectedColumn
-                    .setNullable(rs.getInt("NULLABLE") == DatabaseMetaData.columnNullable);
+            introspectedColumn.setNullable(rs.getInt("NULLABLE") == DatabaseMetaData.columnNullable);
             introspectedColumn.setScale(rs.getInt("DECIMAL_DIGITS"));
             introspectedColumn.setRemarks(rs.getString("REMARKS"));
             introspectedColumn.setDefaultValue(rs.getString("COLUMN_DEF"));
@@ -611,11 +606,8 @@ public class DatabaseIntrospector {
             columns.add(introspectedColumn);
 
             if (logger.isDebugEnabled()) {
-                logger.debug(getString(
-                        "Tracing.2",
-                        introspectedColumn.getActualColumnName(), Integer
-                                .toString(introspectedColumn.getJdbcType()),
-                        atn.toString()));
+                logger.debug(getString("Tracing.2", introspectedColumn.getActualColumnName(),
+                        Integer.toString(introspectedColumn.getJdbcType()), atn.toString()));
             }
         }
 
@@ -626,8 +618,7 @@ public class DatabaseIntrospector {
                 && !stringContainsSQLWildcard(localTableName)) {
             // issue a warning if there is more than one table and
             // no wildcards were used
-            ActualTableName inputAtn = new ActualTableName(tc.getCatalog(), tc
-                    .getSchema(), tc.getTableName());
+            ActualTableName inputAtn = new ActualTableName(tc.getCatalog(), tc.getSchema(), tc.getTableName());
 
             StringBuilder sb = new StringBuilder();
             boolean comma = false;
@@ -640,8 +631,7 @@ public class DatabaseIntrospector {
                 sb.append(atn.toString());
             }
 
-            warnings.add(getString("Warning.25",
-                    inputAtn.toString(), sb.toString()));
+            warnings.add(getString("Warning.25", inputAtn.toString(), sb.toString()));
         }
 
         return answer;

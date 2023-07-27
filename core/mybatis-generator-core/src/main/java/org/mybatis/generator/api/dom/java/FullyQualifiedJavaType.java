@@ -48,15 +48,15 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
 
     /** The short name without any generic arguments. */
     private String baseShortName;
-    /** The fully qualified name without any generic arguments. */
+    /** 不带任何泛型参数的完全限定名 */
     private String baseQualifiedName;
-    /** The explicitly imported. */
+    /** 显示 imported */
     private boolean explicitlyImported;
     /** The package name. */
     private String packageName;
-    /** The primitive. */
+    /** 是否基础类型：int、long */
     private boolean primitive;
-    /** The is array. */
+    /** 是否是数组类型 */
     private boolean isArray;
     
     /** The primitive type wrapper. */
@@ -66,7 +66,7 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
     private List<FullyQualifiedJavaType> typeArguments;
 
     // the following three values are used for dealing with wildcard types
-    /** The wildcard type. */
+    /** 是否是通配符类型. */
     private boolean wildcardType;
     
     /** The bounded wildcard. */
@@ -103,6 +103,7 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
      */
     public String getFullyQualifiedName() {
         StringBuilder sb = new StringBuilder();
+        // 是通配符类型
         if (wildcardType) {
             sb.append('?');
             if (boundedWildcard) {

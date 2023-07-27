@@ -14,7 +14,7 @@
         <property name="gmtModifiedColumn" value="r_modified_time"/>
         <property name="useLombok" value="true"/>
 
-        <commentGenerator type="org.mybatis.generator.internal.WhzCommentGenerator">
+        <commentGenerator type="com.whz.mybatis.generator.internal.WhzCommentGenerator">
             <property name="suppressDate" value="false"/>
             <property name="suppressAllComments" value="false"/>
         </commentGenerator>
@@ -76,7 +76,7 @@
         <property name="gmtModifiedColumn" value="r_modified_time"/>
 
         <plugin type="org.mybatis.generator.plugins.WhzSerializablePlugin"/>
-        <commentGenerator type="org.mybatis.generator.internal.WhzCommentGenerator">
+        <commentGenerator type="com.whz.mybatis.generator.internal.WhzCommentGenerator">
             <!--<commentGenerator type="org.mybatis.generator.internal.DefaultCommentGenerator">-->
             <!-- 这个元素用来去除指定生成的注释中是否包含生成的日期 false:表示保护 -->
             <!-- 如果生成日期，会造成即使修改一个字段，整个实体类所有属性都会发生变化，不利于版本控制，所以设置为true -->

@@ -277,6 +277,7 @@
                 column:指定要忽略的列的名字；
                 delimitedColumnName：参考table元素的delimitAllColumns配置，默认为false
                 注意，一个table元素中可以有多个ignoreColumn元素
+                delimitedColumnName：是否为列名添加定界符，例如`{column}`
             <ignoreColumn column="deptId" delimitedColumnName=""/>
             -->
         </table>

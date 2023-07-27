@@ -163,7 +163,9 @@ public abstract class IntrospectedTable {
     protected List<IntrospectedColumn> baseColumns;
     /** blob字段 */
     protected List<IntrospectedColumn> blobColumns;
+    /** 查询字段 */
     protected List<IntrospectedColumn> queryColumns;
+    /** 所有字段 */
     protected List<IntrospectedColumn> allColumns;
 
     /**

@@ -124,6 +124,9 @@
             <property name="gmtModifiedColumn" value="r_modified_time"/>
             <!-- 指定要查询的字段 -->
             <property name="queryColumns" value="id,code,is_delete"/>
+            <!-- 配置要忽略的列名，SQL和DO中都不会生成该字段 -->
+            <ignoreColumn column="org_budget_code"/>
+            <ignoreColumn column="org_budget_name"/>
         </table>
 
     </context>

@@ -24,7 +24,7 @@ public class WhzListElementGenerator extends AbstractXmlElementGenerator {
      *             <include refid="qc"/>
      *         </where>
      *         <if test="orderBy != null">
-     *             order by ${orderBy}
+     *             order by #{orderBy}
      *         </if>
      *         <include refid="page-limit"/>
      *     </select>
@@ -50,7 +50,7 @@ public class WhzListElementGenerator extends AbstractXmlElementGenerator {
             String orderByFieldName = introspectedTable.getTableConfiguration().getOrderByFieldName();
             if (StringUtility.stringHasValue(orderByFieldName)) {
                 sb.append(NEW_LINE + TAB + "<if test=\"" + orderByFieldName + " != null\">" +
-                        NEW_LINE + TAB + TAB + "order by ${" + orderByFieldName + "}" +
+                        NEW_LINE + TAB + TAB + "order by #{" + orderByFieldName + "}" +
                         NEW_LINE + TAB + "</if>");
             }
         }

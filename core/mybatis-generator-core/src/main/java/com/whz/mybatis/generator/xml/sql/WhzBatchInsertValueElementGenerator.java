@@ -52,8 +52,8 @@ public class WhzBatchInsertValueElementGenerator extends AbstractXmlElementGener
      */
     private XmlElement buildTrimElement() {
         XmlElement trimElement = new XmlElement("trim");
-        trimElement.addAttribute(new Attribute("suffix", ","));
-        trimElement.addAttribute(new Attribute("suffixOverrides", ""));
+        trimElement.addAttribute(new Attribute("suffix", ""));
+        trimElement.addAttribute(new Attribute("suffixOverrides", ","));
 
         for (IntrospectedColumn column : introspectedTable.getTableAllColumns()) {
             // now(),

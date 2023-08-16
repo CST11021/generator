@@ -59,14 +59,14 @@ public class WhzBatchInsertValueElementGenerator extends AbstractXmlElementGener
             // now(),
             String gmtCreateColumn = column.getIntrospectedTable().getTableConfiguration().getGmtCreateColumn();
             if (column.getActualColumnName().equals(gmtCreateColumn)) {
-                trimElement.addElement(new TextElement("now(),"));
+                trimElement.addElement(buildChooseElement(column.getJavaProperty(), "now()"));
                 continue;
             }
 
             // now(),
             String gmtModifiedColumn = column.getIntrospectedTable().getTableConfiguration().getGmtModifiedColumn();
             if (column.getActualColumnName().equals(gmtModifiedColumn)) {
-                trimElement.addElement(new TextElement("now(),"));
+                trimElement.addElement(buildChooseElement(column.getJavaProperty(), "now()"));
                 continue;
             }
 
@@ -74,13 +74,42 @@ public class WhzBatchInsertValueElementGenerator extends AbstractXmlElementGener
             String deleteColumn = column.getIntrospectedTable().getTableConfiguration().getDeleteColumnName();
             String undeleteValue = column.getIntrospectedTable().getTableConfiguration().getUndeleteValue();
             if (column.getActualColumnName().equals(deleteColumn)) {
-                trimElement.addElement(new TextElement(undeleteValue + ","));
+                trimElement.addElement(buildChooseElement(column.getJavaProperty(), undeleteValue));
+                // trimElement.addElement(new TextElement(undeleteValue + ","));
                 continue;
             }
 
             trimElement.addElement(new TextElement("#{item." + column.getJavaProperty() + "},"));
         }
         return trimElement;
+    }
+
+    /**
+     * 例如：
+     <choose>
+         <when test="item.addTime != null">
+            #{item.addTime},
+         </when>
+         <otherwise>
+            now(),
+         </otherwise>
+     </choose>
+
+     * @return
+     */
+    private XmlElement buildChooseElement(String javaProperty, String value) {
+        XmlElement whenElement = new XmlElement("when");
+        whenElement.addAttribute(new Attribute("test", "item." + javaProperty + " != null"));
+        whenElement.addElement(new TextElement("#{tiem." + javaProperty + "},"));
+
+        XmlElement otherwiseElement = new XmlElement("otherwise");
+        otherwiseElement.addElement(new TextElement(value + ","));
+
+        XmlElement chooseElement = new XmlElement("choose");
+        chooseElement.addElement(whenElement);
+        chooseElement.addElement(otherwiseElement);
+
+        return chooseElement;
     }
 
 }

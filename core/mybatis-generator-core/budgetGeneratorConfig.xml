@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="whz定制" targetRuntime="MyBatis3Whz">
+        <!-- 指定offset字段 -->
+        <property name="offsetFieldName" value="offset"/>
+        <!-- 指定limit字段 -->
+        <property name="limitFieldName" value="limit"/>
+        <!-- 是否生成offset和limit分页查SQL -->
+        <property name="enableGeneralOffsetLimit" value="false"/>
+        <!-- 指定排序字段 -->
+        <property name="orderByFieldName" value="sortField"/>
+        <!-- 是否生成排序SQL -->
+        <property name="enableGeneralOrderBy" value="true"/>
+        <!-- 标记逻辑删除标识的字段 -->
+        <property name="deleteColumnName" value="is_delete"/>
+        <!-- 标记逻辑删除标识的值 -->
+        <property name="deletedValue" value="1"/>
+        <!-- 标记逻辑删除标识的值 -->
+        <property name="undeleteValue" value="0"/>
+        <!-- 指定创建时间字段：mybatis插入SQL，指定该字段更新为now() -->
+        <property name="gmtCreateColumn" value="add_time"/>
+        <!-- 指定最后修改时间字段：mybatis更新SQL，指定该字段更新为now() -->
+        <property name="gmtModifiedColumn" value="modified_time"/>
+
+        <!-- DO和QC使用Lombok注解 -->
+        <property name="useLombok" value="true"/>
+        <!-- DO是否生成serialVersionUID -->
+        <property name="generalSerializable" value="true"/>
+
+
+
+
+        <!--<plugin type="org.mybatis.generator.plugins.WhzSerializablePlugin"/>-->
+        <plugin type="com.whz.mybatis.generator.plugin.WhzRenameModelRecordPlugin">
+            <!-- 添加Zlb前缀 -->
+            <property name="prefixName" value="Zlb"/>
+            <!-- 添加DO后缀 -->
+            <property name="postfixName" value="DO"/>
+        </plugin>
+        <plugin type="com.whz.mybatis.generator.plugin.WhzRenameQueryRecordPlugin">
+            <!-- 查询对象：QC替换为QO -->
+            <property name="replaceString" value="QC>QO"/>
+            <!-- 添加Zlb前缀 -->
+            <property name="prefixName" value="Zlb"/>
+        </plugin>
+        <plugin type="com.whz.mybatis.generator.plugin.WhzRenameJavaMapperPlugin">
+            <!-- mapper接口：Mapper替换为Dao -->
+            <property name="replaceString" value="Mapper>Dao"/>
+            <!-- 添加Zlb前缀 -->
+            <property name="prefixName" value="Zlb"/>
+        </plugin>
+        <plugin type="com.whz.mybatis.generator.plugin.WhzRenameSqlMapperPlugin">
+            <!-- xml文件：Mapper替换为Dao -->
+            <property name="replaceString" value="Mapper>Dao"/>
+            <!-- 添加Zlb前缀 -->
+            <property name="prefixName" value="Zlb"/>
+        </plugin>
+
+        <commentGenerator type="com.whz.mybatis.generator.internal.WhzCommentGenerator">
+            <property name="suppressDate" value="false"/>
+            <property name="suppressAllComments" value="false"/>
+        </commentGenerator>
+
+        <!--数据库链接URL，用户名、密码 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://10.100.185.239:3306/db_sop?useUnicode=true&amp;characterEncoding=UTF8&amp;allowMultiQueries=true&amp;useSSL=false&amp;tinyInt1isBit=false" userId="zlb_dev_user"
+                        password="OsDFdjhByD4">
+        </jdbcConnection>
+
+        <javaTypeResolver type="com.whz.mybatis.generator.config.WhzJavaTypeResolverImpl"/>
+
+        <!-- 生成模型的包名和位置 -->
+        <javaModelGenerator targetPackage="budget" targetProject="src/test/java">
+        </javaModelGenerator>
+
+        <javaQueryModelGenerator targetPackage="budget" targetProject="src/test/java">
+            <!-- 指定QueryModel继承的父类 -->
+            <property name="rootClass" value="cn.gov.zcy.paas.dto.page.PagePO"/>
+        </javaQueryModelGenerator>
+
+        <!-- 生成映射文件的包名和位置 -->
+        <sqlMapGenerator targetPackage="budget" targetProject="src/test/java">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- 生成DAO的包名和位置 -->
+        <javaClientGenerator targetPackage="budget" targetProject="src/test/java" type="XMLMAPPER" >
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!--<table tableName="budget_relation">-->
+        <!--    &lt;!&ndash; 指定要查询的字段 &ndash;&gt;-->
+        <!--    <property name="queryColumns" value="main_id,relation_type"/>-->
+        <!--</table>-->
+        <!--<table tableName="budget_used_record">-->
+        <!--    &lt;!&ndash; 指定要查询的字段 &ndash;&gt;-->
+        <!--    <property name="queryColumns" value="main_id,relation_type,business_code,type"/>-->
+        <!--</table>-->
+        <!--<table tableName="budget_org_mapping">-->
+        <!--    &lt;!&ndash; 指定要查询的字段 &ndash;&gt;-->
+        <!--    <property name="queryColumns" value="main_id,relation_type,business_code,type"/>-->
+        <!--    <ignoreColumn column="org_budget_code"/>-->
+        <!--    <ignoreColumn column="org_budget_name"/>-->
+        <!--</table>-->
+
+        <table tableName="zlb_baida_invoice_rel">
+            <!-- 指定要查询的字段 -->
+            <property name="queryColumns" value="biz_code,invoice_id"/>
+        </table>
+
+    </context>
+
+</generatorConfiguration>
+
+
+

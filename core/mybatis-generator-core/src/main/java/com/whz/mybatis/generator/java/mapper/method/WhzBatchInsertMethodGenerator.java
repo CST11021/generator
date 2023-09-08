@@ -10,9 +10,9 @@ import java.util.TreeSet;
  * @Author 盖伦
  * @Date 2023/5/17
  */
-public class WhzInsert extends AbstractJavaMapperMethodGenerator {
+public class WhzBatchInsertMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
-    public WhzInsert() {
+    public WhzBatchInsertMethodGenerator() {
         super();
     }
 
@@ -26,8 +26,6 @@ public class WhzInsert extends AbstractJavaMapperMethodGenerator {
         Method method = buildMethod();
         interfaze.addMethod(method);
         interfaze.addImportedTypes(buildImportedTypes());
-
-        // 添加注释
         this.context.getCommentGenerator().addGeneralMethodComment(method, this.introspectedTable);
     }
 
@@ -38,9 +36,9 @@ public class WhzInsert extends AbstractJavaMapperMethodGenerator {
      */
     private Method buildMethod() {
         Method method = new Method();
-        method.setReturnType(new FullyQualifiedJavaType("int"));
+        method.setReturnType(FullyQualifiedJavaType.getIntInstance());
         method.setVisibility(JavaVisibility.PUBLIC);
-        method.setName("insert");
+        method.setName("batchInsert");
         method.addParameter(buildParameter());
 
         return method;
@@ -52,18 +50,17 @@ public class WhzInsert extends AbstractJavaMapperMethodGenerator {
      * @return
      */
     private Parameter buildParameter() {
-        return new Parameter(new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType()), "DO");
+        FullyQualifiedJavaType listType = FullyQualifiedJavaType.getNewListInstance();
+        listType.addTypeArgument(new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType()));
+        return new Parameter(listType, "doList");
     }
 
-    /**
-     * int insert(T baseDO);
-     *
-     * @return
-     */
     private Set<FullyQualifiedJavaType> buildImportedTypes() {
         Set<FullyQualifiedJavaType> importedTypes = new TreeSet();
+        importedTypes.add(FullyQualifiedJavaType.getNewListInstance());
         importedTypes.add(new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType()));
 
         return importedTypes;
     }
+
 }

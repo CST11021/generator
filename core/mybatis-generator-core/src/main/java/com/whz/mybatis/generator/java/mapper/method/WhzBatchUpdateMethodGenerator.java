@@ -10,9 +10,9 @@ import java.util.TreeSet;
  * @Author 盖伦
  * @Date 2023/5/17
  */
-public class WhzBatchInsert extends AbstractJavaMapperMethodGenerator {
+public class WhzBatchUpdateMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
-    public WhzBatchInsert() {
+    public WhzBatchUpdateMethodGenerator() {
         super();
     }
 
@@ -38,7 +38,7 @@ public class WhzBatchInsert extends AbstractJavaMapperMethodGenerator {
         Method method = new Method();
         method.setReturnType(FullyQualifiedJavaType.getIntInstance());
         method.setVisibility(JavaVisibility.PUBLIC);
-        method.setName("batchInsert");
+        method.setName("batchUpdate");
         method.addParameter(buildParameter());
 
         return method;

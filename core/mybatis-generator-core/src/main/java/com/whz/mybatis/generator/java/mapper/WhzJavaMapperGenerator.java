@@ -56,22 +56,22 @@ public class WhzJavaMapperGenerator extends AbstractJavaClientGenerator {
         }
 
         // list
-        initializeAndExecuteGenerator(new WhzList(), interfaze);
+        initializeAndExecuteGenerator(new WhzListMethodGenerator(), interfaze);
 
         // count
-        initializeAndExecuteGenerator(new WhzCount(), interfaze);
+        initializeAndExecuteGenerator(new WhzCountMethodGenerator(), interfaze);
 
         // insert
-        initializeAndExecuteGenerator(new WhzInsert(), interfaze);
+        initializeAndExecuteGenerator(new WhzInsertMethodGenerator(), interfaze);
 
         // batchInsert
-        initializeAndExecuteGenerator(new WhzBatchInsert(), interfaze);
+        initializeAndExecuteGenerator(new WhzBatchInsertMethodGenerator(), interfaze);
 
         // update
-        initializeAndExecuteGenerator(new WhzUpdate(), interfaze);
+        initializeAndExecuteGenerator(new WhzUpdateMethodGenerator(), interfaze);
 
         // batchUpdate
-        initializeAndExecuteGenerator(new WhzBatchUpdate(), interfaze);
+        initializeAndExecuteGenerator(new WhzBatchUpdateMethodGenerator(), interfaze);
 
         // addCountByExampleMethod(interfaze);
         // addDeleteByExampleMethod(interfaze);

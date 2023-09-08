@@ -10,9 +10,9 @@ import java.util.TreeSet;
  * @Author 盖伦
  * @Date 2023/5/17
  */
-public class WhzUpdate extends AbstractJavaMapperMethodGenerator {
+public class WhzCountMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
-    public WhzUpdate() {
+    public WhzCountMethodGenerator() {
         super();
     }
 
@@ -36,9 +36,9 @@ public class WhzUpdate extends AbstractJavaMapperMethodGenerator {
      */
     private Method buildMethod() {
         Method method = new Method();
-        method.setReturnType(new FullyQualifiedJavaType("int"));
+        method.setReturnType(new FullyQualifiedJavaType("long"));
         method.setVisibility(JavaVisibility.PUBLIC);
-        method.setName("update");
+        method.setName("count");
         method.addParameter(buildParameter());
 
         return method;
@@ -50,17 +50,13 @@ public class WhzUpdate extends AbstractJavaMapperMethodGenerator {
      * @return
      */
     private Parameter buildParameter() {
-        return new Parameter(new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType()), "DO");
+        return new Parameter(new FullyQualifiedJavaType(this.introspectedTable.getQueryRecordType()), "qc");
     }
 
-    /**
-     * int insert(T baseDO);
-     *
-     * @return
-     */
     private Set<FullyQualifiedJavaType> buildImportedTypes() {
         Set<FullyQualifiedJavaType> importedTypes = new TreeSet();
-        importedTypes.add(new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType()));
+        importedTypes.add(FullyQualifiedJavaType.getNewListInstance());
+        importedTypes.add(new FullyQualifiedJavaType(this.introspectedTable.getQueryRecordType()));
 
         return importedTypes;
     }

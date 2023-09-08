@@ -10,9 +10,9 @@ import java.util.TreeSet;
  * @Author 盖伦
  * @Date 2023/5/17
  */
-public class WhzBatchUpdate extends AbstractJavaMapperMethodGenerator {
+public class WhzUpdateMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
-    public WhzBatchUpdate() {
+    public WhzUpdateMethodGenerator() {
         super();
     }
 
@@ -36,9 +36,9 @@ public class WhzBatchUpdate extends AbstractJavaMapperMethodGenerator {
      */
     private Method buildMethod() {
         Method method = new Method();
-        method.setReturnType(FullyQualifiedJavaType.getIntInstance());
+        method.setReturnType(new FullyQualifiedJavaType("int"));
         method.setVisibility(JavaVisibility.PUBLIC);
-        method.setName("batchUpdate");
+        method.setName("update");
         method.addParameter(buildParameter());
 
         return method;
@@ -50,17 +50,18 @@ public class WhzBatchUpdate extends AbstractJavaMapperMethodGenerator {
      * @return
      */
     private Parameter buildParameter() {
-        FullyQualifiedJavaType listType = FullyQualifiedJavaType.getNewListInstance();
-        listType.addTypeArgument(new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType()));
-        return new Parameter(listType, "doList");
+        return new Parameter(new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType()), "DO");
     }
 
+    /**
+     * int insert(T baseDO);
+     *
+     * @return
+     */
     private Set<FullyQualifiedJavaType> buildImportedTypes() {
         Set<FullyQualifiedJavaType> importedTypes = new TreeSet();
-        importedTypes.add(FullyQualifiedJavaType.getNewListInstance());
         importedTypes.add(new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType()));
 
         return importedTypes;
     }
-
 }

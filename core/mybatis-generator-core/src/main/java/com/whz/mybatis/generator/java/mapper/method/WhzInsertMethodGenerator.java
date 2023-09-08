@@ -10,9 +10,9 @@ import java.util.TreeSet;
  * @Author 盖伦
  * @Date 2023/5/17
  */
-public class WhzCount extends AbstractJavaMapperMethodGenerator {
+public class WhzInsertMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
-    public WhzCount() {
+    public WhzInsertMethodGenerator() {
         super();
     }
 
@@ -26,6 +26,8 @@ public class WhzCount extends AbstractJavaMapperMethodGenerator {
         Method method = buildMethod();
         interfaze.addMethod(method);
         interfaze.addImportedTypes(buildImportedTypes());
+
+        // 添加注释
         this.context.getCommentGenerator().addGeneralMethodComment(method, this.introspectedTable);
     }
 
@@ -36,9 +38,9 @@ public class WhzCount extends AbstractJavaMapperMethodGenerator {
      */
     private Method buildMethod() {
         Method method = new Method();
-        method.setReturnType(new FullyQualifiedJavaType("long"));
+        method.setReturnType(new FullyQualifiedJavaType("int"));
         method.setVisibility(JavaVisibility.PUBLIC);
-        method.setName("count");
+        method.setName("insert");
         method.addParameter(buildParameter());
 
         return method;
@@ -50,13 +52,17 @@ public class WhzCount extends AbstractJavaMapperMethodGenerator {
      * @return
      */
     private Parameter buildParameter() {
-        return new Parameter(new FullyQualifiedJavaType(this.introspectedTable.getQueryRecordType()), "qc");
+        return new Parameter(new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType()), "DO");
     }
 
+    /**
+     * int insert(T baseDO);
+     *
+     * @return
+     */
     private Set<FullyQualifiedJavaType> buildImportedTypes() {
         Set<FullyQualifiedJavaType> importedTypes = new TreeSet();
-        importedTypes.add(FullyQualifiedJavaType.getNewListInstance());
-        importedTypes.add(new FullyQualifiedJavaType(this.introspectedTable.getQueryRecordType()));
+        importedTypes.add(new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType()));
 
         return importedTypes;
     }

@@ -10,9 +10,9 @@ import java.util.TreeSet;
  * @Author 盖伦
  * @Date 2023/5/17
  */
-public class WhzGetByQc extends AbstractJavaMapperMethodGenerator {
+public class WhzListMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
-    public WhzGetByQc() {
+    public WhzListMethodGenerator() {
         super();
     }
 
@@ -36,12 +36,19 @@ public class WhzGetByQc extends AbstractJavaMapperMethodGenerator {
      */
     private Method buildMethod() {
         Method method = new Method();
-        method.setReturnType(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
         method.setVisibility(JavaVisibility.PUBLIC);
-        method.setName("getByQc");
+        method.setReturnType(buildReturnType());
+        method.setName("list");
         method.addParameter(buildParameter());
 
         return method;
+    }
+
+    private FullyQualifiedJavaType buildReturnType() {
+        FullyQualifiedJavaType listType = FullyQualifiedJavaType.getNewListInstance();
+        listType.addTypeArgument(new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType()));
+
+        return listType;
     }
 
     /**
@@ -50,11 +57,12 @@ public class WhzGetByQc extends AbstractJavaMapperMethodGenerator {
      * @return
      */
     private Parameter buildParameter() {
-        return new Parameter(new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType()), "qc");
+        return new Parameter(new FullyQualifiedJavaType(this.introspectedTable.getQueryRecordType()), "qc");
     }
 
     private Set<FullyQualifiedJavaType> buildImportedTypes() {
         Set<FullyQualifiedJavaType> importedTypes = new TreeSet();
+        importedTypes.add(FullyQualifiedJavaType.getNewListInstance());
         importedTypes.add(new FullyQualifiedJavaType(this.introspectedTable.getQueryRecordType()));
 
         return importedTypes;

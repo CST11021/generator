@@ -14,8 +14,8 @@ public class WhzGeneratorTest {
 		List<String> warnings = new ArrayList<String>();
 
 		ConfigurationParser parser = new ConfigurationParser(warnings);
-		Configuration config = parser.parseConfiguration(new File("budgetGeneratorConfig.xml"));
-		// Configuration config = parser.parseConfiguration(new File("whzTestGeneratorConfig.xml"));
+		// Configuration config = parser.parseConfiguration(new File("budgetGeneratorConfig.xml"));
+		Configuration config = parser.parseConfiguration(new File("whzTestGeneratorConfig.xml"));
 
 		MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, new DefaultShellCallback(true), warnings);
 		myBatisGenerator.generate(new ProgressCallbackImpl());

@@ -15,6 +15,7 @@
  */
 package org.mybatis.generator.internal.util;
 
+import com.whz.mybatis.generator.api.IntrospectedColumnForQuery;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.*;
@@ -192,20 +193,34 @@ public class JavaBeansUtil {
      * @return the java beans getter
      */
     public static Method getJavaBeansGetter(IntrospectedColumn introspectedColumn, Context context, IntrospectedTable introspectedTable) {
-        FullyQualifiedJavaType fqjt = introspectedColumn
-                .getFullyQualifiedJavaType();
+        FullyQualifiedJavaType fqjt = introspectedColumn.getFullyQualifiedJavaType();
         String property = introspectedColumn.getJavaProperty();
 
         Method method = new Method();
         method.setVisibility(JavaVisibility.PUBLIC);
         method.setReturnType(fqjt);
         method.setName(getGetterMethodName(property, fqjt));
-        context.getCommentGenerator().addGetterComment(method,
-                introspectedTable, introspectedColumn);
+        context.getCommentGenerator().addGetterComment(method, introspectedTable, introspectedColumn);
 
         StringBuilder sb = new StringBuilder();
         sb.append("return ");
         sb.append(property);
+        sb.append(';');
+        method.addBodyLine(sb.toString());
+
+        return method;
+    }
+
+    public static Method getJavaBeansGetter(IntrospectedColumnForQuery query, Context context, IntrospectedTable introspectedTable) {
+        Method method = new Method();
+        method.setVisibility(JavaVisibility.PUBLIC);
+        method.setReturnType(query.getJavaType());
+        method.setName(getGetterMethodName(query.getFieldName(), query.getJavaType()));
+        context.getCommentGenerator().addGetterComment(method, introspectedTable, query.getIntrospectedColumn());
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("return ");
+        sb.append(query.getFieldName());
         sb.append(';');
         method.addBodyLine(sb.toString());
 
@@ -224,16 +239,21 @@ public class JavaBeansUtil {
      * @return the java beans field
      */
     public static Field getJavaBeansField(IntrospectedColumn introspectedColumn, Context context, IntrospectedTable introspectedTable) {
-        FullyQualifiedJavaType fqjt = introspectedColumn
-                .getFullyQualifiedJavaType();
-        String property = introspectedColumn.getJavaProperty();
-
         Field field = new Field();
         field.setVisibility(JavaVisibility.PRIVATE);
-        field.setType(fqjt);
-        field.setName(property);
-        context.getCommentGenerator().addFieldComment(field,
-                introspectedTable, introspectedColumn);
+        field.setType(introspectedColumn.getFullyQualifiedJavaType());
+        field.setName(introspectedColumn.getJavaProperty());
+        context.getCommentGenerator().addFieldComment(field, introspectedTable, introspectedColumn);
+
+        return field;
+    }
+
+    public static Field getJavaBeansField(IntrospectedColumnForQuery query, Context context, IntrospectedTable introspectedTable) {
+        Field field = new Field();
+        field.setVisibility(JavaVisibility.PRIVATE);
+        field.setType(query.getJavaType());
+        field.setName(query.getFieldName());
+        context.getCommentGenerator().addFieldComment(field, introspectedTable, query.getIntrospectedColumn());
 
         return field;
     }
@@ -279,6 +299,35 @@ public class JavaBeansUtil {
             sb.append(';');
             method.addBodyLine(sb.toString());
         }
+
+        return method;
+    }
+
+    /**
+     * Gets the java beans setter.
+     *
+     * @param query
+     * @param context
+     * @param introspectedTable
+     * @return
+     */
+    public static Method getJavaBeansSetter(IntrospectedColumnForQuery query, Context context, IntrospectedTable introspectedTable) {
+        FullyQualifiedJavaType fqjt = query.getJavaType();
+
+        String property = query.getFieldName();
+        Method method = new Method();
+        method.setVisibility(JavaVisibility.PUBLIC);
+        method.setName(getSetterMethodName(property));
+        method.addParameter(new Parameter(fqjt, property));
+        context.getCommentGenerator().addSetterComment(method, introspectedTable, query.getIntrospectedColumn());
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("this.");
+        sb.append(property);
+        sb.append(" = ");
+        sb.append(property);
+        sb.append(';');
+        method.addBodyLine(sb.toString());
 
         return method;
     }

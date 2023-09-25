@@ -34,8 +34,7 @@ public abstract class AbstractJavaGenerator extends AbstractGenerator {
 
     public static Method getGetter(Field field) {
         Method method = new Method();
-        method.setName(getGetterMethodName(field.getName(), field
-                .getType()));
+        method.setName(getGetterMethodName(field.getName(), field.getType()));
         method.setReturnType(field.getType());
         method.setVisibility(JavaVisibility.PUBLIC);
         StringBuilder sb = new StringBuilder();

@@ -18,7 +18,6 @@ package org.mybatis.generator.api.dom.xml;
 import org.mybatis.generator.api.dom.OutputUtilities;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -67,7 +66,7 @@ public class XmlElement extends Element {
         sb.append('<');
         sb.append(name);
 
-        Collections.sort(attributes);
+        // Collections.sort(attributes);
         for (Attribute att : attributes) {
             sb.append(' ');
             sb.append(att.getFormattedContent());

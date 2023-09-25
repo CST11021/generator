@@ -757,8 +757,7 @@ public interface Plugin {
      *         first plugin returning false will disable the calling of further
      *         plugins.
      */
-    boolean clientUpdateByPrimaryKeyWithBLOBsMethodGenerated(Method method,
-                                                             Interface interfaze, IntrospectedTable introspectedTable);
+    boolean clientUpdateByPrimaryKeyWithBLOBsMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable);
 
     /**
      * This method is called when the updateByPrimaryKeyWithoutBLOBs method has
@@ -781,8 +780,7 @@ public interface Plugin {
     boolean clientUpdateByPrimaryKeyWithoutBLOBsMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable);
 
     /**
-     * This method is called after the field is generated for a specific column
-     * in a table.
+     * this method is called after the field is generated for a specific column in a table.
      *
      * @param field
      *            the field generated for the specified column
@@ -797,10 +795,7 @@ public interface Plugin {
      *            introspected from the database
      * @param modelClassType
      *            the type of class that the field is generated for
-     * @return true if the field should be generated, false if the generated
-     *         field should be ignored. In the case of multiple plugins, the
-     *         first plugin returning false will disable the calling of further
-     *         plugins.
+     * @return 如果应生成字段，则为 true；如果应忽略生成的字段，则为 false。如果有多个插件，第一个插件返回 false 将禁用其他插件的调用。
      */
     boolean modelFieldGenerated(Field field, TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn, IntrospectedTable introspectedTable, ModelClassType modelClassType);
 
@@ -822,10 +817,7 @@ public interface Plugin {
      *            introspected from the database
      * @param modelClassType
      *            the type of class that the field is generated for
-     * @return true if the method should be generated, false if the generated
-     *         method should be ignored. In the case of multiple plugins, the
-     *         first plugin returning false will disable the calling of further
-     *         plugins.
+     * @return 如果应生成字段的get方法，则为 true；如果应忽略生成的字段，则为 false。如果有多个插件，第一个插件返回 false 将禁用其他插件的调用。
      */
     boolean modelGetterMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn, IntrospectedTable introspectedTable, ModelClassType modelClassType);
 

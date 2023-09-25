@@ -1,11 +1,11 @@
 package com.whz.mybatis.generator.java.model;
 
+import com.whz.mybatis.generator.api.IntrospectedColumnForQuery;
 import org.mybatis.generator.api.CommentGenerator;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.Plugin;
 import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.codegen.AbstractJavaGenerator;
-import org.mybatis.generator.codegen.RootClassInfo;
 import org.mybatis.generator.config.PropertyRegistry;
 import org.mybatis.generator.internal.util.StringUtility;
 
@@ -31,14 +31,54 @@ public class WhzModelQcGenerator extends AbstractJavaGenerator {
         progressCallback.startTask(getString("Progress.8", introspectedTable.getFullyQualifiedTable().toString()));
 
         // 创建一个TopLevelClass
-        FullyQualifiedJavaType type = new FullyQualifiedJavaType(introspectedTable.getQueryRecordType());
-        TopLevelClass topLevelClass = new TopLevelClass(type);
+        TopLevelClass topLevelClass = createTopLevelClass();
+        // 类设置为public
         topLevelClass.setVisibility(JavaVisibility.PUBLIC);
+        // 给类添加注释
+        doCommentGenerate(topLevelClass);
+        // 设置继承父类
+        setExtendParentClassIfNecessary(topLevelClass);
+        // 设置构造函数
+        setConstructor(topLevelClass);
+        // 设置lombok注解
+        setLombokAnnotationIfNecessary(topLevelClass);
 
-        // 代码生成类
-        CommentGenerator commentGenerator = context.getCommentGenerator();
-        commentGenerator.addJavaFileComment(topLevelClass);
 
+        // 获取要生成的查询字段
+        List<IntrospectedColumnForQuery> queryColumns = introspectedTable.getQueryColumns();
+        // 遍历配置的查询字段
+        for (IntrospectedColumnForQuery query : queryColumns) {
+
+            // 设置生成的字段
+            setField(topLevelClass, query);
+
+            // 生成getter和setter方法
+            setGetterAndSetterIfNecessary(topLevelClass, query);
+        }
+
+        List<CompilationUnit> answer = new ArrayList<CompilationUnit>();
+        if (context.getPlugins().modelBaseRecordClassGenerated(topLevelClass, introspectedTable)) {
+            answer.add(topLevelClass);
+        }
+        return answer;
+    }
+
+    /**
+     * 创建一个TopLevelClass
+     *
+     * @return
+     */
+    private TopLevelClass createTopLevelClass() {
+        FullyQualifiedJavaType type = new FullyQualifiedJavaType(introspectedTable.getQueryRecordType());
+        return new TopLevelClass(type);
+    }
+
+    /**
+     * 设置继承父类
+     *
+     * @param topLevelClass
+     */
+    private void setExtendParentClassIfNecessary(TopLevelClass topLevelClass) {
         // 获取父类
         FullyQualifiedJavaType superClass = getSuperClass();
         if (superClass != null) {
@@ -47,12 +87,72 @@ public class WhzModelQcGenerator extends AbstractJavaGenerator {
             // import父类
             topLevelClass.addImportedType(superClass);
         }
+    }
 
-        // 给类添加注释
-        commentGenerator.addModelClassComment(topLevelClass, introspectedTable);
+    /**
+     * 设置lombok注解
+     *
+     * @param topLevelClass
+     */
+    private void setLombokAnnotationIfNecessary(TopLevelClass topLevelClass) {
+        // lombok注解
+        if (useLombok()) {
+            topLevelClass.addAnnotation("@Data");
+            topLevelClass.addImportedType("lombok.Data");
+        }
+    }
+
+    /**
+     * 设置生成的字段
+     *
+     * @param topLevelClass
+     * @param query
+     */
+    private void setField(TopLevelClass topLevelClass, IntrospectedColumnForQuery query) {
+        Plugin plugins = context.getPlugins();
 
 
+        // 添加字段
+        Field field = getJavaBeansField(query, context, introspectedTable);
+        if (plugins.modelFieldGenerated(field, topLevelClass, query.getIntrospectedColumn(), introspectedTable, Plugin.ModelClassType.BASE_RECORD)) {
+            // 添加字段
+            topLevelClass.addField(field);
+            // 导出字段类型
+            topLevelClass.addImportedType(field.getType());
+            if (query.isArray()) {
+                topLevelClass.addImportedType(FullyQualifiedJavaType.getNewListInstance());
+            }
+        }
+    }
+    /**
+     * 设置getter和Setter方法
+     *
+     * @param topLevelClass
+     * @param query
+     */
+    private void setGetterAndSetterIfNecessary(TopLevelClass topLevelClass, IntrospectedColumnForQuery query) {
+        Plugin plugins = context.getPlugins();
+        // 不使用@Lombok注解的，生成getter和setter方法
+        if (!useLombok()) {
+            // 添加getter方法
+            Method getterMethod = getJavaBeansGetter(query, context, introspectedTable);
+            if (plugins.modelGetterMethodGenerated(getterMethod, topLevelClass, query.getIntrospectedColumn(), introspectedTable, Plugin.ModelClassType.BASE_RECORD)) {
+                topLevelClass.addMethod(getterMethod);
+            }
 
+            // 添加setter方法
+            Method setterMethod = getJavaBeansSetter(query, context, introspectedTable);
+            if (plugins.modelSetterMethodGenerated(setterMethod, topLevelClass, query.getIntrospectedColumn(), introspectedTable, Plugin.ModelClassType.BASE_RECORD)) {
+                topLevelClass.addMethod(setterMethod);
+            }
+        }
+    }
+
+    /**
+     * 设置构造函数
+     * @param topLevelClass
+     */
+    private void setConstructor(TopLevelClass topLevelClass) {
         if (introspectedTable.isConstructorBased()) {
             // 添加带有参数的构造函数
             addParameterizedConstructor(topLevelClass);
@@ -62,55 +162,20 @@ public class WhzModelQcGenerator extends AbstractJavaGenerator {
                 addDefaultConstructor(topLevelClass);
             }
         }
+    }
 
-        // lombok注解
-        if (useLombok()) {
-            topLevelClass.addAnnotation("@Data");
-            topLevelClass.addImportedType("lombok.Data");
-        }
-
-        String rootClass = getRootClass();
-        Plugin plugins = context.getPlugins();
-
-        List<IntrospectedColumn> queryColumns = introspectedTable.getQueryColumns();
-        if (queryColumns == null || queryColumns.size() == 0) {
-            queryColumns = introspectedTable.getTableAllColumns();
-        }
-
-        for (IntrospectedColumn introspectedColumn : queryColumns) {
-            if (RootClassInfo.getInstance(rootClass, warnings).containsProperty(introspectedColumn)) {
-                continue;
-            }
-
-            // 添加字段
-            Field field = getJavaBeansField(introspectedColumn, context, introspectedTable);
-            if (plugins.modelFieldGenerated(field, topLevelClass, introspectedColumn, introspectedTable, Plugin.ModelClassType.BASE_RECORD)) {
-                // 添加字段
-                topLevelClass.addField(field);
-                // 导出字段类型
-                topLevelClass.addImportedType(field.getType());
-            }
-
-            if (!useLombok()) {
-                // 添加getter方法
-                Method getterMethod = getJavaBeansGetter(introspectedColumn, context, introspectedTable);
-                if (plugins.modelGetterMethodGenerated(getterMethod, topLevelClass, introspectedColumn, introspectedTable, Plugin.ModelClassType.BASE_RECORD)) {
-                    topLevelClass.addMethod(getterMethod);
-                }
-
-                // 添加setter方法
-                Method setterMethod = getJavaBeansSetter(introspectedColumn, context, introspectedTable);
-                if (plugins.modelSetterMethodGenerated(setterMethod, topLevelClass, introspectedColumn, introspectedTable, Plugin.ModelClassType.BASE_RECORD)) {
-                    topLevelClass.addMethod(setterMethod);
-                }
-            }
-        }
-
-        List<CompilationUnit> answer = new ArrayList<CompilationUnit>();
-        if (context.getPlugins().modelBaseRecordClassGenerated(topLevelClass, introspectedTable)) {
-            answer.add(topLevelClass);
-        }
-        return answer;
+    /**
+     * 给类添加注释
+     *
+     * @param topLevelClass
+     */
+    private void doCommentGenerate(TopLevelClass topLevelClass) {
+        // 代码生成类
+        CommentGenerator commentGenerator = context.getCommentGenerator();
+        // 设置需要生成注释的类
+        commentGenerator.addJavaFileComment(topLevelClass);
+        // 给类添加注释
+        commentGenerator.addModelClassComment(topLevelClass, introspectedTable);
     }
 
     /**
@@ -176,6 +241,11 @@ public class WhzModelQcGenerator extends AbstractJavaGenerator {
         topLevelClass.addMethod(method);
     }
 
+    /**
+     * 是否使用lombok注解
+     *
+     * @return
+     */
     private boolean useLombok() {
         String useLombok = introspectedTable.getContext().getProperty("useLombok");
         return StringUtility.stringHasValue(useLombok) && "true".equals(useLombok);

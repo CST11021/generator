@@ -123,7 +123,7 @@
             <!-- 指定最后修改时间字段：mybatis更新SQL，指定该字段更新为now() -->
             <property name="gmtModifiedColumn" value="r_modified_time"/>
             <!-- 指定要查询的字段 -->
-            <property name="queryColumns" value="id,code,is_delete"/>
+            <property name="queryColumns" value="id, id[],code,code[],is_delete,is_delete[]"/>
             <!-- 配置要忽略的列名，SQL和DO中都不会生成该字段 -->
             <ignoreColumn column="org_budget_code"/>
             <ignoreColumn column="org_budget_name"/>

@@ -15,6 +15,7 @@
  */
 package org.mybatis.generator.api;
 
+import com.whz.mybatis.generator.api.IntrospectedColumnForQuery;
 import com.whz.mybatis.generator.config.JavaQueryModelGeneratorConfiguration;
 import org.mybatis.generator.config.*;
 import org.mybatis.generator.internal.rules.ConditionalModelRules;
@@ -164,7 +165,7 @@ public abstract class IntrospectedTable {
     /** blob字段 */
     protected List<IntrospectedColumn> blobColumns;
     /** 查询字段 */
-    protected List<IntrospectedColumn> queryColumns;
+    protected List<IntrospectedColumnForQuery> queryColumns;
     /** 所有字段 */
     protected List<IntrospectedColumn> allColumns;
 
@@ -200,7 +201,7 @@ public abstract class IntrospectedTable {
         primaryKeyColumns = new ArrayList<IntrospectedColumn>();
         baseColumns = new ArrayList<IntrospectedColumn>();
         blobColumns = new ArrayList<IntrospectedColumn>();
-        queryColumns = new ArrayList<IntrospectedColumn>();
+        queryColumns = new ArrayList<IntrospectedColumnForQuery>();
         allColumns = new ArrayList<IntrospectedColumn>();
         attributes = new HashMap<String, Object>();
         internalAttributes = new HashMap<IntrospectedTable.InternalAttribute, String>();
@@ -267,8 +268,8 @@ public abstract class IntrospectedTable {
             return true;
         }
 
-        for (IntrospectedColumn col : queryColumns) {
-            if (col.getActualColumnName().equals(column.getActualColumnName())) {
+        for (IntrospectedColumnForQuery col : queryColumns) {
+            if (col.getIntrospectedColumn().getActualColumnName().equals(column.getActualColumnName())) {
                 return true;
             }
         }
@@ -734,11 +735,11 @@ public abstract class IntrospectedTable {
         introspectedColumn.setIntrospectedTable(this);
     }
 
-    public void addQueryColumn(IntrospectedColumn introspectedColumn) {
+    public void addQueryColumn(IntrospectedColumnForQuery introspectedColumn) {
         queryColumns.add(introspectedColumn);
     }
 
-    public List<IntrospectedColumn> getQueryColumns() {
+    public List<IntrospectedColumnForQuery> getQueryColumns() {
         return queryColumns;
     }
 

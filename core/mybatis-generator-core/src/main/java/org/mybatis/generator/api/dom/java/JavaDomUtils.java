@@ -18,10 +18,8 @@ package org.mybatis.generator.api.dom.java;
 public class JavaDomUtils {
 
     /**
-     * Calculates type names for writing into generated Java.  We try to
-     * use short names wherever possible.  If the type requires an import,
-     * but has not been imported, then we need to use the fully qualified
-     * type name.
+     * 返回字段的类型代码，例如：String,Long,Date等
+     *
      * 
      * @param compilationUnit the compilation unit being written
      * @param fqjt the type in question
@@ -31,7 +29,8 @@ public class JavaDomUtils {
         if (fqjt.getTypeArguments().size() > 0) {
             return calculateParameterizedTypeName(compilationUnit, fqjt);
         }
-        
+
+        // 如果字段是不需要额外的import的、在同一个包下的或者是可以import的，则不需要使用全限定类名
         if(compilationUnit == null
                 || typeDoesNotRequireImport(fqjt)
                 || typeIsInSamePackage(compilationUnit, fqjt) 
@@ -62,8 +61,7 @@ public class JavaDomUtils {
     }
     
     private static boolean typeDoesNotRequireImport(FullyQualifiedJavaType fullyQualifiedJavaType) {
-        return fullyQualifiedJavaType.isPrimitive()
-                || !fullyQualifiedJavaType.isExplicitlyImported();
+        return fullyQualifiedJavaType.isPrimitive() || !fullyQualifiedJavaType.isExplicitlyImported();
     }
     
     private static boolean typeIsInSamePackage(CompilationUnit compilationUnit, FullyQualifiedJavaType fullyQualifiedJavaType) {

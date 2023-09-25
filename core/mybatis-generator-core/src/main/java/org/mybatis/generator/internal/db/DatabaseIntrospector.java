@@ -15,6 +15,8 @@
  */
 package org.mybatis.generator.internal.db;
 
+import com.whz.mybatis.generator.api.IntrospectedColumnForQuery;
+import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.api.FullyQualifiedTable;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
@@ -675,12 +677,10 @@ public class DatabaseIntrospector {
 
             for (IntrospectedColumn introspectedColumn : entry.getValue()) {
                 introspectedTable.addColumn(introspectedColumn);
-
-                // 添加查询字段
-                if (tc.getQueryColumns().contains(introspectedColumn.getActualColumnName())) {
-                    introspectedTable.addQueryColumn(introspectedColumn);
-                }
             }
+
+            // 添加查询字段
+            addQueryColumnIfNecessary(tc, introspectedTable, entry.getValue());
 
             calculatePrimaryKey(table, introspectedTable);
             
@@ -690,6 +690,58 @@ public class DatabaseIntrospector {
         }
 
         return answer;
+    }
+
+    /**
+     * 添加查询字段
+     *
+     * @param tc
+     * @param introspectedTable
+     * @param columns
+     */
+    private void addQueryColumnIfNecessary(TableConfiguration tc, IntrospectedTable introspectedTable, List<IntrospectedColumn> columns) {
+        List<String> queryColumns = tc.getQueryColumns();
+        if (queryColumns == null || queryColumns.size() == 0) {
+
+            for (IntrospectedColumn column : columns) {
+                introspectedTable.addQueryColumn(new IntrospectedColumnForQuery(false, column));
+            }
+
+        } else {
+
+            for (String queryColumn : queryColumns) {
+                IntrospectedColumnForQuery query = determineIntrospectedColumn(queryColumn, columns);
+                if (query != null) {
+                    introspectedTable.addQueryColumn(query);
+                }
+            }
+
+        }
+
+    }
+
+    /**
+     * 获取IntrospectedColumnForQuery
+     *
+     * @param queryColumn
+     * @param columns
+     * @return
+     */
+    private IntrospectedColumnForQuery determineIntrospectedColumn(String queryColumn, List<IntrospectedColumn> columns) {
+        boolean isList = false;
+        String queryColumnName = StringUtils.trim(queryColumn);
+        if (queryColumn.endsWith("[]")) {
+            isList = true;
+            queryColumnName = queryColumnName.replace("[]", "");
+        }
+
+        for (IntrospectedColumn column : columns) {
+            if (queryColumnName.equals(column.getActualColumnName())) {
+                return new IntrospectedColumnForQuery(isList, column);
+            }
+        }
+
+        return null;
     }
 
     /**

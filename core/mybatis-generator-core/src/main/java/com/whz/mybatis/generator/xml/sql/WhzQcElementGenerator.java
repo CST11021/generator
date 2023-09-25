@@ -1,5 +1,6 @@
 package com.whz.mybatis.generator.xml.sql;
 
+import com.whz.mybatis.generator.api.IntrospectedColumnForQuery;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.TextElement;
@@ -55,7 +56,26 @@ public class WhzQcElementGenerator extends AbstractXmlElementGenerator {
                 answer.addElement(0, new TextElement(column.getActualColumnName() + " = " + undeleteValue));
             }
 
-            if (introspectedTable.isQueryColumn(column)) {
+
+
+        }
+
+        for (IntrospectedColumnForQuery query : introspectedTable.getQueryColumns()) {
+            IntrospectedColumn column = query.getIntrospectedColumn();
+            if (query.isArray()) {
+                // <if test="typeList != null">
+                //     and type in
+                //     <foreach collection="typeList" item="item" open="(" close=")" separator=",">
+                //         #{item}
+                //     </foreach>
+                // </if>
+                XmlElement ifE = new XmlElement("if");
+                ifE.addAttribute(new Attribute("test", query.getFieldName() + " != null"));
+                ifE.addElement(new TextElement("and " + column.getActualColumnName() + " in"));
+                ifE.addElement(buildForeachElement(query));
+                answer.addElement(ifE);
+
+            } else {
                 XmlElement ifE = new XmlElement("if");
                 ifE.addAttribute(new Attribute("test", column.getJavaProperty() + " != null"));
                 ifE.addElement(new TextElement("and " + column.getActualColumnName() + " = #{" + column.getJavaProperty() + "}"));
@@ -65,6 +85,17 @@ public class WhzQcElementGenerator extends AbstractXmlElementGenerator {
 
         parentElement.addElement(answer);
         context.getCommentGenerator().addComment(answer);
+    }
+
+    private XmlElement buildForeachElement(IntrospectedColumnForQuery query) {
+        XmlElement foreachElement = new XmlElement("foreach");
+        foreachElement.addAttribute(new Attribute("collection", query.getFieldName()));
+        foreachElement.addAttribute(new Attribute("item", "item"));
+        foreachElement.addAttribute(new Attribute("open", "("));
+        foreachElement.addAttribute(new Attribute("close", ")"));
+        foreachElement.addAttribute(new Attribute("separator", ","));
+        foreachElement.addElement(new TextElement("#{item}"));
+        return foreachElement;
     }
 
 }

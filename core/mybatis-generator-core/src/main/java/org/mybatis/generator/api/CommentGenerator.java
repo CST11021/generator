@@ -21,8 +21,7 @@ import org.mybatis.generator.api.dom.xml.XmlElement;
 import java.util.Properties;
 
 /**
- * Implementations of this interface are used to generate comments for the
- * various artifacts.
+ * 用于给类添加注释
  * 
  * @author Jeff Butler
  */

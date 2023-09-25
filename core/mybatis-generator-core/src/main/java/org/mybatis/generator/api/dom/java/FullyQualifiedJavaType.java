@@ -50,7 +50,7 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
     private String baseShortName;
     /** 不带任何泛型参数的完全限定名 */
     private String baseQualifiedName;
-    /** 显示 imported */
+    /** 是否显式导入 imported */
     private boolean explicitlyImported;
     /** The package name. */
     private String packageName;
@@ -88,7 +88,7 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
     }
 
     /**
-     * Checks if is explicitly imported.
+     * 是否显式导入
      *
      * @return Returns the explicitlyImported.
      */
@@ -154,8 +154,7 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
             if (index == -1) {
                 answer.add(baseQualifiedName);
             } else {
-                // an inner class is specified, only import the top
-                // level class
+                // an inner class is specified, only import the top level class
                 StringBuilder sb = new StringBuilder();
                 sb.append(packageName);
                 sb.append('.');

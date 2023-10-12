@@ -67,7 +67,7 @@
 
         <!--数据库链接URL，用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://10.100.185.239:3306/db_sop?useUnicode=true&amp;characterEncoding=UTF8&amp;allowMultiQueries=true&amp;useSSL=false&amp;tinyInt1isBit=false" userId="zlb_dev_user"
+                        connectionURL="jdbc:mysql://10.100.185.239:3306/db_budget?useUnicode=true&amp;characterEncoding=UTF8&amp;allowMultiQueries=true&amp;useSSL=false&amp;tinyInt1isBit=false" userId="zlb_dev_user"
                         password="OsDFdjhByD4">
         </jdbcConnection>
 
@@ -92,24 +92,19 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <!--<table tableName="budget_relation">-->
-        <!--    &lt;!&ndash; 指定要查询的字段 &ndash;&gt;-->
-        <!--    <property name="queryColumns" value="main_id,relation_type"/>-->
-        <!--</table>-->
-        <!--<table tableName="budget_used_record">-->
-        <!--    &lt;!&ndash; 指定要查询的字段 &ndash;&gt;-->
-        <!--    <property name="queryColumns" value="main_id,relation_type,business_code,type"/>-->
-        <!--</table>-->
-        <!--<table tableName="budget_org_mapping">-->
-        <!--    &lt;!&ndash; 指定要查询的字段 &ndash;&gt;-->
-        <!--    <property name="queryColumns" value="main_id,relation_type,business_code,type"/>-->
-        <!--    <ignoreColumn column="org_budget_code"/>-->
-        <!--    <ignoreColumn column="org_budget_name"/>-->
-        <!--</table>-->
-
-        <table tableName="zlb_baida_invoice_rel">
+        <table tableName="budget_relation">
             <!-- 指定要查询的字段 -->
-            <property name="queryColumns" value="biz_code,invoice_id"/>
+            <property name="queryColumns" value="main_id,relation_type"/>
+        </table>
+        <table tableName="budget_used_record">
+            <!-- 指定要查询的字段 -->
+            <property name="queryColumns" value="main_id,relation_type,business_code,type"/>
+        </table>
+        <table tableName="budget_org_mapping">
+            <!-- 指定要查询的字段 -->
+            <property name="queryColumns" value="main_id,relation_type,business_code,type"/>
+            <ignoreColumn column="org_budget_code"/>
+            <ignoreColumn column="org_budget_name"/>
         </table>
 
     </context>

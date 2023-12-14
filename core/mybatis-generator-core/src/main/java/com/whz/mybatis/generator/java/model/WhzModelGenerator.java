@@ -69,6 +69,8 @@ public class WhzModelGenerator extends AbstractJavaGenerator {
         }
 
         if (generalSerializable()) {
+            topLevelClass.addImportedType("java.io.Serializable");
+            topLevelClass.addSuperInterface(new FullyQualifiedJavaType("java.io.Serializable"));
             Field field = new Field();
             field.setFinal(true);
             field.setInitializationString(String.valueOf((new Random()).nextLong()) + "L");

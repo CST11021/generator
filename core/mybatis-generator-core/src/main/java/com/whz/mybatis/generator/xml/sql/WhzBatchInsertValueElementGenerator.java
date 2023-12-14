@@ -100,7 +100,7 @@ public class WhzBatchInsertValueElementGenerator extends AbstractXmlElementGener
     private XmlElement buildChooseElement(String javaProperty, String value) {
         XmlElement whenElement = new XmlElement("when");
         whenElement.addAttribute(new Attribute("test", "item." + javaProperty + " != null"));
-        whenElement.addElement(new TextElement("#{tiem." + javaProperty + "},"));
+        whenElement.addElement(new TextElement("#{item." + javaProperty + "},"));
 
         XmlElement otherwiseElement = new XmlElement("otherwise");
         otherwiseElement.addElement(new TextElement(value + ","));

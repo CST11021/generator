@@ -216,87 +216,94 @@ public class MyBatisGeneratorConfigurationParser {
         }
     }
 
-    protected void parseTable(Context context, Node node) {
+    /**
+     * 解析table节点
+     *
+     * @param context   上下文配置
+     * @param tableNode      xml的<table>节点
+     */
+    protected void parseTable(Context context, Node tableNode) {
         TableConfiguration tc = new TableConfiguration(context);
         context.addTableConfiguration(tc);
 
-        Properties attributes = parseAttributes(node);
+        // 解析table节点属性
+        Properties tableAttributes = parseAttributes(tableNode);
 
-        String queryObjectName = attributes.getProperty("queryObjectName");
+        String queryObjectName = tableAttributes.getProperty("queryObjectName");
 
-        String deleteColumnName = attributes.getProperty("deleteColumnName");
+        String deleteColumnName = tableAttributes.getProperty("deleteColumnName");
         if (!stringHasValue(deleteColumnName)) {
             deleteColumnName = context.getProperty("deleteColumnName");
         }
 
-        String deletedValue = attributes.getProperty("deletedValue");
+        String deletedValue = tableAttributes.getProperty("deletedValue");
         if (!stringHasValue(deletedValue)) {
             deletedValue = context.getProperty("deletedValue");
         }
 
-        String undeleteValue = attributes.getProperty("undeleteValue");
+        String undeleteValue = tableAttributes.getProperty("undeleteValue");
         if (!stringHasValue(undeleteValue)) {
             undeleteValue = context.getProperty("undeleteValue");
         }
 
-        String gmtCreateColumn = attributes.getProperty("gmtCreateColumn");
+        String gmtCreateColumn = tableAttributes.getProperty("gmtCreateColumn");
         if (!stringHasValue(gmtCreateColumn)) {
             gmtCreateColumn = context.getProperty("gmtCreateColumn");
         }
 
-        String gmtModifiedColumn = attributes.getProperty("gmtModifiedColumn");
+        String gmtModifiedColumn = tableAttributes.getProperty("gmtModifiedColumn");
         if (!stringHasValue(gmtModifiedColumn)) {
             gmtModifiedColumn = context.getProperty("gmtModifiedColumn");
         }
 
-        String orderByFieldName = attributes.getProperty("orderByFieldName");
+        String orderByFieldName = tableAttributes.getProperty("orderByFieldName");
         if (!stringHasValue(orderByFieldName)) {
             orderByFieldName = context.getProperty("orderByFieldName");
         }
 
-        String enableGeneralOrderBy = attributes.getProperty("enableGeneralOrderBy");
+        String enableGeneralOrderBy = tableAttributes.getProperty("enableGeneralOrderBy");
         if (!stringHasValue(enableGeneralOrderBy)) {
             enableGeneralOrderBy = context.getProperty("enableGeneralOrderBy");
         }
 
-        String enableGeneralOffsetLimit = attributes.getProperty("enableGeneralOffsetLimit");
+        String enableGeneralOffsetLimit = tableAttributes.getProperty("enableGeneralOffsetLimit");
         if (!stringHasValue(enableGeneralOffsetLimit)) {
             enableGeneralOffsetLimit = context.getProperty("enableGeneralOffsetLimit");
         }
 
-        String offsetFieldName = attributes.getProperty("offsetFieldName");
+        String offsetFieldName = tableAttributes.getProperty("offsetFieldName");
         if (!stringHasValue(offsetFieldName)) {
             offsetFieldName = context.getProperty("offsetFieldName");
         }
 
-        String limitFieldName = attributes.getProperty("limitFieldName");
+        String limitFieldName = tableAttributes.getProperty("limitFieldName");
         if (!stringHasValue(limitFieldName)) {
             limitFieldName = context.getProperty("limitFieldName");
         }
 
 
-        String catalog = attributes.getProperty("catalog");
-        String schema = attributes.getProperty("schema");
-        String tableName = attributes.getProperty("tableName");
-        String domainObjectName = attributes.getProperty("domainObjectName");
-        String alias = attributes.getProperty("alias");
-        String enableInsert = attributes.getProperty("enableInsert");
-        String enableSelectByPrimaryKey = attributes.getProperty("enableSelectByPrimaryKey");
-        String enableSelectByExample = attributes.getProperty("enableSelectByExample");
-        String enableUpdateByPrimaryKey = attributes.getProperty("enableUpdateByPrimaryKey");
-        String enableDeleteByPrimaryKey = attributes.getProperty("enableDeleteByPrimaryKey");
-        String enableDeleteByExample = attributes.getProperty("enableDeleteByExample");
-        String enableCountByExample = attributes.getProperty("enableCountByExample");
-        String enableUpdateByExample = attributes.getProperty("enableUpdateByExample");
-        String selectByPrimaryKeyQueryId = attributes.getProperty("selectByPrimaryKeyQueryId");
-        String selectByExampleQueryId = attributes.getProperty("selectByExampleQueryId");
-        String modelType = attributes.getProperty("modelType");
-        String escapeWildcards = attributes.getProperty("escapeWildcards");
-        String delimitIdentifiers = attributes.getProperty("delimitIdentifiers");
-        String delimitAllColumns = attributes.getProperty("delimitAllColumns");
+        String catalog = tableAttributes.getProperty("catalog");
+        String schema = tableAttributes.getProperty("schema");
+        String tableName = tableAttributes.getProperty("tableName");
+        String domainObjectName = tableAttributes.getProperty("domainObjectName");
+        String alias = tableAttributes.getProperty("alias");
+        String enableInsert = tableAttributes.getProperty("enableInsert");
+        String enableSelectByPrimaryKey = tableAttributes.getProperty("enableSelectByPrimaryKey");
+        String enableSelectByExample = tableAttributes.getProperty("enableSelectByExample");
+        String enableUpdateByPrimaryKey = tableAttributes.getProperty("enableUpdateByPrimaryKey");
+        String enableDeleteByPrimaryKey = tableAttributes.getProperty("enableDeleteByPrimaryKey");
+        String enableDeleteByExample = tableAttributes.getProperty("enableDeleteByExample");
+        String enableCountByExample = tableAttributes.getProperty("enableCountByExample");
+        String enableUpdateByExample = tableAttributes.getProperty("enableUpdateByExample");
+        String selectByPrimaryKeyQueryId = tableAttributes.getProperty("selectByPrimaryKeyQueryId");
+        String selectByExampleQueryId = tableAttributes.getProperty("selectByExampleQueryId");
+        String modelType = tableAttributes.getProperty("modelType");
+        String escapeWildcards = tableAttributes.getProperty("escapeWildcards");
+        String delimitIdentifiers = tableAttributes.getProperty("delimitIdentifiers");
+        String delimitAllColumns = tableAttributes.getProperty("delimitAllColumns");
         
-        String mapperName = attributes.getProperty("mapperName");
-        String sqlProviderName = attributes.getProperty("sqlProviderName");
+        String mapperName = tableAttributes.getProperty("mapperName");
+        String sqlProviderName = tableAttributes.getProperty("sqlProviderName");
 
         if (stringHasValue(catalog)) {
             tc.setCatalog(catalog);
@@ -425,7 +432,7 @@ public class MyBatisGeneratorConfigurationParser {
             tc.setSqlProviderName(sqlProviderName);
         }
         
-        NodeList nodeList = node.getChildNodes();
+        NodeList nodeList = tableNode.getChildNodes();
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node childNode = nodeList.item(i);
 

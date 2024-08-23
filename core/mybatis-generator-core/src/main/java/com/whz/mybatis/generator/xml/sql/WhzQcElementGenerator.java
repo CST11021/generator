@@ -56,8 +56,6 @@ public class WhzQcElementGenerator extends AbstractXmlElementGenerator {
                 answer.addElement(0, new TextElement(column.getActualColumnName() + " = " + undeleteValue));
             }
 
-
-
         }
 
         for (IntrospectedColumnForQuery query : introspectedTable.getQueryColumns()) {

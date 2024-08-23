@@ -16,7 +16,7 @@
         <!-- 是否生成排序SQL -->
         <property name="enableGeneralOrderBy" value="false"/>
         <!-- 标记逻辑删除标识的字段 -->
-        <property name="deleteColumnName" value="is_delete"/>
+        <property name="deleteColumnName" value="is_deleted"/>
         <!-- 标记逻辑删除标识的值 -->
         <property name="deletedValue" value="1"/>
         <!-- 标记逻辑删除标识的值 -->
